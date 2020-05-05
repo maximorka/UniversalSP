@@ -1,7 +1,10 @@
 package comUniversal.ui;
 
 
-
+import comUniversal.Core;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -19,7 +22,37 @@ public class MainUI {
 
     @FXML
     public void initialize() {
+        ipTextField.setText("192.168.0.1");
+        portTextField.setText("80");
+        connectButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                int port = Integer.parseInt(portTextField.getText());
 
+
+
+
+                String con = "-fx-background-color: #00cd00";
+                if (connectButton.getStyle() != con) {
+                    Core.getInstance().ethernetDriver.doInit(ipTextField.getText(), port);
+                    Platform.runLater(()->{
+                        connectButton.setText("Відключитись");
+                        connectButton.setStyle("-fx-background-color: #00cd00");
+
+                    });
+
+                } else {
+                    Core.getInstance().ethernetDriver.closeSocket();
+                    Platform.runLater(()-> {
+                        connectButton.setText("Підключитись");
+                        connectButton.setStyle("-fx-background-color: #c0ae9d");
+                    });
+
+                }
+
+
+            }
+        });
 
     }
 

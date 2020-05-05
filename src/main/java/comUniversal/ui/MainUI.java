@@ -8,8 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 public class MainUI {
-
-
     @FXML
     private TextField ipTextField;
 
@@ -18,8 +16,6 @@ public class MainUI {
 
     @FXML
     private Button connectButton;
-
-
 
     @FXML
     public void initialize() {

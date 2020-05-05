@@ -29,23 +29,25 @@ public class MainUI {
             public void handle(ActionEvent actionEvent) {
                 int port = Integer.parseInt(portTextField.getText());
 
-
-
-
                 String con = "-fx-background-color: #00cd00";
                 if (connectButton.getStyle() != con) {
-                    Core.getInstance().ethernetDriver.doInit(ipTextField.getText(), port);
-                    Platform.runLater(()->{
-                        connectButton.setText("Відключитись");
-                        connectButton.setStyle("-fx-background-color: #00cd00");
+                    if(Core.getInstance().ethernetDriver.doInit(ipTextField.getText(), port)){
+                        Platform.runLater(()->{
+                            connectButton.setText("Відключитись");
+                            connectButton.setStyle("-fx-background-color: #00cd00");
+                            ipTextField.setDisable(true);
+                            portTextField.setDisable(true);
 
-                    });
+                        });
+                    }
 
                 } else {
                     Core.getInstance().ethernetDriver.closeSocket();
                     Platform.runLater(()-> {
                         connectButton.setText("Підключитись");
                         connectButton.setStyle("-fx-background-color: #c0ae9d");
+                        ipTextField.setDisable(false);
+                        portTextField.setDisable(false);
                     });
 
                 }

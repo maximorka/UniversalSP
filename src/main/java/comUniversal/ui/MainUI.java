@@ -114,10 +114,10 @@ public class MainUI {
     @FXML
     public void initialize() {
         System.out.println("initialize()");
-        MainUI.freqTx = freqTxTextField;
-        MainUI.freqRx = freqRxTextField;
-        MainUI.freqTxLab = freqTxLabel;
-        MainUI.freqRxLab = freqRxLabel;
+        freqTx = freqTxTextField;
+        freqRx = freqRxTextField;
+        freqTxLab = freqTxLabel;
+        freqRxLab = freqRxLabel;
 
         freqRxTextField.setVisible(false);
         freqRxLabel.setVisible(false);

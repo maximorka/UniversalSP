@@ -14,7 +14,7 @@ public class SPApp extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/FirstWindow.fxml"));
 
-        Scene scene = new Scene(root, 300, 275);
+        Scene scene = new Scene(root, 600, 400);
 
         stage.setTitle("FXML Welcome");
         stage.setScene(scene);

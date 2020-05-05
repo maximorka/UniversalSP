@@ -18,6 +18,12 @@ public class EthernetDriver {
    //private OutputThread outputThread;
 
 
+    public boolean isConnect(){
+        if(socket != null){
+            return socket.isConnected();
+        }else return false;
+
+    }
     public boolean doInit(String ip, int port) {
         this.socket = new Socket();
         this.ip = ip;
@@ -79,15 +85,24 @@ public class EthernetDriver {
         }
     }
 
-    public void writeBytes(byte[] data) {
-        if ( !socket.isClosed()) {
-            try {
-                outputStream.write(data);
-                outputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
+    public void writeByte(byte data) {
+        if(socket!=null) {
+            if (!socket.isClosed()) {
+                try {
+                    outputStream.write(data);
+                    outputStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+
+    public void writeBytes(byte[] data) {
+
+        for(byte out: data)
+            writeByte(out);
     }
 
 

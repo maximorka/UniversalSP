@@ -23,7 +23,7 @@ public class MainUI {
     @FXML
     public void initialize() {
         ipTextField.setText("192.168.0.1");
-        portTextField.setText("80");
+        portTextField.setText("81");
         connectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -31,7 +31,7 @@ public class MainUI {
 
                 String con = "-fx-background-color: #00cd00";
                 if (connectButton.getStyle() != con) {
-                    if(Core.getInstance().ethernetDriver.doInit(ipTextField.getText(), port)){
+                    if(Core.getCore().ethernetDriver.doInit(ipTextField.getText(), port)){
                         Platform.runLater(()->{
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
@@ -42,7 +42,7 @@ public class MainUI {
                     }
 
                 } else {
-                    Core.getInstance().ethernetDriver.closeSocket();
+                    Core.getCore().ethernetDriver.closeSocket();
                     Platform.runLater(()-> {
                         connectButton.setText("Підключитись");
                         connectButton.setStyle("-fx-background-color: #c0ae9d");

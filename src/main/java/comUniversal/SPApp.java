@@ -1,6 +1,5 @@
 package comUniversal;
 
-import com.sun.tools.javac.Main;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class SPApp extends Application {
-    public static Main INSTANCE;
+
     private Stage primaryStage;
 
     @Override

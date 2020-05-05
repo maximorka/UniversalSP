@@ -1,4 +1,4 @@
-package comUniversal.lowLevel;
+package comUniversal;
 
 import com.sun.tools.javac.Main;
 import javafx.application.Application;

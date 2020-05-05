@@ -1,10 +1,10 @@
-package lowLevel;
+package comUniversal.lowLevel.ui;
 //
 //import javafx.event.ActionEvent;
 //import javafx.fxml.FXML;
 //import javafx.scene.text.Text;
 //
-//public class FirstWindowController {
+//public class MainUI {
 //    @FXML private Text actiontarget;
 //
 //    @FXML protected void handleSubmitButtonAction(ActionEvent event) {
@@ -34,7 +34,7 @@ package lowLevel;
 
         import java.io.IOException;
 
-public class FirstWindowController  {
+public class MainUI {
 
     //public static ReaderWriter newReaderWriter;
 
@@ -114,10 +114,10 @@ public class FirstWindowController  {
     @FXML
     public void initialize() {
         System.out.println("initialize()");
-        FirstWindowController.freqTx = freqTxTextField;
-        FirstWindowController.freqRx = freqRxTextField;
-        FirstWindowController.freqTxLab = freqTxLabel;
-        FirstWindowController.freqRxLab = freqRxLabel;
+        MainUI.freqTx = freqTxTextField;
+        MainUI.freqRx = freqRxTextField;
+        MainUI.freqTxLab = freqTxLabel;
+        MainUI.freqRxLab = freqRxLabel;
 
         freqRxTextField.setVisible(false);
         freqRxLabel.setVisible(false);

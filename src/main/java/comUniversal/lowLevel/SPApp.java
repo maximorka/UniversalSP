@@ -1,4 +1,4 @@
-package lowLevel;
+package comUniversal.lowLevel;
 
 import com.sun.tools.javac.Main;
 import javafx.application.Application;
@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MainDriver extends Application {
+public class SPApp extends Application {
     public static Main INSTANCE;
     private Stage primaryStage;
 

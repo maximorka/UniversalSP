@@ -14,7 +14,7 @@ public class EthernetDriver {
 
     private Socket socket;
 
-   private ReadThread readThread;
+    private ReadThread readThread;
    //private OutputThread outputThread;
 
 
@@ -24,6 +24,7 @@ public class EthernetDriver {
         this.port = port;
         return initSocket();
     }
+
 
     private boolean initSocket() {
         try {

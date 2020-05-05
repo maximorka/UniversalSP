@@ -27,7 +27,7 @@ public class Core {
             while (true) {
 
                 if (ethernetDriver.isConnect()) {
-
+                    System.out.println("DFGdfgdf");
                     Status status = driverHorizon.setFrequency(128000);
                     System.out.println(status);
 

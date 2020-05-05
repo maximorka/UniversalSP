@@ -79,7 +79,7 @@ public class EthernetDriver {
         }
     }
 
-    protected void writeBytes(byte[] data) {
+    public void writeBytes(byte[] data) {
         if ( !socket.isClosed()) {
             try {
                 outputStream.write(data);

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+        <?import java.lang.*?>
+        <?import javafx.scene.control.*?>
+        <?import javafx.scene.layout.*?>
+        <?import javafx.scene.text.*?>
+        <?import javafx.scene.control.Button?>
+        <?import javafx.scene.control.ChoiceBox?>
+        <?import javafx.scene.control.Label?>
+        <?import javafx.scene.control.TextArea?>
+        <?import javafx.scene.control.TextField?>
+        <?import javafx.scene.layout.AnchorPane?>
+        <?import javafx.scene.layout.BorderPane?>
+        <?import javafx.scene.layout.HBox?>
+        <?import javafx.scene.layout.VBox?>
+        <?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="777.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lowLevel.FirstWindowController">
+<top>
+   <HBox prefHeight="54.0" prefWidth="927.0" styleClass="Hbox" BorderPane.alignment="CENTER">
+      <children>
+         <AnchorPane prefHeight="54.0" prefWidth="22.0" />
+         <AnchorPane prefHeight="54.0" prefWidth="68.0">
+            <children>
+               <Label prefHeight="46.0" prefWidth="68.0" text="Режим:" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-6.0" AnchorPane.topAnchor="3.0">
+                  <font>
+                     <Font name="System Bold Italic" size="18.0" />
+                  </font>
+               </Label>
+            </children>
+         </AnchorPane>
+         <AnchorPane prefHeight="37.0" prefWidth="112.0">
+            <children>
+               <ChoiceBox fx:id="modeOperation" layoutX="3.0" layoutY="9.0" prefHeight="37.0" prefWidth="103.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="8.0" />
+            </children>
+         </AnchorPane>
+         <AnchorPane prefHeight="48.0" prefWidth="178.0">
+            <children>
+               <Button fx:id="connectButton" layoutX="9.0" layoutY="8.0" mnemonicParsing="false" onAction="#connecting" prefHeight="39.0" prefWidth="160.0" styleClass="buttonConect" text="Підключитись" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="8.0">
+                  <font>
+                     <Font name="System Bold Italic" size="18.0" />
+                  </font>
+               </Button>
+            </children>
+         </AnchorPane>
+         <AnchorPane prefHeight="45.0" prefWidth="33.0" />
+         <AnchorPane prefHeight="54.0" prefWidth="176.0" />
+         <AnchorPane prefHeight="49.0" prefWidth="91.0">
+            <children>
+               <Label fx:id="freqRxLabel" layoutX="36.0" layoutY="16.0" prefHeight="43.0" prefWidth="86.0" text="ПРМ, кГц" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="3.0">
+                  <font>
+                     <Font name="System Bold Italic" size="18.0" />
+                  </font>
+               </Label>
+            </children>
+         </AnchorPane>
+         <AnchorPane prefHeight="49.0" prefWidth="78.0">
+            <children>
+               <TextField fx:id="freqRxTextField" layoutX="6.0" layoutY="7.0" prefHeight="32.0" prefWidth="66.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="8.0" />
+            </children>
+         </AnchorPane>
+         <AnchorPane prefHeight="52.0" prefWidth="57.0">
+            <children>
+               <Label fx:id="freqTxLabel" layoutX="60.0" layoutY="16.0" text="ПРД, кГц" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="3.0">
+                  <font>
+                     <Font name="System Bold Italic" size="18.0" />
+                  </font>
+               </Label>
+            </children>
+         </AnchorPane>
+         <AnchorPane prefHeight="54.0" prefWidth="96.0">
+            <children>
+               <TextField fx:id="freqTxTextField" layoutY="8.0" prefHeight="30.0" prefWidth="68.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="8.0" />
+            </children>
+         </AnchorPane>
+      </children>
+   </HBox>
+</top>
+<center>
+
+</center>
+<bottom>
+   <AnchorPane prefHeight="40.0" prefWidth="947.0" styleClass="Hbox" BorderPane.alignment="CENTER">
+      <children>
+
+      </children>
+   </AnchorPane>
+</bottom>
+</BorderPane>

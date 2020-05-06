@@ -11,12 +11,13 @@ public class EthernetDriver {
     private InputStream inputStream;
     private String ip;
     private int port;
-
+    private boolean connect = false;
     private Socket socket;
 
     private ReadThread readThread;
-   //private OutputThread outputThread;
 
+
+    private long lastReceiveTime;
 
     public boolean isConnect(){
         if(socket != null){
@@ -33,8 +34,19 @@ public class EthernetDriver {
 
 
     private boolean initSocket() {
+        if (readThread != null) {
+            readThread.running = false;
+
+        }
+        closeSocket();
+
         try {
+            socket = new Socket();
             socket.connect(new InetSocketAddress(ip,port),3_000);
+            connect = true;
+
+            System.out.println("Connected");
+
             outputStream = socket.getOutputStream();
             inputStream = socket.getInputStream();
             readThread = new ReadThread();
@@ -49,7 +61,9 @@ public class EthernetDriver {
     public void closeSocket(){
         if (socket != null && !socket.isClosed()) {
             try {
-                readThread.setRunning(false);
+                if (readThread != null) {
+                    readThread.running = false;
+                }
                 socket.close();
             } catch ( IOException e) {
                 e.printStackTrace();
@@ -66,24 +80,30 @@ public class EthernetDriver {
         }
         @Override
         public void run() {
-            while(this.running){
+            while(running){
 
                 int data = 0;
                 try {
-                    data = inputStream.available();
+                    data = inputStream.read(inputBuffer);
                     if (data > 0) {
-                        int dataSize = inputStream.read(inputBuffer);
+                        connect = true;
                         //System.out.println("RX:"+dataSize);
-
                     }
+
                 } catch (IOException e) {
+                    connect = false;
                     e.printStackTrace();
                 }
-
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
             }
         }
     }
+
 
     public void writeByte(byte data) {
         if(socket!=null) {
@@ -105,5 +125,8 @@ public class EthernetDriver {
             writeByte(out);
     }
 
+public boolean isConect(){
+        return connect;
+}
 
 }

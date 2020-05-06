@@ -55,7 +55,7 @@ public class MainUI {
 
             }
         });
-        Core.getCore().setRunning(true);
+
     }
 
 
@@ -64,18 +64,17 @@ public class MainUI {
     class UpdateUIThread extends Thread {
         @Override
         public void run() {
-            while (true) {
+         //   while (running) {
 //                if (Core.isReady()) {
 //
 //                    updateMessages();
 //                    updatePacketStats();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                }
+         //   }
+
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
             }
-
-
         }
     }
 

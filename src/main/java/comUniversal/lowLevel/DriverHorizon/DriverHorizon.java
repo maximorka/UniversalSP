@@ -36,6 +36,12 @@ public class DriverHorizon {
     public void addTransferListener(TransferDataBytes listener){transfer.add(listener);}
     public void clearTransferListener(){transfer.clear();}
     private void toListeners(byte[] data){
+
+
+//        for(byte out: data)
+//            System.out.print(out + " ");
+//        System.out.println("");
+
         if(!transfer.isEmpty())
             for(TransferDataBytes listener: transfer)
                 listener.SendData(data);
@@ -46,34 +52,30 @@ public class DriverHorizon {
     private void sendCommand(byte command){sendCommand(command, 0);}
     private void sendCommand(byte command, Complex[] packet){
 
-        byte[] result = new byte[4 + 64*(4+4)];
-        int index = 0;
-        ByteBuffer re = ByteBuffer.allocate(4);
-        ByteBuffer im = ByteBuffer.allocate(4);
+        ByteBuffer re_im = ByteBuffer.allocate(4);
+        byte[] result = new byte[4 + 64*3];
+        int re = 0, im = 0, index = 0;
 
         result[index++] = command;
         result[index++] = 0x56;
         result[index++] = 0x34;
         result[index++] = 0x12;
-        for (Complex sempl : packet) {
 
-            re.putFloat(sempl.re);
-            im.putFloat(sempl.im);
-            result[index++] = re.array()[3];
-            result[index++] = re.array()[2];
-            result[index++] = re.array()[1];
-            result[index++] = re.array()[0];
-            result[index++] = im.array()[3];
-            result[index++] = im.array()[2];
-            result[index++] = im.array()[1];
-            result[index++] = im.array()[0];
+        for (Complex sempl : packet) {
+            re = (int)(2047*sempl.re);
+            im = (int)(2047*sempl.im);
+            re_im.putFloat((re<<12)|im);
+            result[index++] = re_im.array()[3];
+            result[index++] = re_im.array()[2];
+            result[index++] = re_im.array()[1];
+            re_im.clear();
         }
         toListeners(result);
 
     }
 
     private void sendCommand(byte command, int data){
-        byte[] result = new byte[8];
+        byte[] result = new byte[4+4];
         result[0] = command;
         result[1] = 0x56;
         result[2] = 0x34;
@@ -120,10 +122,17 @@ public class DriverHorizon {
     // DUC methods
     private int semplCounter = 0;
     private Complex[] samplePacket = new Complex[64];
-    public void ddcSetIq(Complex sempl){
+    public void ducSetIq(Complex sempl){
         samplePacket[semplCounter++] = sempl;
-        if(semplCounter % 64 == 0)
+        if(semplCounter == 64) {
+            semplCounter = 0;
             sendCommand(duc_set_iq, samplePacket);
+        }
+
+    }
+    public void ducSetIq(Complex[] sempls){
+        for(Complex sempl: sempls)
+            ducSetIq(sempl);
     }
 
     public void ducSetMode(Mode mode){

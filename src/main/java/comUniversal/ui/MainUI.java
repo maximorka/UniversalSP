@@ -55,7 +55,9 @@ public class MainUI {
 
             }
         });
+
         Core.getCore().setRunning(true);
+
     }
 
 

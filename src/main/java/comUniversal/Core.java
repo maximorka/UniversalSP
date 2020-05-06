@@ -1,6 +1,6 @@
 package comUniversal;
 
-import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
+
 import comUniversal.lowLevel.EthernetDriver;
 
 public class Core {
@@ -24,7 +24,9 @@ public class Core {
     class Update extends Thread{
         @Override
         public void run() {
+
             while (true) {
+
 
                 if(running){
                     System.out.println("Hello");
@@ -34,6 +36,7 @@ public class Core {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+
                 }
             }
         }
@@ -42,6 +45,15 @@ public class Core {
         this.running = running;
     }
     private Core(){
+        TransferDataBytes listener = new TransferDataBytes() {
+            @Override
+            public void SendData(byte[] data) {
+                ethernetDriver.writeBytes(data);
+            }
+        };
+        driverHorizon.addTransferListener(listener);
+
+
         update = new Update();
         update.start();
     }

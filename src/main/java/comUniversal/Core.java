@@ -1,16 +1,16 @@
 package comUniversal;
 
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
-
-
 import comUniversal.lowLevel.EthernetDriver;
-import comUniversal.lowLevel.DriverHorizon.Status;
 
 public class Core {
     private static Core core = new Core();
     public EthernetDriver ethernetDriver = new EthernetDriver();
     private DriverHorizon driverHorizon = new DriverHorizon();
     private Update update;
+    private boolean running ;
+
+    public boolean connected;
 
     /**
      * Повертає унікальний екземпляр "ядра"
@@ -26,21 +26,21 @@ public class Core {
         public void run() {
             while (true) {
 
-                if (ethernetDriver.isConnect()) {
-                    System.out.println("DFGdfgdf");
-                    Status status = driverHorizon.setFrequency(128000);
-                    System.out.println(status);
-
+                if(running){
+                    System.out.println("Hello");
                 }
+
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
     }
-
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
     private Core(){
         update = new Update();
         update.start();

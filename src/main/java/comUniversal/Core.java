@@ -25,24 +25,41 @@ public class Core {
         @Override
         public void run() {
 
-            try { Thread.sleep(1000);} catch (InterruptedException e) {}
-            driverHorizon.ducSetMode(Mode.ENABLE);
-            driverHorizon.ducSetWidth(Width.kHz_3);
-
-
-
-            Complex[] sempls = new Complex[30];
-            for(int i = 0; i < sempls.length; i++)
-                sempls[i] = new Complex(0,0);
-
-
             while (true) {
 
                 if (ethernetDriver.isConnect()) {
 
-                    driverHorizon.ducSetIq(sempls);
-
+//                    driverHorizon.ddcSetMode(Mode.DISABLE); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcSetMode(Mode.ENABLE); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcSetMode(Mode.TEST); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcGetMode(); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcSetFrequency(123); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcGetFrequency(); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcSetWidth(Width.kHz_48); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcSetWidth(Width.kHz_24); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcSetWidth(Width.kHz_12); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcSetWidth(Width.kHz_6); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcSetWidth(Width.kHz_3); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcGetWidth(); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ddcReset(); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//
+//                    driverHorizon.ducSetMode(Mode.DISABLE); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducSetMode(Mode.ENABLE); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducSetMode(Mode.TEST); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducGetMode(); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducSetFrequency(123); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducGetFrequency(); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducSetWidth(Width.kHz_48); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducSetWidth(Width.kHz_24); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducSetWidth(Width.kHz_12); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducSetWidth(Width.kHz_6); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducSetWidth(Width.kHz_3); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducGetWidth(); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducClearBuffer(); try { Thread.sleep(100);} catch (InterruptedException e) {}
+//                    driverHorizon.ducGetBufferPercent(); try { Thread.sleep(100);} catch (InterruptedException e) {}
                     try { Thread.sleep(1000);} catch (InterruptedException e) {}
+                    driverHorizon.ducReset();
+
 
 
 

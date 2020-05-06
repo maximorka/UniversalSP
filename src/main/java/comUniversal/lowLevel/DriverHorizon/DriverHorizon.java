@@ -120,7 +120,7 @@ public class DriverHorizon {
     // DUC methods
     private int semplCounter = 0;
     private Complex[] samplePacket = new Complex[64];
-    public void ddcSetIq(Complex sempl){
+    public void ducSetIq(Complex sempl){
         samplePacket[semplCounter++] = sempl;
         if(semplCounter % 64 == 0)
             sendCommand(duc_set_iq, samplePacket);

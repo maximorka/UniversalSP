@@ -1,6 +1,8 @@
 package comUniversal;
 
 
+import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
+import comUniversal.lowLevel.DriverHorizon.TransferDataBytes;
 import comUniversal.lowLevel.EthernetDriver;
 
 public class Core {

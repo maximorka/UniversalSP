@@ -44,8 +44,7 @@ public class EthernetDriver {
             socket = new Socket();
             socket.connect(new InetSocketAddress(ip,port),3_000);
             connect = true;
-            socket.setTcpNoDelay(true);
-            socket.setKeepAlive(true);
+
             System.out.println("Connected");
 
             outputStream = socket.getOutputStream();

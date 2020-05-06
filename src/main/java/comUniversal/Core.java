@@ -1,9 +1,6 @@
 package comUniversal;
 
-import comUniversal.lowLevel.DriverHorizon.*;
 
-
-import comUniversal.lowLevel.DriverHorizon.TransferDataBytes;
 import comUniversal.lowLevel.EthernetDriver;
 
 public class Core {
@@ -11,6 +8,9 @@ public class Core {
     public EthernetDriver ethernetDriver = new EthernetDriver();
     private DriverHorizon driverHorizon = new DriverHorizon();
     private Update update;
+    private boolean running ;
+
+    public boolean connected;
 
     /**
      * Повертає унікальний екземпляр "ядра"
@@ -27,47 +27,23 @@ public class Core {
 
             while (true) {
 
-                if (ethernetDriver.isConnect()) {
 
-//                    driverHorizon.ddcSetMode(Mode.DISABLE); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcSetMode(Mode.ENABLE); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcSetMode(Mode.TEST); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcGetMode(); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcSetFrequency(123); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcGetFrequency(); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcSetWidth(Width.kHz_48); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcSetWidth(Width.kHz_24); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcSetWidth(Width.kHz_12); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcSetWidth(Width.kHz_6); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcSetWidth(Width.kHz_3); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcGetWidth(); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ddcReset(); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//
-//                    driverHorizon.ducSetMode(Mode.DISABLE); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducSetMode(Mode.ENABLE); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducSetMode(Mode.TEST); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducGetMode(); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducSetFrequency(123); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducGetFrequency(); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducSetWidth(Width.kHz_48); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducSetWidth(Width.kHz_24); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducSetWidth(Width.kHz_12); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducSetWidth(Width.kHz_6); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducSetWidth(Width.kHz_3); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducGetWidth(); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducClearBuffer(); try { Thread.sleep(100);} catch (InterruptedException e) {}
-//                    driverHorizon.ducGetBufferPercent(); try { Thread.sleep(100);} catch (InterruptedException e) {}
-                    try { Thread.sleep(1000);} catch (InterruptedException e) {}
-                    driverHorizon.ducReset();
+                if(running){
+                    System.out.println("Hello");
+                }
 
-
-
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
 
                 }
             }
         }
     }
-
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
     private Core(){
         TransferDataBytes listener = new TransferDataBytes() {
             @Override

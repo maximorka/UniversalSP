@@ -54,7 +54,12 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
                 Core.getCore().driverHorizon.ddcSetFrequency(frequency);
             }
         });
-
+        changeSettingsbutton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Core.getCore().driverHorizon.ddcGetFrequency();
+            }
+        });
         testIP();
         ipTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override

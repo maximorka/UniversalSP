@@ -389,7 +389,7 @@ public class DriverHorizon {
         else if(byteCounter == 1) width = Width.kHz_24;
         else if(byteCounter == 2) width = Width.kHz_12;
         else if(byteCounter == 3) width = Width.kHz_6;
-        else if(byteCounter == 3) width = Width.kHz_3;
+        else if(byteCounter == 4) width = Width.kHz_3;
         else{System.out.println("Ooo shit !");}
         System.out.println("Width is " + width);
         toListenersDucWidth(width);
@@ -411,7 +411,7 @@ public class DriverHorizon {
         state = byteCollecter & 0x0000001F;
         byteCounter = 0;
         timer = System.currentTimeMillis();
-        System.out.printf("Mask was found");
+        System.out.println("Mask was found");
     }
 
     private interface stateHandler {void handler();}

@@ -30,18 +30,23 @@ public class DriverHorizon {
     private byte duc_clear_buffer =  16;
     private byte duc_get_buffer_percent =  17;
 
+    // Interface
+    private byte ethernet_set = 21;
+    private byte ethernet_get = 22;
+    private byte ethernet_reset = 29;
+    private byte init = 30;
+
     // Listeners
     private List<TransferDataBytes> transfer = new ArrayList<>();
     public void addTransferListener(TransferDataBytes listener){transfer.add(listener);}
     public void clearTransferListener(){transfer.clear();}
-    private void toListeners(byte[] data){
+    private void toListenersTransferDataBytes(byte[] data){
         if(!transfer.isEmpty())
             for(TransferDataBytes listener: transfer)
                 listener.SendData(data);
     }
 
     // Common methods
-
     private void sendCommand(byte command){sendCommand(command, 0);}
     private void sendCommand(byte command, Complex[] packet){
 
@@ -64,7 +69,7 @@ public class DriverHorizon {
             result[index++] = re_im.array()[1];
             re_im.clear();
         }
-        toListeners(result);
+        toListenersTransferDataBytes(result);
 
     }
 
@@ -80,7 +85,39 @@ public class DriverHorizon {
         result[5] = b.array()[2];
         result[6] = b.array()[1];
         result[7] = b.array()[0];
-        toListeners(result);
+        toListenersTransferDataBytes(result);
+    }
+    private void sendCommand(byte command, int data1, int data2, int data3, int data4){
+        byte[] result = new byte[20];
+        result[0] = command;
+        result[1] = 0x56;
+        result[2] = 0x34;
+        result[3] = 0x12;
+        ByteBuffer b = ByteBuffer.allocate(4);
+        b.putInt(data1);
+        result[4] = b.array()[3];
+        result[5] = b.array()[2];
+        result[6] = b.array()[1];
+        result[7] = b.array()[0];
+        b.clear();
+        b.putInt(data2);
+        result[8] = b.array()[3];
+        result[9] = b.array()[2];
+        result[10] = b.array()[1];
+        result[11] = b.array()[0];
+        b.clear();
+        b.putInt(data3);
+        result[12] = b.array()[3];
+        result[13] = b.array()[2];
+        result[14] = b.array()[1];
+        result[15] = b.array()[0];
+        b.clear();
+        b.putInt(data4);
+        result[16] = b.array()[3];
+        result[17] = b.array()[2];
+        result[18] = b.array()[1];
+        result[19] = b.array()[0];
+        toListenersTransferDataBytes(result);
     }
 
     // DDC methods
@@ -155,11 +192,276 @@ public class DriverHorizon {
     public void ducClearBuffer(){sendCommand(duc_clear_buffer);}
     public void ducGetBufferPercent(){sendCommand(duc_get_buffer_percent);}
 
+    // Inertface
+    public void ethernetSet(int ip, int mask, short port, int gateWay){
+        int p = (int)port;
+        p &= 0xFFFF;
+        sendCommand(ethernet_set, ip, mask, p, gateWay);
+    }
+    public void ethernetGet(){sendCommand(ethernet_get);}
+    public void ethernetreset(){sendCommand(ethernet_reset);}
+    public void init(){sendCommand(init);}
+
+
+
+    // Parser describe ---------------------------------
+
+
+    // Listeners DdcIQ
+    private List<DdcIQ> ddcIQ = new ArrayList<>();
+    public void addDdcIQ(DdcIQ listener){ddcIQ.add(listener);}
+    public void clearDdcIQ(){ddcIQ.clear();}
+    private void toListenersDdcIQ(Complex sempl){
+        if(!ddcIQ.isEmpty())
+            for(DdcIQ listener: ddcIQ)
+                listener.sempl(sempl);
+    }
+    // Listeners DdcMode
+    private List<DdcMode> ddcMode = new ArrayList<>();
+    public void addDdcMode(DdcMode listener){ddcMode.add(listener);}
+    public void clearDdcMode(){ddcMode.clear();}
+    private void toListenersDdcMode(Mode mode){
+        if(!ddcMode.isEmpty())
+            for(DdcMode listener: ddcMode)
+                listener.mode(mode);
+    }
+    // Listeners DdcWidth
+    private List<DdcWidth> ddcWidth = new ArrayList<>();
+    public void addDdcWidth(DdcWidth listener){ddcWidth.add(listener);}
+    public void clearDdcWidth(){ddcWidth.clear();}
+    private void toListenersDdcWidth(Width width){
+        if(!ddcWidth.isEmpty())
+            for(DdcWidth listener: ddcWidth)
+                listener.width(width);
+    }
+    // Listeners DdcFrequency
+    private List<DdcFrequency> ddcFrequency = new ArrayList<>();
+    public void addDdcFrequency(DdcFrequency listener){ddcFrequency.add(listener);}
+    public void clearDdcFrequency(){ddcFrequency.clear();}
+    private void toListenersDdcFrequency(int frequency){
+        if(!ddcFrequency.isEmpty())
+            for(DdcFrequency listener: ddcFrequency)
+                listener.frequency(frequency);
+    }
+
+
+    // Listeners DucMode
+    private List<DucMode> ducMode = new ArrayList<>();
+    public void addDucMode(DucMode listener){ducMode.add(listener);}
+    public void clearDucMode(){ducMode.clear();}
+    private void toListenersDucMode(Mode mode){
+        if(!ducMode.isEmpty())
+            for(DucMode listener: ducMode)
+                listener.mode(mode);
+    }
+    // Listeners DucWidth
+    private List<DucWidth> ducWidth = new ArrayList<>();
+    public void addDucWidth(DucWidth listener){ducWidth.add(listener);}
+    public void clearDucWidth(){ducWidth.clear();}
+    private void toListenersDucWidth(Width width){
+        if(!ducWidth.isEmpty())
+            for(DucWidth listener: ducWidth)
+                listener.width(width);
+    }
+    // Listeners DucFrequency
+    private List<DucFrequency> ducFrequency = new ArrayList<>();
+    public void addDucFrequency(DucFrequency listener){ducFrequency.add(listener);}
+    public void clearDucFrequency(){ducFrequency.clear();}
+    private void toListenersDucFrequency(int frequency){
+        if(!ducFrequency.isEmpty())
+            for(DucFrequency listener: ducFrequency)
+                listener.frequency(frequency);
+    }
+    // Listeners DucBufferPercent
+    private List<DucBufferPercent> ducBufferPercent = new ArrayList<>();
+    public void addDucBufferPercent(DucBufferPercent listener){ducBufferPercent.add(listener);}
+    public void clearDucBufferPercent(){ducBufferPercent.clear();}
+    private void toListenersDucBufferPercent(int percent){
+        if(!ducBufferPercent.isEmpty())
+            for(DucBufferPercent listener: ducBufferPercent)
+                listener.percent(percent);
+    }
+
+
+
+
+    private int PACKET_SIZE = 64;
+    private int MASK = 0x12345600;
+    private int MASK_FIND = 32;
+    private int TIME_DATA_COLLECT = 1000;
+
+    private int byteCollecter = 0;
+
+    private int state = MASK_FIND;
+    private int byteCounter = 0;
+    private long timer = 0;
+
+    public void parse(byte data){
+        byteCollecter >>= 8;
+        byteCollecter &= 0x00FFFFFF;
+        byteCollecter |= ((int)data << 24);
+        byteCounter++;
+        stateTable[state].handler();
+
+        if (state == MASK_FIND) return;
+        if(System.currentTimeMillis() - timer < TIME_DATA_COLLECT) return;
+        System.out.println("Fuck, where are my bytes?");
+        state = MASK_FIND;
+    }
+
+    public void parse(byte[] data){
+        for(byte source: data)
+            parse(source);
+    }
+
+
+    private Complex convertIntToComplex(int data){
+        Complex sempl = new Complex(0,0 );
+        int re = data & 0x0000FFFF;
+        int im = data & 0xFFFF0000;
+        re <<= 16;
+        re >>= 16;
+        im >>= 16;
+        sempl.re = (float)re/32768.f;
+        sempl.im = (float)im/32768.f;
+        return sempl;
+    }
+
+    private void reserved(){
+        System.out.println("I don't know this command " + state);
+        state = MASK_FIND;
+        stateTable[state].handler();
+    }
+
+    private void packet() {
+        if(byteCounter % 4 != 0) return;
+        toListenersDdcIQ(convertIntToComplex(byteCounter));
+        if(byteCounter != 4 * PACKET_SIZE) return;
+        state = MASK_FIND;
+    }
+    private void ddcMode() {
+        if(byteCounter != 4) return;
+        state = MASK_FIND;
+        Mode mode = Mode.DISABLE;;
+        if(byteCounter == 0) mode = Mode.DISABLE;
+        else if(byteCounter == 1) mode = Mode.ENABLE;
+        else if(byteCounter == 2) mode = Mode.TEST;
+        else{System.out.println("Ooo shit !");}
+        System.out.println("Mode is " + mode);
+        toListenersDdcMode(mode);
+    }
+    private void ddcWidth() {
+        if(byteCounter != 4) return;
+        state = MASK_FIND;
+        Width width = Width.kHz_48;;
+        if(byteCounter == 0) width = Width.kHz_48;
+        else if(byteCounter == 1) width = Width.kHz_24;
+        else if(byteCounter == 2) width = Width.kHz_12;
+        else if(byteCounter == 3) width = Width.kHz_6;
+        else if(byteCounter == 3) width = Width.kHz_3;
+        else{System.out.println("Ooo shit !");}
+        System.out.println("Width is " + width);
+        toListenersDdcWidth(width);
+    }
+    private void ddcFrequency() {
+        if(byteCounter != 4) return;
+        state = MASK_FIND;
+        System.out.println("Frequency is " + byteCounter);
+        toListenersDdcFrequency(byteCounter);
+    }
+
+    private void ducMode() {
+        if(byteCounter != 4) return;
+        state = MASK_FIND;
+        Mode mode = Mode.DISABLE;;
+        if(byteCounter == 0) mode = Mode.DISABLE;
+        else if(byteCounter == 1) mode = Mode.ENABLE;
+        else if(byteCounter == 2) mode = Mode.TEST;
+        else{System.out.println("Ooo shit !");}
+        System.out.println("Mode is " + mode);
+        toListenersDucMode(mode);
+    }
+    private void ducWidth() {
+        if(byteCounter != 4) return;
+        state = MASK_FIND;
+        Width width = Width.kHz_48;;
+        if(byteCounter == 0) width = Width.kHz_48;
+        else if(byteCounter == 1) width = Width.kHz_24;
+        else if(byteCounter == 2) width = Width.kHz_12;
+        else if(byteCounter == 3) width = Width.kHz_6;
+        else if(byteCounter == 4) width = Width.kHz_3;
+        else{System.out.println("Ooo shit !");}
+        System.out.println("Width is " + width);
+        toListenersDucWidth(width);
+    }
+    private void ducFrequency() {
+        if(byteCounter != 4) return;
+        state = MASK_FIND;
+        System.out.println("Frequency is " + byteCounter);
+        toListenersDucFrequency(byteCounter);
+    }
+    private void ducBufferPercent() {
+        if(byteCounter != 4) return;
+        state = MASK_FIND;
+        System.out.println("% = " + byteCounter);
+        toListenersDucBufferPercent(byteCounter);
+    }
+    private void maskFind() {
+        if((byteCollecter & 0xFFFFFFE0) != MASK) return;
+        state = byteCollecter & 0x0000001F;
+        byteCounter = 0;
+        timer = System.currentTimeMillis();
+        System.out.println("Mask was found");
+    }
+
+    private interface stateHandler {void handler();}
+    stateHandler[] stateTable = {
+            this::packet,
+            this::reserved,
+            this::ddcMode,
+            this::reserved,
+            this::ddcWidth,
+            this::reserved,
+            this::ddcFrequency,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::ducMode,
+            this::reserved,
+            this::ducWidth,
+            this::reserved,
+            this::ducFrequency,
+            this::reserved,
+            this::reserved,
+            this::ducBufferPercent,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::reserved,
+            this::maskFind
+    };
+
+
+
+
+
+
+
+
 
 
 
 
 
 }
-
 

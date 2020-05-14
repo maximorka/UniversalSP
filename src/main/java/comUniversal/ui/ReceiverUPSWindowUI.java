@@ -1,5 +1,6 @@
 package comUniversal.ui;
 
+import comUniversal.Core;
 import comUniversal.ui.setting.ParamsSettings;
 import comUniversal.util.Params;
 import javafx.event.ActionEvent;
@@ -45,6 +46,14 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
 
         restoreAll(Params.SETTINGS);
         changeSettingsbutton.setVisible(false);
+        rxFrequencyTextField.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                int frequency = Integer.parseInt(rxFrequencyTextField.getText());
+
+                Core.getCore().driverHorizon.ddcSetFrequency(frequency);
+            }
+        });
 
         testIP();
         ipTextField.setOnAction(new EventHandler<ActionEvent>() {

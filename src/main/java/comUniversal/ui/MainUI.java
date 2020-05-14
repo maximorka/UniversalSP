@@ -2,6 +2,8 @@ package comUniversal.ui;
 
 
 import comUniversal.Core;
+import comUniversal.util.Params;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -83,30 +85,28 @@ public class MainUI {
         connectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-//                int port = Integer.parseInt(portTextField.getText());
-//
-//                String con = "-fx-background-color: #00cd00";
-//                if (connectButton.getStyle() != con) {
-//                    if(Core.getCore().ethernetDriver.doInit(ipTextField.getText(), port)){
-//                        Platform.runLater(()->{
-//                            connectButton.setText("Відключитись");
-//                            connectButton.setStyle("-fx-background-color: #00cd00");
-//                            ipTextField.setDisable(true);
-//                            portTextField.setDisable(true);
-//
-//                        });
-//                    }
-//
-//                } else {
-//                    Core.getCore().ethernetDriver.closeSocket();
-//                    Platform.runLater(()-> {
-//                        connectButton.setText("Підключитись");
-//                        connectButton.setStyle("-fx-background-color: #c0ae9d");
-//                        ipTextField.setDisable(false);
-//                        portTextField.setDisable(false);
-//                    });
-//
-//                }
+                String ip = Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1");
+                int port = 80;
+
+
+
+                String con = "-fx-background-color: #00cd00";
+                if (connectButton.getStyle() != con) {
+                    if(Core.getCore().ethernetDriver.doInit(ip, port)){
+                        Platform.runLater(()->{
+                            connectButton.setText("Відключитись");
+                            connectButton.setStyle("-fx-background-color: #00cd00");
+                        });
+                    }
+
+                } else {
+                    Core.getCore().ethernetDriver.closeSocket();
+                    Platform.runLater(()-> {
+                        connectButton.setText("Підключитись");
+                        connectButton.setStyle("-fx-background-color: #c0ae9d");
+                    });
+
+                }
 
 
             }

@@ -1,10 +1,13 @@
 package comUniversal;
 
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
+import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
+import comUniversal.lowLevel.DriverHorizon.TransferDataBytes;
 
 public class Core {
     private static Core core = new Core();
     public EthernetDriver ethernetDriver = new EthernetDriver();
+    public DriverHorizon driverHorizon = new DriverHorizon();
     private Update update;
     private boolean running = false;
     /**
@@ -33,6 +36,14 @@ public class Core {
     private Core(){
         update = new Update();
         update.start();
+
+        TransferDataBytes listener = new TransferDataBytes() {
+            @Override
+            public void SendData(byte[] data) {
+                ethernetDriver.writeBytes(data);
+            }
+        };
+        driverHorizon.addTransferListener(listener);
     }
 
 

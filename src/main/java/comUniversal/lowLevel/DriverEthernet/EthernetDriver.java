@@ -1,10 +1,12 @@
-package comUniversal.lowLevel;
+package comUniversal.lowLevel.DriverEthernet;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EthernetDriver {
     private OutputStream outputStream;
@@ -18,6 +20,12 @@ public class EthernetDriver {
 
 
     private long lastReceiveTime;
+
+    // Listeners
+    private List<ReceiverDataBytes> receiver = new ArrayList<>();
+    public void addReceiverListener(ReceiverDataBytes listener){receiver.add(listener);}
+    public void clearReceiverListener(){receiver.clear();}
+
 
     public boolean isConnect(){
         if(socket != null){
@@ -87,7 +95,9 @@ public class EthernetDriver {
                     data = inputStream.read(inputBuffer);
                     if (data > 0) {
                         connect = true;
-                        //System.out.println("RX:"+dataSize);
+                        if(!receiver.isEmpty())
+                            for(ReceiverDataBytes listener: receiver)
+                                listener.ReceiveData(inputBuffer);
                     }
 
                 } catch (IOException e) {

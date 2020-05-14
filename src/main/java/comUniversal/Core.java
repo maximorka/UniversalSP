@@ -1,6 +1,6 @@
 package comUniversal;
 
-import comUniversal.lowLevel.EthernetDriver;
+import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 
 public class Core {
     private static Core core = new Core();
@@ -22,7 +22,7 @@ public class Core {
 
             while (true) {
                 if(running){
-                    System.out.println("Hello");
+                    //System.out.println("Hello");
                 }
             }
         }

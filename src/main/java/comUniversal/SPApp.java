@@ -14,9 +14,9 @@ public class SPApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/FirstWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/StartWindow.fxml"));
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root);
 
         stage.setTitle("Universal Special Program");
         stage.setScene(scene);

@@ -1,9 +1,10 @@
 package comUniversal;
 
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
+import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.TransferDataBytes;
 import comUniversal.lowLevel.DriverHorizon.Width;
-import comUniversal.lowLevel.EthernetDriver;
+import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 
 public class BufferController {
     /**
@@ -40,29 +41,48 @@ public class BufferController {
         };
         driverHorizon.addTransferListener(listener);
         driverHorizon.ducSetWidth(Width.kHz_3);
+        driverHorizon.ducSetMode(Mode.ENABLE);
+        sampleFreq = 3_000;
+        sampleCountPer10ms = sampleFreq / 100;
+        byteCountPer10ms = sampleCountPer10ms * 3;
+        sampleCountPer1ms = sampleFreq / 1000;
+
         workingThread = new WorkingThread();
         workingThread.start();
     }
-class WorkingThread extends Thread{
-    @Override
-    public void run() {
-        while (true){
+
+    class WorkingThread extends Thread {
+        @Override
+        public void run() {
             long start = System.currentTimeMillis();
+            long executeTime  = 1;
+            while (true) {
 
-            if (finishingWork) {
-                continue;
-            }
-            if( percentBuffer>60){
-                continue;
-            }
-            Complex sample[] = modulatorTest.getIQ();
-            for (int i = 0; i <sample.length ; i++) {
-                driverHorizon.ducSetIq(sample[i]);
-            }
 
+                if (finishingWork) {
+                    continue;
+                }
+                if (percentBuffer > 60) {
+                    continue;
+                }
+                System.out.println(executeTime+"countPerSec:"+sampleCountPer1ms);
+                int needSendSample = sampleCountPer1ms * (int) executeTime;
+                needSendSample+=(int) (0.1*sampleCountPer1ms);
+                for (int i = 0; i <needSendSample ; i++) {
+                    Complex sample = modulatorTest.getIQ();
+                    driverHorizon.ducSetIq(sample);
+                }
+                executeTime = System.currentTimeMillis() - start;
+                start = System.currentTimeMillis();
+                //System.out.println(executeTime);
+                try {
+                    Thread.sleep(0,100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
-}
 
 
     public void sendIQ(){
@@ -81,7 +101,7 @@ class WorkingThread extends Thread{
 
         while (true){
 
-            bufferController.sendIQ();
+           // bufferController.sendIQ();
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {

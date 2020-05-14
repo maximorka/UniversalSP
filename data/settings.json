@@ -1,0 +1,7 @@
+{
+  "filename": "settings",
+  "items": {
+    "ethernet_ip": "192.168.0.1",
+    "ethernet_port": "80"
+  }
+}

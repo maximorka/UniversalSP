@@ -7,7 +7,7 @@ public class ModulatorTest implements IBufferController {
     }
 
     @Override
-    public Complex[] getIQ() {
-        return new Complex[0];
+    public Complex getIQ() {
+        return new Complex(1,0);
     }
 }

@@ -1,5 +1,5 @@
 package comUniversal;
 
 public interface IBufferController {
-    public Complex[] getIQ();
+    public Complex getIQ();
 }

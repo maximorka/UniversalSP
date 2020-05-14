@@ -1,13 +1,9 @@
 package comUniversal;
 
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
-
-import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
-import comUniversal.lowLevel.DriverHorizon.TransferDataBytes;
 import comUniversal.lowLevel.DriverEthernet.ReceiverDataBytes;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import javafx.geometry.HorizontalDirection;
-
 
 public class Core {
     private static Core core = new Core();
@@ -51,14 +47,6 @@ public class Core {
 
         update = new Update();
         update.start();
-
-        TransferDataBytes listener = new TransferDataBytes() {
-            @Override
-            public void SendData(byte[] data) {
-                ethernetDriver.writeBytes(data);
-            }
-        };
-        driverHorizon.addTransferListener(listener);
     }
 
 

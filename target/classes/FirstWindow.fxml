@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="777.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.MainUI">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="777.0" prefWidth="953.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.MainUI">
 <top>
    <HBox prefHeight="54.0" prefWidth="927.0" styleClass="Hbox" BorderPane.alignment="CENTER">
       <children>
@@ -54,4 +55,11 @@
 <center>
 
 </center>
+   <center>
+      <HBox prefHeight="601.0" prefWidth="953.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane prefHeight="655.0" prefWidth="234.0" />
+         </children>
+      </HBox>
+   </center>
 </BorderPane>

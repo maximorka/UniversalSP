@@ -5,7 +5,6 @@ import comUniversal.Complex;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class DriverHorizon {
 
@@ -46,27 +45,24 @@ public class DriverHorizon {
     private void sendCommand(byte command){sendCommand(command, 0);}
     private void sendCommand(byte command, Complex[] packet){
 
-        byte[] result = new byte[4 + 64*(4+4)];
-        int index = 0;
-        ByteBuffer re = ByteBuffer.allocate(4);
-        ByteBuffer im = ByteBuffer.allocate(4);
+        byte[] result = new byte[4 + 64*3];
+        ByteBuffer re_im = ByteBuffer.allocate(4);
+        int re = 0, im = 0, index = 0;
 
         result[index++] = command;
         result[index++] = 0x56;
         result[index++] = 0x34;
         result[index++] = 0x12;
         for (Complex sempl : packet) {
-
-            re.putFloat(sempl.re);
-            im.putFloat(sempl.im);
-            result[index++] = re.array()[3];
-            result[index++] = re.array()[2];
-            result[index++] = re.array()[1];
-            result[index++] = re.array()[0];
-            result[index++] = im.array()[3];
-            result[index++] = im.array()[2];
-            result[index++] = im.array()[1];
-            result[index++] = im.array()[0];
+            re = (int)(2047*sempl.re);
+            im = (int)(2047*sempl.im);
+            re &= 0xFFF;
+            im &= 0xFFF;
+            re_im.putInt((re<<12)|im);
+            result[index++] = re_im.array()[3];
+            result[index++] = re_im.array()[2];
+            result[index++] = re_im.array()[1];
+            re_im.clear();
         }
         toListeners(result);
 
@@ -122,8 +118,10 @@ public class DriverHorizon {
     private Complex[] samplePacket = new Complex[64];
     public void ducSetIq(Complex sempl){
         samplePacket[semplCounter++] = sempl;
-        if(semplCounter % 64 == 0)
+        if(semplCounter == 64) {
+            semplCounter = 0;
             sendCommand(duc_set_iq, samplePacket);
+        }
     }
 
     public void ducSetMode(Mode mode){

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="302.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.TransmitterUPSWindowUI">
+   <children>
+      <VBox layoutY="2.0" prefHeight="287.0" prefWidth="302.0">
+         <children>
+            <Pane prefHeight="26.0" prefWidth="344.0" />
+            <HBox prefHeight="58.0" prefWidth="322.0">
+               <children>
+                  <AnchorPane prefHeight="21.0" prefWidth="69.0">
+                     <children>
+                        <Label prefHeight="48.0" prefWidth="104.0" text="Частота ПЧ ПРМ:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="50.0" prefWidth="152.0">
+                     <children>
+                        <TextField fx:id="rxFrequencyTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <HBox prefHeight="48.0" prefWidth="380.0">
+               <children>
+                  <AnchorPane prefHeight="83.0" prefWidth="107.0">
+                     <children>
+                        <Label contentDisplay="CENTER" prefHeight="30.0" prefWidth="107.0" text="Частота ПЧ ПРД:" AnchorPane.leftAnchor="10.0" />
+                     </children>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="58.0" prefWidth="197.0">
+                     <children>
+                        <TextField fx:id="txFrequencyTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <Pane prefHeight="16.0" prefWidth="289.0" />
+            <HBox prefHeight="36.0" prefWidth="380.0">
+               <children>
+                  <AnchorPane prefHeight="54.0" prefWidth="73.0">
+                     <children>
+                        <Label prefHeight="48.0" prefWidth="107.0" text="             IP:" AnchorPane.leftAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="38.0" prefWidth="128.0">
+                     <children>
+                        <TextField fx:id="ipTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="58.0" prefWidth="20.0">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="62.0" layoutX="7.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <HBox prefHeight="45.0" prefWidth="322.0">
+               <children>
+                  <AnchorPane prefHeight="48.0" prefWidth="107.0">
+                     <children>
+                        <Label prefHeight="48.0" prefWidth="107.0" text="         Порт:" AnchorPane.leftAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="35.0" prefWidth="187.0">
+                     <children>
+                        <TextField fx:id="portTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

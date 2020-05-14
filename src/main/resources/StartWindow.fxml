@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="97.0" prefWidth="863.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.MainUI">
+   <children>
+      <VBox layoutX="-2.0" prefHeight="97.0" prefWidth="863.0">
+         <children>
+            <HBox prefHeight="44.0" prefWidth="761.0" />
+            <HBox prefHeight="45.0" prefWidth="761.0">
+               <children>
+                  <Label prefHeight="21.0" prefWidth="94.0" text="Тип ПРМ:">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <ChoiceBox fx:id="typeRxChoicebox" prefHeight="25.0" prefWidth="138.0" />
+                  <AnchorPane prefHeight="65.0" prefWidth="76.0" />
+                  <Label prefHeight="21.0" prefWidth="94.0" text="Тип ПРД:" />
+                  <ChoiceBox fx:id="typeTxChoicebox" prefHeight="25.0" prefWidth="138.0" />
+                  <AnchorPane prefHeight="65.0" prefWidth="101.0" />
+                  <Label prefHeight="21.0" prefWidth="125.0" text="Режим роботи:" />
+                  <ChoiceBox fx:id="modeWorkChoicebox" prefHeight="25.0" prefWidth="138.0" />
+                  <AnchorPane prefHeight="65.0" prefWidth="148.0" />
+                  <Button fx:id="connectButton" mnemonicParsing="false" prefHeight="41.0" prefWidth="131.0" text="Підключитись">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

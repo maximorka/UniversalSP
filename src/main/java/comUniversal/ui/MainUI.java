@@ -14,11 +14,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class MainUI {
+    String oldTypeRx = "";
     @FXML
     private ChoiceBox typeRxChoicebox;
 
@@ -29,39 +31,84 @@ public class MainUI {
 
     @FXML
     private Button connectButton;
+    @FXML
+    private ComboBox test;
 
     @FXML
     public void initialize() {
-        ObservableList <String> typeRx = FXCollections.observableArrayList("УПС1");
-        typeRxChoicebox.setItems(typeRx);
 
+        ObservableList <String> typeRx = FXCollections.observableArrayList("УПС1","rty");
+        typeRxChoicebox.setItems(typeRx);
+//test.setItems(typeRx);
         ObservableList <String> typeTx = FXCollections.observableArrayList("УПС1");
         typeTxChoicebox.setItems(typeTx);
 
         ObservableList <String> typeMode = FXCollections.observableArrayList("Горизонт");
         modeWorkChoicebox.setItems(typeMode);
 
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
+        /*
+         * if "fx:controller" is not set in fxml
+         * fxmlLoader.setController(NewWindowController);
+         */
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Receiver UPS");
+        stage.setScene(scene);
+
+//        test.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                System.out.println("show");
+//                stage.show();
+//            }
+//        });
+
+
+//        typeRxChoicebox.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                System.out.println("show");
+//                stage.show();
+//            }
+//        });
+
         typeRxChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
-                /*
-                 * if "fx:controller" is not set in fxml
-                 * fxmlLoader.setController(NewWindowController);
-                 */
-                Scene scene = null;
-                try {
-                    scene = new Scene(fxmlLoader.load());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Stage stage = new Stage();
-                stage.setTitle("Receiver UPS");
-                stage.setScene(scene);
+                System.out.println("show11");
                 stage.show();
+                oldTypeRx = typeRxChoicebox.getValue().toString();
+
             }
         });
+
+       
+
+//        typeRxChoicebox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//
+//                if(typeRxChoicebox.getValue() == null ){
+//
+//                }else {
+//                    if(!stage.isShowing()){
+//                        System.out.println("show");
+//                        stage.show();
+//                    }
+//
+//                    oldTypeRx = typeRxChoicebox.getValue().toString();
+//
+//                }
+//            }
+//        });
+
 
         typeTxChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override

@@ -12,7 +12,7 @@ import javafx.geometry.HorizontalDirection;
 public class Core {
     private static Core core = new Core();
     public EthernetDriver ethernetDriver = new EthernetDriver();
-    public DriverHorizon driverHorizon = new DriverHorizon();
+    public DriverHorizon driverHorizon;
     private Update update;
     private boolean running = false;
     /**
@@ -60,6 +60,9 @@ public class Core {
         };
         driverHorizon.addTransferListener(listener);
     }
-
-
+    public void setDriver() {
+        driverHorizon = new DriverHorizon();
+        ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
+        driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
+    }
 }

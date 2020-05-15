@@ -28,18 +28,11 @@
             <HBox prefHeight="48.0" prefWidth="302.0">
                <children>
                   <AnchorPane prefHeight="29.0" prefWidth="117.0">
-                     <children>
-                        <Label contentDisplay="CENTER" prefHeight="30.0" prefWidth="107.0" text="Частота ПЧ ПРД:" AnchorPane.leftAnchor="10.0" />
-                     </children>
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </AnchorPane>
-                  <AnchorPane prefHeight="48.0" prefWidth="151.0">
-                     <children>
-                        <TextField fx:id="txFrequencyTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane prefHeight="48.0" prefWidth="151.0" />
                </children>
             </HBox>
             <Pane prefHeight="16.0" prefWidth="289.0" />

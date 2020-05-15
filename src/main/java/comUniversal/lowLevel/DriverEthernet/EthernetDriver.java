@@ -97,7 +97,10 @@ public class EthernetDriver {
                         connect = true;
                         if(!receiver.isEmpty())
                             for(ReceiverDataBytes listener: receiver)
-                                listener.ReceiveData(inputBuffer);
+                                for (int i = 0; i < data ; i++) {
+                                    listener.ReceiveData(inputBuffer[i]);
+                                }
+
                     }
 
                 } catch (IOException e) {

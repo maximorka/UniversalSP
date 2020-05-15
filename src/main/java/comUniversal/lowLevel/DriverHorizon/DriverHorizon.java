@@ -335,7 +335,9 @@ public class DriverHorizon {
 
     private void packet() {
         if(byteCounter % 4 != 0) return;
-        toListenersDdcIQ(convertIntToComplex(byteCounter));
+        Complex sempl = convertIntToComplex(byteCollecter);
+        toListenersDdcIQ(sempl);
+        //System.out.println("I got a sempl! " + sempl.re + " " + sempl.im);
         if(byteCounter != 4 * PACKET_SIZE) return;
         state = MASK_FIND;
     }
@@ -343,75 +345,76 @@ public class DriverHorizon {
         if(byteCounter != 4) return;
         state = MASK_FIND;
         Mode mode = Mode.DISABLE;;
-        if(byteCounter == 0) mode = Mode.DISABLE;
-        else if(byteCounter == 1) mode = Mode.ENABLE;
-        else if(byteCounter == 2) mode = Mode.TEST;
+        if(byteCollecter == 0) mode = Mode.DISABLE;
+        else if(byteCollecter == 1) mode = Mode.ENABLE;
+        else if(byteCollecter == 2) mode = Mode.TEST;
         else{System.out.println("Ooo shit !");}
-        System.out.println("Mode is " + mode);
+        //System.out.println("Mode is " + mode);
         toListenersDdcMode(mode);
     }
     private void ddcWidth() {
         if(byteCounter != 4) return;
         state = MASK_FIND;
         Width width = Width.kHz_48;;
-        if(byteCounter == 0) width = Width.kHz_48;
-        else if(byteCounter == 1) width = Width.kHz_24;
-        else if(byteCounter == 2) width = Width.kHz_12;
-        else if(byteCounter == 3) width = Width.kHz_6;
-        else if(byteCounter == 3) width = Width.kHz_3;
+        if(byteCollecter == 0) width = Width.kHz_48;
+        else if(byteCollecter == 1) width = Width.kHz_24;
+        else if(byteCollecter == 2) width = Width.kHz_12;
+        else if(byteCollecter == 3) width = Width.kHz_6;
+        else if(byteCollecter == 4) width = Width.kHz_3;
         else{System.out.println("Ooo shit !");}
-        System.out.println("Width is " + width);
+        //System.out.println("Width is " + width);
         toListenersDdcWidth(width);
     }
     private void ddcFrequency() {
         if(byteCounter != 4) return;
         state = MASK_FIND;
-        System.out.println("Frequency is " + byteCounter);
-        toListenersDdcFrequency(byteCounter);
+        //System.out.println("Frequency is " + byteCollecter);
+        toListenersDdcFrequency(byteCollecter);
     }
 
     private void ducMode() {
         if(byteCounter != 4) return;
         state = MASK_FIND;
         Mode mode = Mode.DISABLE;;
-        if(byteCounter == 0) mode = Mode.DISABLE;
-        else if(byteCounter == 1) mode = Mode.ENABLE;
-        else if(byteCounter == 2) mode = Mode.TEST;
+        if(byteCollecter == 0) mode = Mode.DISABLE;
+        else if(byteCollecter == 1) mode = Mode.ENABLE;
+        else if(byteCollecter == 2) mode = Mode.TEST;
         else{System.out.println("Ooo shit !");}
-        System.out.println("Mode is " + mode);
+        //System.out.println("Mode is " + mode);
         toListenersDucMode(mode);
     }
     private void ducWidth() {
         if(byteCounter != 4) return;
         state = MASK_FIND;
         Width width = Width.kHz_48;;
-        if(byteCounter == 0) width = Width.kHz_48;
-        else if(byteCounter == 1) width = Width.kHz_24;
-        else if(byteCounter == 2) width = Width.kHz_12;
-        else if(byteCounter == 3) width = Width.kHz_6;
-        else if(byteCounter == 4) width = Width.kHz_3;
+        if(byteCollecter == 0) width = Width.kHz_48;
+        else if(byteCollecter == 1) width = Width.kHz_24;
+        else if(byteCollecter == 2) width = Width.kHz_12;
+        else if(byteCollecter == 3) width = Width.kHz_6;
+        else if(byteCollecter == 4) width = Width.kHz_3;
         else{System.out.println("Ooo shit !");}
-        System.out.println("Width is " + width);
+        //System.out.println("Width is " + width);
         toListenersDucWidth(width);
     }
     private void ducFrequency() {
         if(byteCounter != 4) return;
         state = MASK_FIND;
-        System.out.println("Frequency is " + byteCounter);
-        toListenersDucFrequency(byteCounter);
+        //System.out.println("Frequency is " + byteCollecter);
+        toListenersDucFrequency(byteCollecter);
     }
     private void ducBufferPercent() {
         if(byteCounter != 4) return;
+
+        //System.out.println("% = " + byteCollecter);
+        toListenersDucBufferPercent(byteCollecter);
         state = MASK_FIND;
-        System.out.println("% = " + byteCounter);
-        toListenersDucBufferPercent(byteCounter);
     }
     private void maskFind() {
         if((byteCollecter & 0xFFFFFFE0) != MASK) return;
         state = byteCollecter & 0x0000001F;
         byteCounter = 0;
         timer = System.currentTimeMillis();
-        System.out.println("Mask was found");
+        //System.out.println("Mask was found");
     }
 
     private interface stateHandler {void handler();}
@@ -450,18 +453,6 @@ public class DriverHorizon {
             this::reserved,
             this::maskFind
     };
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

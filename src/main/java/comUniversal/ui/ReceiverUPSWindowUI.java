@@ -42,10 +42,17 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     @FXML
     public void initialize() {
 
+//        Core.getCore().driverHorizon.addDdcFrequency(new DdcFrequency() {
+//            @Override
+//            public void frequency(int frequency) {
+//                String tmp = Integer.toString(frequency);
+//                rxFrequencyTextField.setText(tmp);
+//            }
+//        });
         System.out.println("initialize() setting");
 
         restoreAll(Params.SETTINGS);
-        changeSettingsbutton.setVisible(false);
+        //changeSettingsbutton.setVisible(false);
         rxFrequencyTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -67,6 +74,10 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
                 testIP();
             }
         });
+    }
+    public void test(int data){
+        String tmp = Integer.toString(data);
+        rxFrequencyTextField.setText(tmp);
     }
     public void testIP() {
 
@@ -96,5 +107,7 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
         //Restore Ethernet params 1
         ipTextField.setText(Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1"));
         portTextField.setText(Params.SETTINGS.getString("ethernet-port", "80"));
+        rxFrequencyTextField.setText(Params.SETTINGS.getString("rx_UPS_frequency", "128000"));
+
     }
 }

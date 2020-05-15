@@ -1,5 +1,5 @@
 package comUniversal.lowLevel.DriverEthernet;
 
 public interface ReceiverDataBytes {
-    public void ReceiveData(byte[] data);
+    public void ReceiveData(byte data);
 }

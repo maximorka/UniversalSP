@@ -15,12 +15,12 @@
                <children>
                   <AnchorPane prefHeight="21.0" prefWidth="69.0">
                      <children>
-                        <Label prefHeight="48.0" prefWidth="104.0" text="Частота ПЧ ПРМ:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0" />
+                        <Label prefHeight="48.0" prefWidth="104.0" text="Частота ПЧ ПРД:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="50.0" prefWidth="152.0">
                      <children>
-                        <TextField fx:id="rxFrequencyTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
+                        <TextField fx:id="txFrequencyTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
                      </children>
                   </AnchorPane>
                </children>
@@ -28,18 +28,11 @@
             <HBox prefHeight="48.0" prefWidth="380.0">
                <children>
                   <AnchorPane prefHeight="83.0" prefWidth="107.0">
-                     <children>
-                        <Label contentDisplay="CENTER" prefHeight="30.0" prefWidth="107.0" text="Частота ПЧ ПРД:" AnchorPane.leftAnchor="10.0" />
-                     </children>
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </AnchorPane>
-                  <AnchorPane prefHeight="58.0" prefWidth="197.0">
-                     <children>
-                        <TextField fx:id="txFrequencyTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane prefHeight="58.0" prefWidth="197.0" />
                </children>
             </HBox>
             <Pane prefHeight="16.0" prefWidth="289.0" />

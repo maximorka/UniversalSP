@@ -14,7 +14,7 @@ public class Core {
     public DriverHorizon driverHorizon = new DriverHorizon();
     private Update update;
     private boolean running = false;
-    /**
+     /**
      * Повертає унікальний екземпляр "ядра"
      *
      * @return
@@ -30,7 +30,6 @@ public class Core {
             while (true) {
                 if(running){
 
-
                 }
             }
         }
@@ -39,7 +38,6 @@ public class Core {
         this.running = running;
     }
     private Core(){
-
         update = new Update();
         update.start();
 

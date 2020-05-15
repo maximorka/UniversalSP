@@ -160,6 +160,11 @@ public class DriverHorizon {
             sendCommand(duc_set_iq, samplePacket);
         }
     }
+    public void ducSetIq(Complex[] sempls){
+        for(Complex sempl: sempls)
+            ducSetIq(sempl);
+    }
+
 
     public void ducSetMode(Mode mode){
         int data = -1;
@@ -193,13 +198,11 @@ public class DriverHorizon {
     public void ducGetBufferPercent(){sendCommand(duc_get_buffer_percent);}
 
     // Inertface
-    public void ethernetSet(int ip, int mask, short port, int gateWay){
-        int p = (int)port;
-        p &= 0xFFFF;
-        sendCommand(ethernet_set, ip, mask, p, gateWay);
+    public void ethernetSet(int ip, int mask, int port, int gateWay){
+         sendCommand(ethernet_set, ip, mask, port, gateWay);
     }
     public void ethernetGet(){sendCommand(ethernet_get);}
-    public void ethernetreset(){sendCommand(ethernet_reset);}
+    public void ethernetReset(){sendCommand(ethernet_reset);}
     public void init(){sendCommand(init);}
 
 
@@ -244,7 +247,6 @@ public class DriverHorizon {
                 listener.frequency(frequency);
     }
 
-
     // Listeners DucMode
     private List<DucMode> ducMode = new ArrayList<>();
     public void addDucMode(DucMode listener){ducMode.add(listener);}
@@ -282,8 +284,35 @@ public class DriverHorizon {
                 listener.percent(percent);
     }
 
+    // Listeners EthernetSettings
+    private List<EthernetSettings> ethernetSettings = new ArrayList<>();
+    public void addEthernetSettings(EthernetSettings listener){ethernetSettings.add(listener);}
+    public void clearEthernetSettings(){ethernetSettings.clear();}
+    private void toListenersEthernetSettings(int ip, int mask, int port, int gateWay){
+        if(!ethernetSettings.isEmpty())
+            for(EthernetSettings listener: ethernetSettings)
+                listener.ethernetSettings(ip, mask, port, gateWay);
+    }
 
+    // Listeners Error
+    private List<Error> errors = new ArrayList<>();
+    public void addError(Error listener){errors.add(listener);}
+    public void clearError(){errors.clear();}
+    private void toListenersError(int error){
+        if(!errors.isEmpty())
+            for(Error listener: errors)
+                listener.error(error);
+    }
 
+    // Listeners Init
+    private List<Init> inits = new ArrayList<>();
+    public void addInit(Init listener){inits.add(listener);}
+    public void clearInit(){inits.clear();}
+    private void toListenersInit(String init){
+        if(!inits.isEmpty())
+            for(Init listener: inits)
+                listener.init(init);
+    }
 
     private int PACKET_SIZE = 64;
     private int MASK = 0x12345600;
@@ -335,8 +364,7 @@ public class DriverHorizon {
 
     private void packet() {
         if(byteCounter % 4 != 0) return;
-        Complex sempl = convertIntToComplex(byteCollecter);
-        toListenersDdcIQ(sempl);
+        toListenersDdcIQ(convertIntToComplex(byteCollecter));
         //System.out.println("I got a sempl! " + sempl.re + " " + sempl.im);
         if(byteCounter != 4 * PACKET_SIZE) return;
         state = MASK_FIND;
@@ -344,7 +372,7 @@ public class DriverHorizon {
     private void ddcMode() {
         if(byteCounter != 4) return;
         state = MASK_FIND;
-        Mode mode = Mode.DISABLE;;
+        Mode mode = Mode.DISABLE;
         if(byteCollecter == 0) mode = Mode.DISABLE;
         else if(byteCollecter == 1) mode = Mode.ENABLE;
         else if(byteCollecter == 2) mode = Mode.TEST;
@@ -404,10 +432,32 @@ public class DriverHorizon {
     }
     private void ducBufferPercent() {
         if(byteCounter != 4) return;
-        state = MASK_FIND;
-        System.out.println("% = " + byteCollecter);
-        toListenersDucBufferPercent(byteCollecter);
+            state = MASK_FIND;
+            //System.out.println("% = " + byteCollecter);
+            toListenersDucBufferPercent(byteCollecter);
+
     }
+    private String initStr = new String();
+    private void initString() {
+        char symbol = (char)(byteCollecter >> 24);
+        if(symbol != 0){
+            initStr += symbol;
+        } else{
+            state = MASK_FIND;
+            //System.out.println("Init: " + initStr);
+            toListenersInit(initStr);
+            initStr = new String();
+        }
+    }
+
+    private void errors() {
+        if(byteCounter != 4) return;
+        state = MASK_FIND;
+        //System.out.println("Палундра !! Ашибка :" + byteCollecter);
+        toListenersError(byteCollecter);
+
+    }
+
     private void maskFind() {
         if((byteCollecter & 0xFFFFFFE0) != MASK) return;
         state = byteCollecter & 0x0000001F;
@@ -448,8 +498,8 @@ public class DriverHorizon {
             this::reserved,
             this::reserved,
             this::reserved,
-            this::reserved,
-            this::reserved,
+            this::initString,
+            this::errors,
             this::maskFind
     };
 

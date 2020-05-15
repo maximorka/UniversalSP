@@ -2,8 +2,7 @@ package comUniversal;
 
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 
-import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
-import comUniversal.lowLevel.DriverHorizon.TransferDataBytes;
+import comUniversal.lowLevel.DriverHorizon.*;
 import comUniversal.lowLevel.DriverEthernet.ReceiverDataBytes;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import javafx.geometry.HorizontalDirection;
@@ -30,7 +29,8 @@ public class Core {
 
             while (true) {
                 if(running){
-                    //System.out.println("Hello");
+
+
                 }
             }
         }
@@ -39,9 +39,6 @@ public class Core {
         this.running = running;
     }
     private Core(){
-
-        ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
-        driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
 
         update = new Update();
         update.start();

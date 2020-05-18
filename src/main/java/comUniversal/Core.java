@@ -47,7 +47,7 @@ public class Core {
         driverHorizon = new DriverHorizon();
         ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
         driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
-        
+
         driverHorizon.addInit(data->transiverUPSWindow.getInit(data));
         driverHorizon.addDdcMode(data->transiverUPSWindow.getModeRx(data));
         driverHorizon.addDdcWidth(data->transiverUPSWindow.getWidthRx(data));

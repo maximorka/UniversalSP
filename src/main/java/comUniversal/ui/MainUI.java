@@ -2,7 +2,6 @@ package comUniversal.ui;
 
 
 import comUniversal.Core;
-import comUniversal.util.Params;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -181,9 +180,10 @@ public class MainUI {
         connectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String ip = Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1");
-                int port = 80;
-
+                String ip = Core.getCore().transiverUPSWindow.getIP();
+                //String ip = Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1");
+                String portText = Core.getCore().transiverUPSWindow.getPort();
+int port = Integer.parseInt(portText);
 
 
                 String con = "-fx-background-color: #00cd00";

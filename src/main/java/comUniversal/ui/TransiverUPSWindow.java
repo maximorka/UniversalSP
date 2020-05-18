@@ -1,11 +1,14 @@
 
 package comUniversal.ui;
 
-        import comUniversal.lowLevel.DriverHorizon.Mode;
+import comUniversal.Core;
+import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
 import comUniversal.ui.setting.ParamsSettings;
 import comUniversal.util.Params;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -51,12 +54,13 @@ public class TransiverUPSWindow implements ParamsSettings {
     @FXML
     private Button getIPButton;
 
-    public TransiverUPSWindow() {
-    }
+
 
     @FXML
     public void initialize() {
+
         System.out.println("initialize() setting Transceiver");
+
         widthLabel = new Label();
         widthLabel = this.widthDeviceLabel;
         modeLabel = new Label();
@@ -72,9 +76,15 @@ public class TransiverUPSWindow implements ParamsSettings {
         this.widthDeviceLabel = new Label("");
         this.restoreAll(Params.SETTINGS);
         this.changeSettingsbutton.setVisible(true);
-        this.testIP();
+        testIP();
 
-
+        getFreqRxButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                int frequency = Integer.parseInt(rxFrequencyTextField.getText());
+                Core.getCore().driverHorizon.ddcSetFrequency(frequency);
+            }
+        });
 
     }
 

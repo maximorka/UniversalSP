@@ -1,4 +1,4 @@
-package comUniversal;
+package comUniversal.util;
 
 public class Complex {
     public float re = 0;

@@ -1,16 +1,19 @@
 package comUniversal;
 
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
-
-import comUniversal.lowLevel.DriverHorizon.*;
-import comUniversal.lowLevel.DriverEthernet.ReceiverDataBytes;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
-import javafx.geometry.HorizontalDirection;
+import comUniversal.ui.ReceiverUPSWindowUI;
+import comUniversal.ui.TransiverUPSWindow;
+import comUniversal.ui.TransmitterUPSWindowUI;
 
 
 public class Core {
     private static Core core = new Core();
     public EthernetDriver ethernetDriver = new EthernetDriver();
+    public ReceiverUPSWindowUI receiverUPSWindowUI = new ReceiverUPSWindowUI();
+    public TransiverUPSWindow transiverUPSWindow = new TransiverUPSWindow();
+    public TransmitterUPSWindowUI transmitterUPSWindowUI = new TransmitterUPSWindowUI();
+
     public DriverHorizon driverHorizon;
     private Update update;
     private boolean running = false;
@@ -39,14 +42,14 @@ public class Core {
         this.running = running;
     }
     private Core(){
-
+        driverHorizon = new DriverHorizon();
+        ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
+        driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
         update = new Update();
         update.start();
 
     }
     public void setDriver() {
-        driverHorizon = new DriverHorizon();
-        ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
-        driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
+
     }
 }

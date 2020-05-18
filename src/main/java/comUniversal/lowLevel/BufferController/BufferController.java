@@ -1,42 +1,47 @@
-package comUniversal;
+package comUniversal.lowLevel.BufferController;
 
-import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
-import comUniversal.lowLevel.DriverHorizon.*;
+import comUniversal.util.Complex;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BufferController {
-    /**
-     * Розмір одного семпла на передачу, в байтах
-     */
-    public static final int TX_SINGLE_SAMPLE_SIZE_IN_BYTES = 3;
-    /**
-     * Розмір блока семплів на передачу (враховуючи команду)
-     */
-    public static final int TX_BLOCK_SAMPLE_SIZE_IN_BYTES = TX_SINGLE_SAMPLE_SIZE_IN_BYTES * 64;
 
     protected volatile int sampleFreq = 48_000;
     protected volatile int sampleCountPer10ms = sampleFreq / 100;
-    protected volatile int byteCountPer10ms = sampleCountPer10ms * 3;
     protected volatile int sampleCountPer1ms = sampleFreq / 1000;
 
     private boolean finishingWork = false;
 
-    public EthernetDriver ethernetDriver = new EthernetDriver();
-    private DriverHorizon driverHorizon = new DriverHorizon();
-    private ModulatorTest modulatorTest = new ModulatorTest();
     private int percentBuffer = 0 ;
     private WorkingThread workingThread;
     private float k = 0;
+    private GetIQSource getIQSource;
 
+    // Listeners
+    private List<IBufferController> controllers = new ArrayList<>();
+    public void addTransferListener(IBufferController listener){controllers.add(listener);}
+    public void clearTransferListener(){controllers.clear();}
+    private void toListenersTransferDataBytes(Complex sample){
+        if(!controllers.isEmpty())
+            for(IBufferController listener: controllers)
+                listener.sendData(sample);
+    }
+
+
+    public void setSources(GetIQSource sources) {
+        this.getIQSource = sources;
+    }
+
+    public void updateSampleFrequency(int frequency) {
+        this.sampleFreq = frequency;
+    }
+
+    public void updatePercent(int percent) {
+        this.percentBuffer = percent;
+    }
 
     private BufferController(int sampleFreq ){
-
-        Core.getCore().driverHorizon.addDucBufferPercent(new DucBufferPercent() {
-            @Override
-            public void percent(int percent) {
-
-                percentBuffer = percent;
-            }
-        });
 
         this.sampleFreq = sampleFreq;
         if(sampleFreq == 48000){
@@ -45,7 +50,6 @@ public class BufferController {
             k = (float) 0.6;
 
         sampleCountPer10ms = sampleFreq / 100;
-        byteCountPer10ms = sampleCountPer10ms * 3;
         sampleCountPer1ms = sampleFreq / 1000;
 
         workingThread = new WorkingThread();
@@ -68,8 +72,11 @@ public class BufferController {
                     int needSendSample = sampleCountPer1ms * (int) executeTime;
                     needSendSample+= (int) ((int)(k*executeTime)*sampleCountPer1ms);
                     for (int i = 0; i < needSendSample ; i++) {
-                        Complex sample = modulatorTest.getIQ();
-                        driverHorizon.ducSetIq(sample);
+                        Complex sample = new Complex(0.0F, 0.0F);
+                        if (getIQSource != null) {
+                            sample = getIQSource.getIQ();
+                        }
+                        toListenersTransferDataBytes(sample);
                     }
                 }
 

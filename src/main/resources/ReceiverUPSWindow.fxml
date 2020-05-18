@@ -10,7 +10,25 @@
    <children>
       <VBox layoutY="2.0" prefHeight="287.0" prefWidth="303.0">
          <children>
-            <Pane prefHeight="26.0" prefWidth="294.0" />
+            <HBox prefHeight="27.0" prefWidth="290.0">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="initDeviceLabel" layoutX="26.0" layoutY="5.0" text="Init" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="modeDeviceLabel" layoutX="40.0" layoutY="5.0" text="mode" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="widthDeviceLabel" layoutX="26.0" layoutY="5.0" text="width" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
             <HBox prefHeight="50.0" prefWidth="292.0">
                <children>
                   <AnchorPane prefHeight="21.0" prefWidth="69.0">
@@ -18,9 +36,14 @@
                         <Label prefHeight="48.0" prefWidth="104.0" text="Частота ПЧ ПРМ:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="50.0" prefWidth="152.0">
+                  <AnchorPane prefHeight="50.0" prefWidth="140.0">
                      <children>
                         <TextField fx:id="rxFrequencyTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="50.0" prefWidth="52.0">
+                     <children>
+                        <Button fx:id="getFreqRxButton" layoutX="7.0" layoutY="12.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="33.0" text="G" />
                      </children>
                   </AnchorPane>
                </children>

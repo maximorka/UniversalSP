@@ -1,6 +1,6 @@
 package comUniversal.lowLevel.DriverHorizon;
 
-import comUniversal.Complex;
+import comUniversal.util.Complex;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

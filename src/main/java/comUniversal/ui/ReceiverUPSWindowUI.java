@@ -41,15 +41,7 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
 
     @FXML
     public void initialize() {
-
-//        Core.getCore().driverHorizon.addDdcFrequency(new DdcFrequency() {
-//            @Override
-//            public void frequency(int frequency) {
-//                String tmp = Integer.toString(frequency);
-//                rxFrequencyTextField.setText(tmp);
-//            }
-//        });
-        System.out.println("initialize() setting");
+        System.out.println("initialize() setting receiver");
 
         restoreAll(Params.SETTINGS);
         //changeSettingsbutton.setVisible(false);

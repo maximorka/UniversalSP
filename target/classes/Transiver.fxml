@@ -6,11 +6,11 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="326.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.TransiverUPSWindow">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.TransiverUPSWindow">
     <children>
-        <VBox layoutY="2.0" prefHeight="287.0" prefWidth="302.0">
+        <VBox layoutY="2.0" prefHeight="287.0" prefWidth="301.0">
             <children>
-                <HBox prefHeight="26.0" prefWidth="379.0">
+                <HBox prefHeight="26.0" prefWidth="292.0">
                     <children>
                         <AnchorPane prefHeight="26.0" prefWidth="28.0">
                             <children>
@@ -37,7 +37,7 @@
                         <Label fx:id="widthTxDeviceLabel" layoutY="5.0" prefHeight="17.0" prefWidth="41.0" text="WidthTx" />
                      </children>
                   </AnchorPane>
-                        <AnchorPane prefHeight="26.0" prefWidth="54.0">
+                        <AnchorPane prefHeight="26.0" prefWidth="45.0">
                             <children>
                                 <Label fx:id="procentDeviceLabel" layoutX="14.0" layoutY="6.0" prefHeight="17.0" prefWidth="33.0" text="\%" />
                             </children>
@@ -82,7 +82,7 @@
                         </AnchorPane>
                     </children>
                 </HBox>
-                <HBox prefHeight="25.0" prefWidth="322.0">
+                <HBox prefHeight="25.0" prefWidth="303.0">
                     <children>
                         <AnchorPane prefHeight="29.0" prefWidth="117.0">
                             <HBox.margin>

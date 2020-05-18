@@ -1,6 +1,7 @@
 package comUniversal;
 
 import comUniversal.lowLevel.BufferController.BufferController;
+import comUniversal.lowLevel.Debuger.Debuger;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 import comUniversal.lowLevel.DriverHorizon.*;
 import comUniversal.lowLevel.Modulator.ModulatorPsk;
@@ -8,8 +9,11 @@ import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransiverUPSWindow;
 import comUniversal.ui.TransmitterUPSWindowUI;
 
+import java.io.IOException;
+
 public class Core {
     private static Core core = new Core();
+    Debuger debuger;
     public EthernetDriver ethernetDriver;
     public DriverHorizon driverHorizon;
     public BufferController bufferController;
@@ -34,8 +38,11 @@ public class Core {
 
 
             while (true) {
+
                 if(running){
 
+                    debuger.sendData((byte) 111);
+                    try {Thread.sleep(100);} catch (InterruptedException e) {}
 
                 }
             }
@@ -45,6 +52,8 @@ public class Core {
         this.running = running;
     }
     private Core(){
+
+        try {debuger = new Debuger();} catch (IOException e) {}
 
         ethernetDriver = new EthernetDriver();
         driverHorizon = new DriverHorizon();
@@ -60,20 +69,22 @@ public class Core {
         driverHorizon.addDucFrequency(data->transiverUPSWindow.getFrequencyTx(data));
         driverHorizon.addDucBufferPercent(data->transiverUPSWindow.updatePercent(data));
 
-        /* Тестує Бобер
-        modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
-        bufferController.updateSampleFrequency(3000);
-        bufferController.setSources(() -> modulatorPsk.getSempl());
-        bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
-        driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
-        driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
-        ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
-        ethernetDriver.doInit("192.168.0.2", 81);
-        try {Thread.sleep(1000);} catch (InterruptedException e) {}
-        driverHorizon.ducSetWidth(Width.kHz_3);
-        driverHorizon.ducSetMode(Mode.ENABLE);
-        try {Thread.sleep(1000);} catch (InterruptedException e) {}
-        */
+
+
+        //* Тестує Бобер
+//        modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
+//        bufferController.updateSampleFrequency(3000);
+//        bufferController.setSources(() -> modulatorPsk.getSempl());
+//        bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
+//        driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
+//        driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
+//        ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
+//        ethernetDriver.doInit("192.168.0.2", 81);
+//        try {Thread.sleep(1000);} catch (InterruptedException e) {}
+//        driverHorizon.ducSetWidth(Width.kHz_3);
+//        driverHorizon.ducSetMode(Mode.ENABLE);
+//        try {Thread.sleep(1000);} catch (InterruptedException e) {}
+        //*/
 
         update = new Update();
         update.start();

@@ -17,32 +17,28 @@ public class Debuger {
     }
 
     public void sendData(byte data) {
-        if(client!=null) {
-            if (!client.isClosed()) {
-                try {
-                    outputStream.write(data);
-                    outputStream.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        if(client == null) return;
+        try {
+            outputStream.write(data);
+            outputStream.flush();
+        } catch (IOException e) {}
     }
 
     public class ClientWaiting extends Thread {
 
         public void run(){
-            System.out.println("Waiting client ...");
-            try {
-                client = server.accept();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("Client is conected");
-            try {
-                outputStream = client.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            while(true) {
+                try {
+                    client = server.accept();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    outputStream = client.getOutputStream();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -501,7 +501,7 @@ public class DriverHorizon {
             this::reserved,
             this::reserved,
             this::reserved,
-            this::ehernetSettings,
+            this::ethernetSettings,
             this::reserved,
             this::reserved,
             this::reserved,

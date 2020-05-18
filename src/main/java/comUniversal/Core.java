@@ -8,6 +8,7 @@ import comUniversal.lowLevel.Modulator.ModulatorPsk;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransiverUPSWindow;
 import comUniversal.ui.TransmitterUPSWindowUI;
+import comUniversal.util.Complex;
 
 import java.io.IOException;
 
@@ -36,13 +37,11 @@ public class Core {
         @Override
         public void run() {
 
+            Complex sempl = new Complex(0.f, 0.f);
 
             while (true) {
 
                 if(running){
-
-                    debuger.sendData((byte) 111);
-                    try {Thread.sleep(100);} catch (InterruptedException e) {}
 
                 }
             }

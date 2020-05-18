@@ -68,6 +68,7 @@ public class Core {
         driverHorizon.addDucWidth(data->transiverUPSWindow.getWidthTx(data));
         driverHorizon.addDucFrequency(data->transiverUPSWindow.getFrequencyTx(data));
         driverHorizon.addDucBufferPercent(data->transiverUPSWindow.updatePercent(data));
+        driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
 
 
 

@@ -183,7 +183,7 @@ public class MainUI {
                 String ip = Core.getCore().transiverUPSWindow.getIP();
                 //String ip = Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1");
                 String portText = Core.getCore().transiverUPSWindow.getPort();
-int port = Integer.parseInt(portText);
+                int port = Integer.parseInt(portText);
 
 
                 String con = "-fx-background-color: #00cd00";
@@ -192,6 +192,8 @@ int port = Integer.parseInt(portText);
                         Platform.runLater(()->{
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
+
+                            Core.getCore().transiverUPSWindow.updateVisibility();
                         });
                     }
 

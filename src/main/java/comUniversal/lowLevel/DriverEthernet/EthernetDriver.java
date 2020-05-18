@@ -18,7 +18,6 @@ public class EthernetDriver {
 
     private ReadThread readThread;
 
-
     private long lastReceiveTime;
 
     // Listeners

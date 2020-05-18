@@ -98,10 +98,15 @@ public class TransiverUPSWindow implements ParamsSettings {
 
         procentText = new Label("");
         procentText = this.procentDeviceLabel;
+
+        rxFrequencyTextField.setVisible(false);
+        this.changeSettingsbutton.setVisible(false);
+        
         this.initDeviceLabel = new Label("");
 
         this.restoreAll(Params.SETTINGS);
-        this.changeSettingsbutton.setVisible(true);
+
+
         testIP();
 
         getFreqRxButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -146,7 +151,10 @@ public class TransiverUPSWindow implements ParamsSettings {
         });
     }
 
-
+public void updateVisibility(){
+    freqRxText.setVisible(true);
+    freqTxText.setVisible(true);
+}
     public void updatePercent(int percent) {
         String procent = Integer.toString(percent);
         Platform.runLater(() -> {

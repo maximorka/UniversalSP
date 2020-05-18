@@ -308,7 +308,7 @@ public class DriverHorizon {
     private List<Init> inits = new ArrayList<>();
     public void addInit(Init listener){inits.add(listener);}
     public void clearInit(){inits.clear();}
-    private void toListenersInit(String init){
+    private void toListenersInit(int init){
         if(!inits.isEmpty())
             for(Init listener: inits)
                 listener.init(init);
@@ -437,17 +437,12 @@ public class DriverHorizon {
             toListenersDucBufferPercent(byteCollecter);
 
     }
-    private String initStr = new String();
+    //private String initStr = new String();
     private void initString() {
-        char symbol = (char)(byteCollecter >> 24);
-        if(symbol != 0){
-            initStr += symbol;
-        } else{
-            state = MASK_FIND;
-            //System.out.println("Init: " + initStr);
-            toListenersInit(initStr);
-            initStr = new String();
-        }
+        if(byteCounter != 4) return;
+        state = MASK_FIND;
+        //System.out.println("init = " + byteCollecter);
+        toListenersInit(byteCollecter);
     }
 
     private void errors() {

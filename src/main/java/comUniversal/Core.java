@@ -1,5 +1,6 @@
 package comUniversal;
 
+import comUniversal.lowLevel.BufferController.BufferController;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.ui.ReceiverUPSWindowUI;
@@ -13,6 +14,7 @@ public class Core {
     public ReceiverUPSWindowUI receiverUPSWindowUI = new ReceiverUPSWindowUI();
     public TransiverUPSWindow transiverUPSWindow = new TransiverUPSWindow();
     public TransmitterUPSWindowUI transmitterUPSWindowUI = new TransmitterUPSWindowUI();
+    private BufferController bufferController = new BufferController(48000);
 
     public DriverHorizon driverHorizon;
     private Update update;
@@ -45,6 +47,18 @@ public class Core {
         driverHorizon = new DriverHorizon();
         ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
         driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
+        
+        driverHorizon.addInit(data->transiverUPSWindow.getInit(data));
+        driverHorizon.addDdcMode(data->transiverUPSWindow.getModeRx(data));
+        driverHorizon.addDdcWidth(data->transiverUPSWindow.getWidthRx(data));
+        driverHorizon.addDdcFrequency(data->transiverUPSWindow.getFrequencyRx(data));
+        driverHorizon.addDucMode(data->transiverUPSWindow.getModeTx(data));
+        driverHorizon.addDucWidth(data->transiverUPSWindow.getWidthTx(data));
+        driverHorizon.addDucFrequency(data->transiverUPSWindow.getFrequencyTx(data));
+        driverHorizon.addDucBufferPercent(data->transiverUPSWindow.updatePercent(data));
+
+        driverHorizon.addDucBufferPercent(data->bufferController.updatePercent(data));
+
         update = new Update();
         update.start();
 

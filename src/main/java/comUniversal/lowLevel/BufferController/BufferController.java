@@ -41,7 +41,7 @@ public class BufferController {
         this.percentBuffer = percent;
     }
 
-    private BufferController(int sampleFreq ){
+    public BufferController(int sampleFreq ){
 
         this.sampleFreq = sampleFreq;
         if(sampleFreq == 48000){

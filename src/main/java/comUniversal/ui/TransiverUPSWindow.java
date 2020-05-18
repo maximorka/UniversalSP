@@ -24,23 +24,32 @@ public class TransiverUPSWindow implements ParamsSettings {
     private List<ParamsSettings> settings = new ArrayList();
     Image Ok = new Image("/images/check.png");
     Image notOk = new Image("/images/close.png");
-    public static Label widthLabel;
-    public static Label modeLabel;
+    public static Label widthRxLabel;
+    public static Label modeRxLabel;
+    public static Label widthTxLabel;
+    public static Label modeTxLabel;
     public static Label initLabel;
-    public static TextField freqText;
+    public static TextField freqRxText;
+    public static TextField freqTxText;
     public static Label procentText;
     public static TextField ipText;
     public static TextField portText;
     @FXML
     private Label initDeviceLabel;
     @FXML
-    private Label modeDeviceLabel;
+    private Label modeTxDeviceLabel;
     @FXML
-    private Label widthDeviceLabel;
+    private Label widthTxDeviceLabel;
+    @FXML
+    private Label modeRxDeviceLabel;
+    @FXML
+    private Label widthRxDeviceLabel;
     @FXML
     private Label procentDeviceLabel;
     @FXML
     public TextField rxFrequencyTextField;
+    @FXML
+    public TextField txFrequencyTextField;
     @FXML
     private TextField ipTextField;
     @FXML
@@ -62,26 +71,35 @@ public class TransiverUPSWindow implements ParamsSettings {
     public void initialize() {
 
         System.out.println("initialize() setting Transceiver");
-        ipText = new TextField();
+        ipText = new TextField("");
         ipText = ipTextField;
 
-        portText = new TextField();
+        portText = new TextField("");
         portText = portTextField;
 
 
-        widthLabel = new Label();
-        widthLabel = this.widthDeviceLabel;
-        modeLabel = new Label();
-        modeLabel = this.modeDeviceLabel;
-        initLabel = new Label();
+        widthRxLabel = new Label("");
+        widthRxLabel = this.widthRxDeviceLabel;
+        modeRxLabel = new Label("");
+        modeRxLabel = this.modeRxDeviceLabel;
+
+        widthTxLabel = new Label("");
+        widthTxLabel = this.widthTxDeviceLabel;
+        modeTxLabel = new Label("");
+        modeTxLabel = this.modeTxDeviceLabel;
+        initLabel = new Label("");
         initLabel = this.initDeviceLabel;
-        freqText = new TextField();
-        freqText = this.rxFrequencyTextField;
-        procentText = new Label();
+
+        freqRxText = new TextField("");
+        freqRxText = this.rxFrequencyTextField;
+
+        freqTxText = new TextField("");
+        freqTxText = this.txFrequencyTextField;
+
+        procentText = new Label("");
         procentText = this.procentDeviceLabel;
         this.initDeviceLabel = new Label("");
-        this.modeDeviceLabel = new Label("");
-        this.widthDeviceLabel = new Label("");
+
         this.restoreAll(Params.SETTINGS);
         this.changeSettingsbutton.setVisible(true);
         testIP();
@@ -89,11 +107,37 @@ public class TransiverUPSWindow implements ParamsSettings {
         getFreqRxButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+
+
+                Core.getCore().driverHorizon.ddcGetFrequency();
+            }
+        });
+        getFreqTxButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Core.getCore().driverHorizon.ducGetFrequency();
+                Core.getCore().driverHorizon.ducGetMode();
+                Core.getCore().driverHorizon.ducGetWidth();
+                Core.getCore().driverHorizon.ddcGetMode();
+                Core.getCore().driverHorizon.ddcGetWidth();
+                Core.getCore().driverHorizon.init();
+            }
+        });
+        rxFrequencyTextField.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
                 int frequency = Integer.parseInt(rxFrequencyTextField.getText());
                 Core.getCore().driverHorizon.ddcSetFrequency(frequency);
             }
         });
 
+        txFrequencyTextField.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                int frequency = Integer.parseInt(txFrequencyTextField.getText());
+                Core.getCore().driverHorizon.ducSetFrequency(frequency);
+            }
+        });
         ipTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -110,31 +154,52 @@ public class TransiverUPSWindow implements ParamsSettings {
         });
     }
 
-    public void getFrequency(int data) {
+    public void getFrequencyRx(int data) {
         String tmp = Integer.toString(data);
         Platform.runLater(() -> {
-            freqText.setText(tmp);
+            freqRxText.setText(tmp);
         });
     }
 
-    public void getInit(String data) {
+    public void getFrequencyTx(int data) {
+        String tmp = Integer.toString(data);
         Platform.runLater(() -> {
-            initLabel.setText(data);
+            freqTxText.setText(tmp);
         });
     }
 
-    public void getMode(Mode data) {
+    public void getInit(int data) {
+        Platform.runLater(() -> {
+            initLabel.setText(Integer.toString(data));
+        });
+    }
+
+    public void getModeRx(Mode data) {
         String tmp = String.valueOf(data);
         Platform.runLater(() -> {
-            modeLabel.setText(tmp);
+            modeRxLabel.setText(tmp);
+        });
+    }
+    public void getModeTx(Mode data) {
+        String tmp = String.valueOf(data);
+        Platform.runLater(() -> {
+            modeTxLabel.setText(tmp);
         });
     }
 
-    public void getWidth(Width data) {
+    public void getWidthRx(Width data) {
         String tmp = String.valueOf(data);
         System.out.println(tmp);
         Platform.runLater(() -> {
-            widthLabel.setText(tmp);
+            widthRxLabel.setText(tmp);
+        });
+    }
+
+    public void getWidthTx(Width data) {
+        String tmp = String.valueOf(data);
+        System.out.println(tmp);
+        Platform.runLater(() -> {
+            widthTxLabel.setText(tmp);
         });
     }
 

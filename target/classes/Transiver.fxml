@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-        <?import javafx.geometry.*?>
-        <?import javafx.scene.image.*?>
-        <?import javafx.scene.control.*?>
-        <?import java.lang.*?>
-        <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="303.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.TransiverUPSWindow">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="326.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.TransiverUPSWindow">
     <children>
-        <VBox layoutY="2.0" prefHeight="287.0" prefWidth="303.0">
+        <VBox layoutY="2.0" prefHeight="287.0" prefWidth="302.0">
             <children>
-                <HBox prefHeight="27.0" prefWidth="290.0">
+                <HBox prefHeight="26.0" prefWidth="379.0">
                     <children>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                        <AnchorPane prefHeight="26.0" prefWidth="28.0">
                             <children>
-                                <Label fx:id="initDeviceLabel" layoutX="26.0" layoutY="5.0" text="Init" />
+                                <Label fx:id="initDeviceLabel" layoutX="2.0" layoutY="5.0" prefHeight="17.0" prefWidth="22.0" text="Init" />
                             </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                        <AnchorPane prefHeight="26.0" prefWidth="36.0">
                             <children>
-                                <Label fx:id="modeDeviceLabel" layoutX="40.0" layoutY="5.0" text="mode" />
+                                <Label fx:id="modeRxDeviceLabel" layoutY="5.0" prefHeight="17.0" prefWidth="56.0" text="modeRx" />
                             </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane prefHeight="26.0" prefWidth="34.0">
+                     <children>
+                        <Label fx:id="widthRxDeviceLabel" layoutY="6.0" prefHeight="17.0" prefWidth="52.0" text="widthRx" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="26.0" prefWidth="62.0">
+                     <children>
+                        <Label fx:id="modeTxDeviceLabel" layoutX="2.0" layoutY="5.0" text="modeTx" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="26.0" prefWidth="26.0">
+                     <children>
+                        <Label fx:id="widthTxDeviceLabel" layoutY="5.0" prefHeight="17.0" prefWidth="41.0" text="WidthTx" />
+                     </children>
+                  </AnchorPane>
+                        <AnchorPane prefHeight="26.0" prefWidth="54.0">
                             <children>
-                                <Label fx:id="widthDeviceLabel" layoutX="26.0" layoutY="5.0" text="width" />
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                            <children>
-                                <Label fx:id="procentDeviceLabel" layoutX="14.0" layoutY="6.0" text="\%" />
+                                <Label fx:id="procentDeviceLabel" layoutX="14.0" layoutY="6.0" prefHeight="17.0" prefWidth="33.0" text="\%" />
                             </children>
                         </AnchorPane>
                     </children>
@@ -135,4 +145,3 @@
         </VBox>
     </children>
 </AnchorPane>
-

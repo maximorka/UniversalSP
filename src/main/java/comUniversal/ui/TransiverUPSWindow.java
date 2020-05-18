@@ -29,6 +29,8 @@ public class TransiverUPSWindow implements ParamsSettings {
     public static Label initLabel;
     public static TextField freqText;
     public static Label procentText;
+    public static TextField ipText;
+    public static TextField portText;
     @FXML
     private Label initDeviceLabel;
     @FXML
@@ -60,6 +62,12 @@ public class TransiverUPSWindow implements ParamsSettings {
     public void initialize() {
 
         System.out.println("initialize() setting Transceiver");
+        ipText = new TextField();
+        ipText = ipTextField;
+
+        portText = new TextField();
+        portText = portTextField;
+
 
         widthLabel = new Label();
         widthLabel = this.widthDeviceLabel;
@@ -86,7 +94,14 @@ public class TransiverUPSWindow implements ParamsSettings {
             }
         });
 
+        ipTextField.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                testIP();
+            }
+        });
     }
+
 
     public void updatePercent(int percent) {
         String procent = Integer.toString(percent);
@@ -123,8 +138,7 @@ public class TransiverUPSWindow implements ParamsSettings {
         });
     }
 
-    public void getIP(int data) {
-    }
+
 
     public void testIP() {
         try {
@@ -140,7 +154,12 @@ public class TransiverUPSWindow implements ParamsSettings {
         }
 
     }
-
+    public String getIP(){
+        return ipText.getText();
+    }
+    public String getPort(){
+        return portText.getText();
+    }
     public void saveAll(Params params) {
         Params.SETTINGS.putString("rx_UPS_frequency", this.rxFrequencyTextField.getText());
     }

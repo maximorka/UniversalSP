@@ -85,10 +85,16 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
             System.out.println("Exception:" + e.getMessage());
         }
     }
-
+    public String getIP(){
+        return ipTextField.getText();
+    }
+    public String getPort(){
+        return portTextField.getText();
+    }
     @Override
     public void saveAll(Params params) {
-
+        Params.SETTINGS.putString("ethernet-ip-address", ipTextField.getText());
+        Params.SETTINGS.putString("ethernet-port", portTextField.getText());
     }
 
     @Override

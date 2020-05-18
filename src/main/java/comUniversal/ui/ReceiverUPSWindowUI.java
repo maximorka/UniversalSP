@@ -67,9 +67,8 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
             }
         });
     }
-    public void test(int data){
-        String tmp = Integer.toString(data);
-        rxFrequencyTextField.setText(tmp);
+    public String getIP(){
+        return ipTextField.getText();
     }
     public void testIP() {
 

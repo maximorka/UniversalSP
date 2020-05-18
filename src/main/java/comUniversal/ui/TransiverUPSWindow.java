@@ -216,7 +216,10 @@ public class TransiverUPSWindow implements ParamsSettings {
 
     }
     public void updateEthernet(int ip, int port, int mask, int gateway){
-
+        String portW = Integer.toString(port);
+        Platform.runLater(() -> {
+            portText.setText(portW);
+        });
     }
     public void updateVisibility(){
         freqRxText.setVisible(true);

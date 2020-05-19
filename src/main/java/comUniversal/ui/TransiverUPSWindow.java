@@ -36,6 +36,8 @@ public class TransiverUPSWindow implements ParamsSettings {
     public static Label procentText;
     public static TextField ipText;
     public static TextField portText;
+    public static TextField maskText;
+    public static TextField gatewayText;
     public static Button clearBuf;
 
 
@@ -97,6 +99,13 @@ public class TransiverUPSWindow implements ParamsSettings {
 
         portText = new TextField("");
         portText = portTextField;
+
+        maskText = new TextField("");
+        maskText = maskTextField;
+
+        gatewayText = new TextField("");
+        gatewayText = getawayTextField;
+
 
 
         freqRxText = new TextField("");
@@ -233,9 +242,15 @@ public class TransiverUPSWindow implements ParamsSettings {
 
     }
     public void updateEthernet(int ip, int port, int mask, int gateway){
-        String portW = Integer.toString(port);
+        String portW = EthernetUtils.convertIntToStringIP(port);
+        String ipTextT = EthernetUtils.convertIntToStringIP(ip);
+        String maskTextT = EthernetUtils.convertIntToStringIP(mask);
+        String gateTextT = EthernetUtils.convertIntToStringIP(gateway);
         Platform.runLater(() -> {
             portText.setText(portW);
+            ipText.setText(ipTextT);
+            maskText.setText(maskTextT);
+            gatewayText.setText(gateTextT);
         });
     }
     public void updateVisibility(){

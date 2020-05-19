@@ -126,14 +126,14 @@ class Clocker{
             halfLeft = 0.f;
             symbol = (sempl.re >= 0.f)? 1 : 0;
 
-            /*
+
             char bit = (symbol==0)? '1' : '0';
             bitData += bit;
             if(bitData.length() == 100) {
                 System.out.println(bitData);
                 bitData = new String();
             }
-            */
+
         }
         return result;
     }

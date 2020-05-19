@@ -3,8 +3,9 @@ package comUniversal;
 import comUniversal.lowLevel.BufferController.BufferController;
 import comUniversal.lowLevel.Debuger.Debuger;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
-import comUniversal.lowLevel.DriverHorizon.*;
+import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.Modulator.ModulatorPsk;
+import comUniversal.ui.MainUI;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransiverUPSWindow;
 import comUniversal.ui.TransmitterUPSWindowUI;
@@ -19,6 +20,7 @@ public class Core {
     public DriverHorizon driverHorizon;
     public BufferController bufferController;
     public ModulatorPsk modulatorPsk;
+    public MainUI mainUI = new MainUI();
     public ReceiverUPSWindowUI receiverUPSWindowUI = new ReceiverUPSWindowUI();
     public TransiverUPSWindow transiverUPSWindow = new TransiverUPSWindow();
     public TransmitterUPSWindowUI transmitterUPSWindowUI = new TransmitterUPSWindowUI();
@@ -58,6 +60,9 @@ public class Core {
         driverHorizon = new DriverHorizon();
         bufferController = new BufferController(3000);
         modulatorPsk = new ModulatorPsk();
+
+        ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
+        driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
 
         driverHorizon.addInit(data->transiverUPSWindow.getInit(data));
         driverHorizon.addDdcMode(data->transiverUPSWindow.getModeRx(data));

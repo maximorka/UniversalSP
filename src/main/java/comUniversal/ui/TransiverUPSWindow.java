@@ -36,6 +36,8 @@ public class TransiverUPSWindow implements ParamsSettings {
     public static Label procentText;
     public static TextField ipText;
     public static TextField portText;
+    public static TextField maskText;
+    public static TextField gatewayText;
     public static Button clearBuf;
 
 
@@ -54,7 +56,7 @@ public class TransiverUPSWindow implements ParamsSettings {
     @FXML
     private Button getIPButton;
     @FXML
-    private Button changeSettingsbutton;
+    private Button changeSettingsIPbutton;
     @FXML
     public TextField rxFrequencyTextField;
     @FXML
@@ -98,6 +100,13 @@ public class TransiverUPSWindow implements ParamsSettings {
         portText = new TextField("");
         portText = portTextField;
 
+        maskText = new TextField("");
+        maskText = maskTextField;
+
+        gatewayText = new TextField("");
+        gatewayText = getawayTextField;
+
+
 
         freqRxText = new TextField("");
         freqRxText = this.rxFrequencyTextField;
@@ -124,7 +133,7 @@ public class TransiverUPSWindow implements ParamsSettings {
         getSettings.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+                System.out.println("get settings");
                 Core.getCore().driverHorizon.ddcGetFrequency();
                 Core.getCore().driverHorizon.ducGetFrequency();
 
@@ -194,7 +203,7 @@ public class TransiverUPSWindow implements ParamsSettings {
                 Core.getCore().driverHorizon.ethernetGet();
             }
         });
-        changeSettingsbutton.setOnAction(new EventHandler<ActionEvent>() {
+        changeSettingsIPbutton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String ipAddress = ipTextField.getText();
@@ -211,12 +220,38 @@ public class TransiverUPSWindow implements ParamsSettings {
                 int get = ByteBuffer.wrap(gatewayBytes).getInt();
 
                 Core.getCore().driverHorizon.ethernetSet(ip,maskInt,port,get);
+                Core.getCore().ethernetDriver.closeSocket();
+                changeSettingsIPbutton.setDisable(true);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    Platform.runLater(() -> {
+                        changeSettingsIPbutton.setDisable(false);
+                    });
+
+                }).start();
+
+
+
+                Core.getCore().mainUI.setConnectButton();
             }
         });
 
     }
-    public void updateEthernet(int ip, int port, int mask, int gateway){
-
+    public void updateEthernet(int ip, int mask, int port, int gateway){
+        String portW = Integer.toString(port);
+        String ipTextT = EthernetUtils.convertIntToStringIP(ip);
+        String maskTextT = EthernetUtils.convertIntToStringIP(mask);
+        String gateTextT = EthernetUtils.convertIntToStringIP(gateway);
+        Platform.runLater(() -> {
+            portText.setText(portW);
+            ipText.setText(ipTextT);
+            maskText.setText(maskTextT);
+            gatewayText.setText(gateTextT);
+        });
     }
     public void updateVisibility(){
         freqRxText.setVisible(true);

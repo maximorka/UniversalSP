@@ -20,6 +20,7 @@ public class InformationWindow {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String txt = serviceMessage.getText();
+                System.out.println("Fine");
                 //Core.getCore().groupAdd.add(txt);
             }
         });

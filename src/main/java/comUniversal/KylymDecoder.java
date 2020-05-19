@@ -8,7 +8,9 @@ import java.util.Queue;
 public class KylymDecoder {
     private Queue <Integer> data = new ArrayDeque<>();
     private String bufResult[] = new String[128];
+    private int bufInput[] = new int[128];
     private int index = 0;
+    private int indexInput = 0;
     private int symbol =0;
     int countSymbol = 0;
     int countP = 0;
@@ -41,24 +43,24 @@ public class KylymDecoder {
         }
     }
     public void symbolForBit(){
+        bufInput[indexInput] = data.poll();
         symbol<<=1;
-        symbol |= data.poll();
+        symbol |=  bufInput[indexInput];
         symbol&=63;
-
-        String value = number.get(symbol);
-        if(value!= null){
-            countSymbol++;
-            if(value == "P" ){
-                System.out.println("Find mask");
-                countP++;
-                countSymbol=0;
-            }
-            bufResult[index++] = value;
-            System.out.println(bufResult[index-1]);
-        }
-
+        indexInput++;
+        indexInput&=128;
+        countSymbol++;
+        findMask(symbol);
+        if ()
     }
-
+private boolean findMask(int symbol){
+        String value = number.get(symbol);
+        if(value == "P"){
+            countP++;
+            return true;
+        }
+        return false;
+}
 
     public static void main(String[] args) {
         KylymDecoder kylymDecoder = new KylymDecoder();
@@ -77,8 +79,14 @@ public class KylymDecoder {
         kylymDecoder.addData(0);
         kylymDecoder.addData(0);
         kylymDecoder.addData(1);
+        kylymDecoder.addData(0);
+        kylymDecoder.addData(0);
+        kylymDecoder.addData(0);
+        kylymDecoder.addData(0);
+        kylymDecoder.addData(0);
+        kylymDecoder.addData(1);
 
-        for (int i = 0; i <8 ; i++) {
+        for (int i = 0; i <20 ; i++) {
             kylymDecoder.symbolForBit();
         }
 

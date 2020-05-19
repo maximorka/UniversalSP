@@ -17,9 +17,10 @@ public class Debuger {
     private OutputStream outputStream;
     private ClientWaiting clientWaiting = new ClientWaiting();
     private int semplCounter = 0;
-    private byte[] mask = {0x00, 0x56, 0x34, 0x12};
+    private byte[] packet = new byte[4 + 64*(4+4)];
     private ByteBuffer re = ByteBuffer.allocate(4);
     private ByteBuffer im = ByteBuffer.allocate(4);
+    private int index = 0;
 
     public Debuger() throws IOException {
         clientWaiting.start();
@@ -35,25 +36,31 @@ public class Debuger {
 
     public void show(Complex sempl){
 
-        if(semplCounter == 0)
-            sendData(mask);
+        if(index == 0) {
+            packet[index++] = 0x00;
+            packet[index++] = 0x56;
+            packet[index++] = 0x34;
+            packet[index++] = 0x12;
+        }
 
         re.clear();
         im.clear();
-
-        re.order(ByteOrder.LITTLE_ENDIAN);
-        im.order(ByteOrder.LITTLE_ENDIAN);
-
         re.putFloat(sempl.re);
         im.putFloat(sempl.im);
 
-        sendData(re.array());
-        sendData(im.array());
+        packet[index++] = re.array()[3];
+        packet[index++] = re.array()[2];
+        packet[index++] = re.array()[1];
+        packet[index++] = re.array()[0];
+        packet[index++] = im.array()[3];
+        packet[index++] = im.array()[2];
+        packet[index++] = im.array()[1];
+        packet[index++] = im.array()[0];
 
-        semplCounter++;
-
-        if(semplCounter == 64)
-            semplCounter = 0;
+        if(index == packet.length) {
+            index = 0;
+            sendData(packet);
+        }
 
     }
 

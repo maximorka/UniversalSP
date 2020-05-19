@@ -47,11 +47,33 @@ public class MainUI {
         ObservableList <String> typeTx = FXCollections.observableArrayList("УПС", "УПС1");
         typeTxChoicebox.setItems(typeTx);
 
-        ObservableList <String> typeMode = FXCollections.observableArrayList("Горизонт");
+        ObservableList <String> typeMode = FXCollections.observableArrayList("Горизонт","Килим");
         modeWorkChoicebox.setItems(typeMode);
 
 
-
+        modeWorkChoicebox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(modeWorkChoicebox.getValue() == "Килим" ){
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/Information.fxml"));
+                    /*
+                     * if "fx:controller" is not set in fxml
+                     * fxmlLoader.setController(NewWindowController);
+                     */
+                    Scene scene = null;
+                    try {
+                        scene = new Scene(fxmlLoader.load());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Stage stage = new Stage();
+                    stage.setTitle("Information");
+                    stage.setScene(scene);
+                    stage.show();
+                }
+            }
+        });
         typeRxChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {

@@ -5,6 +5,10 @@ import comUniversal.util.Complex;
 import java.util.Random;
 
 public class ModulatorPsk {
+
+    private int[] sinchroSequence = {1,1,0,0};
+    private int index = 0;
+
     private Random random = new Random();
     private SymbolSource symbolSource;
     private float relativeBaudeRate = 0.f;
@@ -28,7 +32,9 @@ public class ModulatorPsk {
             symbol = symbolSource.symbol();
         // for testing
         else{
-            symbol = random.nextInt(2);
+            //symbol = random.nextInt(2);
+            symbol = sinchroSequence[index % 4];
+            index++;
         }
     }
 

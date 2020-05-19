@@ -62,6 +62,7 @@ public class Core {
         driverHorizon = new DriverHorizon();
         bufferController = new BufferController(3000);
         modulatorPsk = new ModulatorPsk();
+        modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
         demodulatorPsk = new DemodulatorPsk(100.f,3000.f);
 
         ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
@@ -77,18 +78,8 @@ public class Core {
         driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
         bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
         driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
-
-        /* Тестує Бобер
-        driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
-        demodulatorPsk.addListenerIQ(sempl -> debuger.show(sempl));
-        modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
-        bufferController.updateSampleFrequency(3000);
         bufferController.setSources(() -> modulatorPsk.getSempl());
-        ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
-        driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
-        ethernetDriver.doInit("192.168.0.2", 81);
-        try {Thread.sleep(1000);} catch (InterruptedException e) {}
-        */
+        driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
 
         update = new Update();
         update.start();

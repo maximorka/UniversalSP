@@ -32,9 +32,9 @@ public class ModulatorPsk {
             symbol = symbolSource.symbol();
         // for testing
         else{
-            //symbol = random.nextInt(2);
-            symbol = sinchroSequence[index % 4];
-            index++;
+            symbol = random.nextInt(2);
+            //symbol = sinchroSequence[index % 4];
+            //index++;
         }
     }
 

@@ -326,6 +326,7 @@ public class DriverHorizon {
     private long timer = 0;
 
     public void parse(byte data){
+
         byteCollecter >>= 8;
         byteCollecter &= 0x00FFFFFF;
         byteCollecter |= ((int)data << 24);
@@ -448,6 +449,7 @@ public class DriverHorizon {
         if(byteCounter == 16) GateWay = byteCollecter;
         if(byteCounter != 16) return;
         state = MASK_FIND;
+
         toListenersEthernetSettings(Ip, Mask, Port, GateWay);
     }
 

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="297.0" prefWidth="424.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.TransiverUPSWindow">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="297.0" prefWidth="424.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.TransiverUPSWindow">
     <children>
         <VBox layoutY="2.0" prefHeight="287.0" prefWidth="436.0">
             <children>
@@ -93,7 +92,7 @@
                      </children></AnchorPane>
                         <AnchorPane prefHeight="35.0" prefWidth="121.0">
                             <children>
-                                <Button fx:id="changeSettingsbutton" layoutY="9.0" mnemonicParsing="false" text="Змінити IP, Порт" AnchorPane.leftAnchor="11.0" />
+                                <Button fx:id="changeSettingsIPbutton" layoutY="9.0" mnemonicParsing="false" text="Змінити IP, Порт" AnchorPane.leftAnchor="11.0" />
                             </children>
                         </AnchorPane>
                     </children>

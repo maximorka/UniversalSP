@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainUI {
+
+    public static Button connect;
     String oldTypeRx = "";
     @FXML
     private ChoiceBox typeRxChoicebox;
@@ -35,6 +37,9 @@ public class MainUI {
 
     @FXML
     public void initialize() {
+
+        connect = new Button();
+        connect =  connectButton;
 
         ObservableList <String> typeRx = FXCollections.observableArrayList("УПС");
         typeRxChoicebox.setItems(typeRx);
@@ -214,7 +219,12 @@ public class MainUI {
 
     }
 
-
+public void setConnectButton(){
+    Platform.runLater(()-> {
+        connect.setText("Підключитись");
+        connect.setStyle("-fx-background-color: #c0ae9d");
+    });
+}
 
 
     class UpdateUIThread extends Thread {

@@ -31,11 +31,12 @@ public class ModulatorPsk {
         if(symbolSource != null)
             symbol = symbolSource.symbol();
         // for testing
-        else{
-            symbol = random.nextInt(2);
+        //else{
+
+            //symbol = random.nextInt(2);
             //symbol = sinchroSequence[index % 4];
             //index++;
-        }
+        //}
     }
 
     public Complex getSempl(){
@@ -45,7 +46,10 @@ public class ModulatorPsk {
         }
         symbolPhase += relativeBaudeRate;
 
-        return constellation[symbol];
+        Complex result = new Complex(0.f, 0.f);
+        if(symbol != -1)
+            result = constellation[symbol];
+        return result;
     }
 
 }

@@ -53,7 +53,7 @@ public class GroupAdd {
     }
 
     public int getBit(){
-        if(bits.size() == 0) return 0;
+        if(bits.size() == 0 || bits == null) return -1;
         return bits.poll();
     }
 

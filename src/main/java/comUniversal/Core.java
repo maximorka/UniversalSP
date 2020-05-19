@@ -1,11 +1,13 @@
 package comUniversal;
 
+import comUniversal.BitLevel.GroupAdd;
 import comUniversal.lowLevel.BufferController.BufferController;
 import comUniversal.lowLevel.Debuger.Debuger;
 import comUniversal.lowLevel.Demodulator.DemodulatorPsk;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.Modulator.ModulatorPsk;
+import comUniversal.lowLevel.Modulator.SymbolSource;
 import comUniversal.ui.MainUI;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransiverUPSWindow;
@@ -17,6 +19,7 @@ import java.io.IOException;
 public class Core {
     private static Core core = new Core();
     public Debuger debuger;
+    public GroupAdd groupAdd;
     public EthernetDriver ethernetDriver;
     public DriverHorizon driverHorizon;
     public BufferController bufferController;
@@ -47,6 +50,10 @@ public class Core {
 
                 if(running){
 
+                    //String string = "P11111P11111P11111P11111P11111P01234P56789P";
+                    //groupAdd.add(string);
+                    //try {Thread.sleep(5000);} catch (InterruptedException e) {}
+
                 }
             }
         }
@@ -58,6 +65,7 @@ public class Core {
 
         try {debuger = new Debuger();} catch (IOException e) {}
 
+        groupAdd = new GroupAdd();
         ethernetDriver = new EthernetDriver();
         driverHorizon = new DriverHorizon();
         bufferController = new BufferController(3000);
@@ -80,6 +88,7 @@ public class Core {
         driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
         bufferController.setSources(() -> modulatorPsk.getSempl());
         driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+        modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
 
         update = new Update();
         update.start();

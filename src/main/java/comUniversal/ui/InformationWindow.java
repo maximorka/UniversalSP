@@ -1,5 +1,6 @@
 package comUniversal.ui;
 
+import comUniversal.Core;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -21,7 +22,7 @@ public class InformationWindow {
             public void handle(ActionEvent actionEvent) {
                 String txt = serviceMessage.getText();
                 System.out.println("Fine");
-                //Core.getCore().groupAdd.add(txt);
+                Core.getCore().groupAdd.add(txt);
             }
         });
 

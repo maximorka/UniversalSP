@@ -241,8 +241,8 @@ public class TransiverUPSWindow implements ParamsSettings {
         });
 
     }
-    public void updateEthernet(int ip, int port, int mask, int gateway){
-        String portW = EthernetUtils.convertIntToStringIP(port);
+    public void updateEthernet(int ip, int mask, int port, int gateway){
+        String portW = Integer.toString(port);
         String ipTextT = EthernetUtils.convertIntToStringIP(ip);
         String maskTextT = EthernetUtils.convertIntToStringIP(mask);
         String gateTextT = EthernetUtils.convertIntToStringIP(gateway);

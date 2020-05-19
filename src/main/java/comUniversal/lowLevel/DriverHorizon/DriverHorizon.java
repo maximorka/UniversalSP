@@ -437,25 +437,15 @@ public class DriverHorizon {
             toListenersDucBufferPercent(byteCollecter);
 
     }
-
+    private int Ip = 0;
+    private int Mask = 0;
+    private int Port = 0;
+    private int GateWay = 0;
     private void ethernetSettings (){
-        int Ip = 0, Mask = 0, Port = 0, GateWay = 0;
-        if(byteCounter == 4) {
-            Ip = byteCollecter;
-            //System.out.println("Ip = " + Ip);
-        }
-        if(byteCounter == 8) {
-            Mask = byteCollecter;
-            //System.out.println("Mask = " + Mask);
-        }
-        if(byteCounter == 12) {
-            Port = byteCollecter;
-            //System.out.println("port = " + Port);
-        }
-        if(byteCounter == 16) {
-            GateWay = byteCollecter;
-            //System.out.println("GateWay = " + GateWay);
-        }
+        if(byteCounter == 4) Ip = byteCollecter;
+        if(byteCounter == 8) Mask = byteCollecter;
+        if(byteCounter == 12) Port = byteCollecter;
+        if(byteCounter == 16) GateWay = byteCollecter;
         if(byteCounter != 16) return;
         state = MASK_FIND;
         toListenersEthernetSettings(Ip, Mask, Port, GateWay);

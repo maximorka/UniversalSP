@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class Core {
     private static Core core = new Core();
-    Debuger debuger;
+    public Debuger debuger;
     public EthernetDriver ethernetDriver;
     public DriverHorizon driverHorizon;
     public BufferController bufferController;
@@ -72,18 +72,19 @@ public class Core {
 
 
         //* Тестує Бобер
+
 //        modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
 //        bufferController.updateSampleFrequency(3000);
 //        bufferController.setSources(() -> modulatorPsk.getSempl());
 //        bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
-//        driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
+
 //        driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
-//        ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
-//        ethernetDriver.doInit("192.168.0.2", 81);
-//        try {Thread.sleep(1000);} catch (InterruptedException e) {}
-//        driverHorizon.ducSetWidth(Width.kHz_3);
-//        driverHorizon.ducSetMode(Mode.ENABLE);
-//        try {Thread.sleep(1000);} catch (InterruptedException e) {}
+        //ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
+        //driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+        //driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
+        //ethernetDriver.doInit("192.168.0.2", 81);
+        //try {Thread.sleep(1000);} catch (InterruptedException e) {}
+
         //*/
 
         update = new Update();

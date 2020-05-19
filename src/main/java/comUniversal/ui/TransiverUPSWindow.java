@@ -54,7 +54,7 @@ public class TransiverUPSWindow implements ParamsSettings {
     @FXML
     private Button getIPButton;
     @FXML
-    private Button changeSettingsbutton;
+    private Button changeSettingsIPbutton;
     @FXML
     public TextField rxFrequencyTextField;
     @FXML
@@ -124,7 +124,7 @@ public class TransiverUPSWindow implements ParamsSettings {
         getSettings.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+                System.out.println("get settings");
                 Core.getCore().driverHorizon.ddcGetFrequency();
                 Core.getCore().driverHorizon.ducGetFrequency();
 
@@ -194,7 +194,7 @@ public class TransiverUPSWindow implements ParamsSettings {
                 Core.getCore().driverHorizon.ethernetGet();
             }
         });
-        changeSettingsbutton.setOnAction(new EventHandler<ActionEvent>() {
+        changeSettingsIPbutton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String ipAddress = ipTextField.getText();
@@ -211,6 +211,23 @@ public class TransiverUPSWindow implements ParamsSettings {
                 int get = ByteBuffer.wrap(gatewayBytes).getInt();
 
                 Core.getCore().driverHorizon.ethernetSet(ip,maskInt,port,get);
+                Core.getCore().ethernetDriver.closeSocket();
+                changeSettingsIPbutton.setDisable(true);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    Platform.runLater(() -> {
+                        changeSettingsIPbutton.setDisable(false);
+                    });
+
+                }).start();
+
+
+
+                Core.getCore().mainUI.setConnectButton();
             }
         });
 

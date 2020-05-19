@@ -2,6 +2,7 @@ package comUniversal;
 
 import comUniversal.lowLevel.BufferController.BufferController;
 import comUniversal.lowLevel.Debuger.Debuger;
+import comUniversal.lowLevel.Demodulator.DemodulatorPsk;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.Modulator.ModulatorPsk;
@@ -20,6 +21,7 @@ public class Core {
     public DriverHorizon driverHorizon;
     public BufferController bufferController;
     public ModulatorPsk modulatorPsk;
+    public DemodulatorPsk demodulatorPsk;
     public MainUI mainUI = new MainUI();
     public ReceiverUPSWindowUI receiverUPSWindowUI = new ReceiverUPSWindowUI();
     public TransiverUPSWindow transiverUPSWindow = new TransiverUPSWindow();
@@ -60,10 +62,11 @@ public class Core {
         driverHorizon = new DriverHorizon();
         bufferController = new BufferController(3000);
         modulatorPsk = new ModulatorPsk();
+        modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
+        demodulatorPsk = new DemodulatorPsk(100.f,3000.f);
 
         ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
         driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
-
         driverHorizon.addInit(data->transiverUPSWindow.getInit(data));
         driverHorizon.addDdcMode(data->transiverUPSWindow.getModeRx(data));
         driverHorizon.addDdcWidth(data->transiverUPSWindow.getWidthRx(data));
@@ -73,24 +76,10 @@ public class Core {
         driverHorizon.addDucFrequency(data->transiverUPSWindow.getFrequencyTx(data));
         driverHorizon.addDucBufferPercent(data->transiverUPSWindow.updatePercent(data));
         driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
-
-
-
-        //* Тестує Бобер
-
-//        modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
-//        bufferController.updateSampleFrequency(3000);
-//        bufferController.setSources(() -> modulatorPsk.getSempl());
-//        bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
-
-//        driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
-        //ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
-        //driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
-        //driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
-        //ethernetDriver.doInit("192.168.0.2", 81);
-        //try {Thread.sleep(1000);} catch (InterruptedException e) {}
-
-        //*/
+        bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
+        driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
+        bufferController.setSources(() -> modulatorPsk.getSempl());
+        driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
 
         update = new Update();
         update.start();

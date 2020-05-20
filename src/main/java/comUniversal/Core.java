@@ -7,11 +7,7 @@ import comUniversal.lowLevel.Demodulator.DemodulatorPsk;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.Modulator.ModulatorPsk;
-import comUniversal.lowLevel.Modulator.SymbolSource;
-import comUniversal.ui.MainUI;
-import comUniversal.ui.ReceiverUPSWindowUI;
-import comUniversal.ui.TransiverUPSWindow;
-import comUniversal.ui.TransmitterUPSWindowUI;
+import comUniversal.ui.*;
 import comUniversal.util.Complex;
 
 import java.io.IOException;
@@ -25,10 +21,12 @@ public class Core {
     public BufferController bufferController;
     public ModulatorPsk modulatorPsk;
     public DemodulatorPsk demodulatorPsk;
+    public KylymDecoder kylymDecoder;
     public MainUI mainUI = new MainUI();
     public ReceiverUPSWindowUI receiverUPSWindowUI = new ReceiverUPSWindowUI();
     public TransiverUPSWindow transiverUPSWindow = new TransiverUPSWindow();
     public TransmitterUPSWindowUI transmitterUPSWindowUI = new TransmitterUPSWindowUI();
+    public InformationWindow informationWindow = new InformationWindow();
     private Update update;
     private boolean running = false;
     /**
@@ -49,11 +47,7 @@ public class Core {
             while (true) {
 
                 if(running){
-
-                    //String string = "P11111P11111P11111P11111P11111P01234P56789P";
-                    //groupAdd.add(string);
-                    //try {Thread.sleep(5000);} catch (InterruptedException e) {}
-
+                    
                 }
             }
         }
@@ -68,6 +62,7 @@ public class Core {
         groupAdd = new GroupAdd();
         ethernetDriver = new EthernetDriver();
         driverHorizon = new DriverHorizon();
+        kylymDecoder = new KylymDecoder();
         bufferController = new BufferController(3000);
         modulatorPsk = new ModulatorPsk();
         modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
@@ -88,6 +83,8 @@ public class Core {
         driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
         bufferController.setSources(() -> modulatorPsk.getSempl());
         driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+
+        demodulatorPsk.addListenerSymbol(data->kylymDecoder.addData(data));
         modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
 
         update = new Update();

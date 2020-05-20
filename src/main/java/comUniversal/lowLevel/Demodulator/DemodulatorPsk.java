@@ -29,8 +29,10 @@ public class DemodulatorPsk {
     public void clearListenersSymbol(){symbol.clear();}
     private void toListenersSymbol(int data) {
         if (!symbol.isEmpty())
-            for (Symbol listener : symbol)
+            for (Symbol listener : symbol) {
+                //System.out.print(data);
                 listener.symbol(data);
+            }
     }
 
     public void demodulate(Complex sempl){
@@ -127,10 +129,10 @@ class Clocker{
             symbol = (sempl.re >= 0.f)? 1 : 0;
 
 
-            char bit = (symbol==0)? '1' : '0';
+            char bit = (symbol==0)? '0' : '1';
             bitData += bit;
             if(bitData.length() == 100) {
-                System.out.println(bitData);
+                //System.out.println(bitData);
                 bitData = new String();
             }
 

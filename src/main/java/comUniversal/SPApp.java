@@ -20,6 +20,8 @@ public class SPApp extends Application {
 
         stage.setTitle("Universal Special Program");
         stage.setScene(scene);
+        stage.setX(212);
+        stage.setY(50);
         stage.show();
         stage.setOnCloseRequest(event -> {
             System.out.println("platform exit");

@@ -13,13 +13,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
 public class MainUI {
-
+    Stage stageRx = new Stage();
+    Stage stageTx = new Stage();
     public static Button connect;
     String oldTypeRx = "";
     @FXML
@@ -32,19 +33,20 @@ public class MainUI {
 
     @FXML
     private Button connectButton;
-    @FXML
-    private ComboBox test;
+
 
     @FXML
     public void initialize() {
 
         connect = new Button();
         connect =  connectButton;
+        connectButton.setDisable(true);
+        modeWorkChoicebox.setDisable(true);
 
-        ObservableList <String> typeRx = FXCollections.observableArrayList("УПС");
+        ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт");
         typeRxChoicebox.setItems(typeRx);
-//test.setItems(typeRx);
-        ObservableList <String> typeTx = FXCollections.observableArrayList("УПС", "УПС1");
+
+        ObservableList <String> typeTx = FXCollections.observableArrayList("Відсутній","Горизонт");
         typeTxChoicebox.setItems(typeTx);
 
         ObservableList <String> typeMode = FXCollections.observableArrayList("Горизонт","Килим");
@@ -78,139 +80,85 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                if (((typeRxChoicebox.getValue() != null) && (typeTxChoicebox.getValue() != null))){
-                    if(typeRxChoicebox.getValue() == "УПС" && typeTxChoicebox.getValue() == "УПС" ){
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/Transiver.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene = null;
-                        try {
-                            scene = new Scene(fxmlLoader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage = new Stage();
-                        stage.setTitle("Transiver UPS");
-                        stage.setScene(scene);
-                        stage.show();
-                    }else{
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene = null;
-                        try {
-                            scene = new Scene(fxmlLoader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage = new Stage();
-                        stage.setTitle("Receiver UPS");
-                        stage.setScene(scene);
-                        stage.show();
+                if(typeRxChoicebox.getValue() == "Горизонт") {
 
-
-                        FXMLLoader fxmlLoader1 = new FXMLLoader();
-                        fxmlLoader1.setLocation(getClass().getResource("/TransmiterUPSWindow.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene1 = null;
-                        try {
-                            scene1 = new Scene(fxmlLoader1.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage1 = new Stage();
-                        stage1.setTitle("Transmiter UPS");
-                        stage1.setScene(scene1);
-                        stage1.show();
-
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
+                    Scene scene = null;
+                    try {
+                        scene = new Scene(fxmlLoader.load());
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
 
+                    stageRx.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent windowEvent) {
+                            windowEvent.consume();
+                        }
+                    });
+                    stageRx.setX(212);
+                    stageRx.setY(160);
+                    stageRx.setTitle("Receiver UPS");
+                    stageRx.setScene(scene);
+                    stageRx.show();
+                    connectButton.setDisable(false);
+                    modeWorkChoicebox.setDisable(false);
+                }else if(typeRxChoicebox.getValue() == "Відсутній"){
+                    stageRx.close();
                 }
             }
         });
-
-
-
 
         typeTxChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                if(typeTxChoicebox.getValue() == "Горизонт") {
 
-                if (((typeRxChoicebox.getValue() != null) && (typeTxChoicebox.getValue() != null))){
-                    if (typeRxChoicebox.getValue() == "УПС" && typeTxChoicebox.getValue() == "УПС") {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/Transiver.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene = null;
-                        try {
-                            scene = new Scene(fxmlLoader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage = new Stage();
-                        stage.setTitle("Transiver UPS");
-                        stage.setScene(scene);
-                        stage.show();
-                    } else {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/TransmiterUPSWindow.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene = null;
-                        try {
-                            scene = new Scene(fxmlLoader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage = new Stage();
-                        stage.setTitle("Transmiter UPS");
-                        stage.setScene(scene);
-                        stage.show();
-
-                        FXMLLoader fxmlLoader1 = new FXMLLoader();
-                        fxmlLoader1.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene1 = null;
-                        try {
-                            scene1 = new Scene(fxmlLoader1.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage1 = new Stage();
-                        stage1.setTitle("Receiver UPS");
-                        stage1.setScene(scene1);
-                        stage1.show();
-
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/TransmiterUPSWindow.fxml"));
+                    Scene scene = null;
+                    try {
+                        scene = new Scene(fxmlLoader.load());
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+
+                    stageTx.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent windowEvent) {
+                            windowEvent.consume();
+                        }
+                    });
+                    stageTx.setX(212);
+                    stageTx.setY(490);
+                    stageTx.setTitle("Receiver UPS");
+                    stageTx.setScene(scene);
+                    stageTx.show();
+                    connectButton.setDisable(false);
+                    modeWorkChoicebox.setDisable(false);
+
+                }else if(typeTxChoicebox.getValue() == "Відсутній"){
+                    stageTx.close();
                 }
+
             }
         });
-//        ipTextField.setText("192.168.0.1");
-        //portTextField.setText("81");
+
         connectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String ip = Core.getCore().transiverUPSWindow.getIP();
+                String ip = "";
+                String ipRx = Core.getCore().receiverUPSWindowUI.getIP();
+                String ipTx = Core.getCore().transmitterUPSWindowUI.getIP();
+
+                if (ipRx.equals(ipTx)){
+                    ip = ipRx;
+                }
+
                 //String ip = Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1");
-                String portText = Core.getCore().transiverUPSWindow.getPort();
-                int port = Integer.parseInt(portText);
+                String portText = "80";// Core.getCore().transiverUPSWindow.getPort();
+                int port = 80;// Integer.parseInt(portText);
 
 
                 String con = "-fx-background-color: #00cd00";
@@ -220,7 +168,8 @@ public class MainUI {
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
 
-                            Core.getCore().transiverUPSWindow.updateVisibility();
+                            Core.getCore().transmitterUPSWindowUI.updateVisibility();
+                            Core.getCore().receiverUPSWindowUI.updateVisibility();
                         });
                     }
 

@@ -6,100 +6,74 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="303.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.ReceiverUPSWindowUI">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.ReceiverUPSWindowUI">
    <children>
-      <VBox layoutY="2.0" prefHeight="287.0" prefWidth="303.0">
+      <VBox layoutY="2.0" prefHeight="300.0" prefWidth="200.0">
          <children>
-            <HBox prefHeight="27.0" prefWidth="290.0">
+            <HBox prefHeight="9.0" prefWidth="200.0">
                <children>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane prefHeight="27.0" prefWidth="23.0" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="380.0">
+               <children>
+                  <AnchorPane prefHeight="40.0" prefWidth="19.0">
                      <children>
-                        <Label fx:id="initDeviceLabel" layoutX="26.0" layoutY="5.0" text="Init" />
+                        <Label layoutX="5.0" prefHeight="25.0" prefWidth="50.0" text="IP" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane prefHeight="30.0" prefWidth="87.0">
                      <children>
-                        <Label fx:id="modeDeviceLabel" layoutX="40.0" layoutY="5.0" text="mode" />
+                        <TextField fx:id="ipTextField" layoutX="1.0" layoutY="2.0" prefHeight="25.0" prefWidth="80.0" text="192.168.0.1" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane prefHeight="30.0" prefWidth="26.0">
                      <children>
-                        <Label fx:id="widthDeviceLabel" layoutX="26.0" layoutY="5.0" text="width" />
+                        <ImageView fx:id="testIpImageView" fitHeight="25.0" fitWidth="29.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
                </children>
             </HBox>
-            <HBox prefHeight="50.0" prefWidth="292.0">
+            <HBox prefHeight="25.0" prefWidth="322.0">
                <children>
-                  <AnchorPane prefHeight="21.0" prefWidth="69.0">
+                  <AnchorPane prefHeight="25.0" prefWidth="118.0">
                      <children>
-                        <Label prefHeight="48.0" prefWidth="104.0" text="Частота ПЧ ПРМ:" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0" />
+                        <Button fx:id="changeSettingsbutton" layoutX="56.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Зміна IP" AnchorPane.topAnchor="2.0" />
+                     </children></AnchorPane>
+                  <AnchorPane prefHeight="27.0" prefWidth="53.0" />
+               </children>
+            </HBox>
+            <Pane prefHeight="55.0" prefWidth="200.0" />
+            <HBox prefHeight="25.0" prefWidth="292.0">
+               <children>
+                  <AnchorPane prefHeight="27.0" prefWidth="57.0">
+                     <children>
+                        <Label prefHeight="25.0" prefWidth="51.0" text="ПЧ ПРМ" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="50.0" prefWidth="140.0">
+                  <AnchorPane prefHeight="27.0" prefWidth="87.0">
                      <children>
-                        <TextField fx:id="rxFrequencyTextField" prefHeight="30.0" prefWidth="128.0" AnchorPane.topAnchor="10.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="50.0" prefWidth="52.0">
-                     <children>
-                        <Button fx:id="getFreqRxButton" layoutX="7.0" layoutY="12.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="33.0" text="G" />
+                        <TextField fx:id="rxFrequencyTextField" prefHeight="25.0" prefWidth="80.0" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
                </children>
             </HBox>
-            <HBox prefHeight="48.0" prefWidth="302.0">
+            <HBox prefHeight="23.0" prefWidth="303.0">
                <children>
-                  <AnchorPane prefHeight="29.0" prefWidth="117.0">
+                  <AnchorPane prefHeight="23.0" prefWidth="59.0">
                      <HBox.margin>
-                        <Insets top="10.0" />
+                        <Insets />
                      </HBox.margin>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="48.0" prefWidth="151.0" />
-               </children>
-            </HBox>
-            <Pane prefHeight="16.0" prefWidth="289.0" />
-            <HBox prefHeight="36.0" prefWidth="380.0">
-               <children>
-                  <AnchorPane prefHeight="54.0" prefWidth="73.0">
                      <children>
-                        <Label prefHeight="38.0" prefWidth="107.0" text="             IP:" AnchorPane.leftAnchor="10.0" />
+                        <Label fx:id="modeDeviceLabel" layoutX="6.0" layoutY="3.0" prefHeight="17.0" prefWidth="50.0" text="m" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="54.0" prefWidth="107.0">
+                  <AnchorPane prefHeight="23.0" prefWidth="98.0">
                      <children>
-                        <TextField fx:id="ipTextField" prefHeight="30.0" prefWidth="128.0" text="192.168.0.1" AnchorPane.topAnchor="10.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="40.0" prefWidth="45.0">
-                     <children>
-                        <ImageView fx:id="testIpImageView" fitHeight="30.0" fitWidth="41.0" layoutX="7.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="31.0" />
-                     </children>
-                  </AnchorPane>
-               </children>
-            </HBox>
-            <HBox prefHeight="48.0" prefWidth="264.0">
-               <children>
-                  <AnchorPane prefHeight="48.0" prefWidth="107.0">
-                     <children>
-                        <Label prefHeight="48.0" prefWidth="107.0" text="         Порт:" AnchorPane.leftAnchor="10.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="48.0" prefWidth="170.0">
-                     <children>
-                        <TextField fx:id="portTextField" prefHeight="30.0" prefWidth="128.0" text="80" AnchorPane.topAnchor="10.0" />
-                     </children>
-                  </AnchorPane>
-               </children>
-            </HBox>
-            <HBox prefHeight="42.0" prefWidth="322.0">
-               <children>
-                  <AnchorPane prefHeight="42.0" prefWidth="118.0" />
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Button fx:id="changeSettingsbutton" layoutY="9.0" mnemonicParsing="false" text="Змінити IP, Порт" />
-                     </children>
-                  </AnchorPane>
+                        <Label fx:id="widthDeviceLabel" layoutX="8.0" layoutY="3.0" prefHeight="17.0" prefWidth="57.0" text="w" AnchorPane.topAnchor="2.0" />
+                     </children></AnchorPane>
                </children>
             </HBox>
          </children>

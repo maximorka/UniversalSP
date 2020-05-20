@@ -47,7 +47,19 @@ public class Core {
             while (true) {
 
                 if(running){
-                    
+                    driverHorizon.ducGetFrequency();
+                    driverHorizon.ducGetWidth();
+                    driverHorizon.ducGetMode();
+
+                    driverHorizon.ddcGetFrequency();
+                    driverHorizon.ddcGetWidth();
+                    driverHorizon.ddcGetMode();
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -70,15 +82,17 @@ public class Core {
 
         ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
         driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
-        driverHorizon.addInit(data->transiverUPSWindow.getInit(data));
-        driverHorizon.addDdcMode(data->transiverUPSWindow.getModeRx(data));
-        driverHorizon.addDdcWidth(data->transiverUPSWindow.getWidthRx(data));
-        driverHorizon.addDdcFrequency(data->transiverUPSWindow.getFrequencyRx(data));
-        driverHorizon.addDucMode(data->transiverUPSWindow.getModeTx(data));
-        driverHorizon.addDucWidth(data->transiverUPSWindow.getWidthTx(data));
-        driverHorizon.addDucFrequency(data->transiverUPSWindow.getFrequencyTx(data));
-        driverHorizon.addDucBufferPercent(data->transiverUPSWindow.updatePercent(data));
-        driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
+
+       driverHorizon.addDucMode(data->transmitterUPSWindowUI.getModeTx(data));
+       driverHorizon.addDucWidth(data->transmitterUPSWindowUI.getWidthTx(data));
+       driverHorizon.addDucFrequency(data->transmitterUPSWindowUI.getFrequencyTx(data));
+       driverHorizon.addDucBufferPercent(data->transmitterUPSWindowUI.updatePercent(data));
+
+       driverHorizon.addDdcMode(data->receiverUPSWindowUI.getModeRx(data));
+       driverHorizon.addDdcWidth(data->receiverUPSWindowUI.getWidthRx(data));
+       driverHorizon.addDdcFrequency(data->receiverUPSWindowUI.getFrequencyRx(data));
+
+//        driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
         bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
         driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
         bufferController.setSources(() -> modulatorPsk.getSempl());

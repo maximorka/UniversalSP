@@ -111,12 +111,9 @@ public class EthernetDriver {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
             }
         }
     }
-
-
     public void writeByte(byte data) {
         if(socket!=null) {
             if (!socket.isClosed()) {

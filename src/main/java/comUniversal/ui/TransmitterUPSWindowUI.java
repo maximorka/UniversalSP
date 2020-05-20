@@ -2,12 +2,16 @@
 package comUniversal.ui;
 
         import comUniversal.Core;
+        import comUniversal.lowLevel.DriverHorizon.Mode;
+        import comUniversal.lowLevel.DriverHorizon.Width;
         import comUniversal.ui.setting.ParamsSettings;
         import comUniversal.util.Params;
+        import javafx.application.Platform;
         import javafx.event.ActionEvent;
         import javafx.event.EventHandler;
         import javafx.fxml.FXML;
         import javafx.scene.control.Button;
+        import javafx.scene.control.Label;
         import javafx.scene.control.TextField;
         import javafx.scene.image.Image;
         import javafx.scene.image.ImageView;
@@ -17,12 +21,19 @@ package comUniversal.ui;
         import java.util.List;
 
 public class TransmitterUPSWindowUI implements ParamsSettings {
+
     private List<ParamsSettings> settings = new ArrayList<>();
 
     Image Ok = new Image("/images/check.png");
     Image notOk = new Image("/images/close.png");
 
+    public static TextField ipTextTx;
 
+    public static Label modeTxText;
+    public static Label widthTxText;
+    public static Label procentTxText;
+    public static TextField freqTxText;
+    public static Button changeIPTxButton;
 
     @FXML
     private TextField txFrequencyTextField;
@@ -31,20 +42,39 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
     private TextField ipTextField;
 
     @FXML
-    private TextField portTextField;
-
-    @FXML
     private ImageView testIpImageView;
 
     @FXML
     private Button changeSettingsbutton;
+    @FXML
+    private Label procentDeviceLabel;
+    @FXML
+    private Label modeDeviceLabel;
+    @FXML
+    private Label widthDeviceLabel;
 
     @FXML
     public void initialize() {
         System.out.println("initialize() setting transmitter");
+        ipTextTx = new TextField();
+        ipTextTx = ipTextField;
 
+        modeTxText = new Label();
+        modeTxText = modeDeviceLabel;
+
+        widthTxText = new Label();
+        widthTxText = widthDeviceLabel;
+
+        procentTxText = new Label();
+        procentTxText = procentDeviceLabel;
+
+        freqTxText = new TextField();
+        freqTxText = txFrequencyTextField;
+        changeIPTxButton = new Button();
+        changeIPTxButton = changeSettingsbutton;
         restoreAll(Params.SETTINGS);
-        //changeSettingsbutton.setVisible(false);
+        changeSettingsbutton.setVisible(false);
+        txFrequencyTextField.setDisable(true);
         txFrequencyTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -86,23 +116,47 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         }
     }
     public String getIP(){
-        return ipTextField.getText();
+        return ipTextTx.getText();
     }
-    public String getPort(){
-        return portTextField.getText();
-    }
+
     @Override
     public void saveAll(Params params) {
         Params.SETTINGS.putString("ethernet-ip-address", ipTextField.getText());
-        Params.SETTINGS.putString("ethernet-port", portTextField.getText());
     }
 
+    public void updatePercent(int percent) {
+        String procent = Integer.toString(percent);
+        Platform.runLater(() -> {
+            procentTxText.setText(procent);
+        });
+    }
+
+    public void getFrequencyTx(int data) {
+        String tmp = Integer.toString(data);
+        Platform.runLater(() -> {
+            freqTxText.setText(tmp);
+        });
+    }
+    public void getModeTx(Mode data) {
+        String tmp = String.valueOf(data);
+        Platform.runLater(() -> {
+            modeTxText.setText(tmp);
+        });
+    }
+    public void getWidthTx(Width data) {
+        String tmp = String.valueOf(data);
+        Platform.runLater(() -> {
+            widthTxText.setText(tmp);
+        });
+    }
+    public void updateVisibility(){
+        changeIPTxButton.setVisible(true);
+    }
     @Override
     public void restoreAll(Params params) {
         //Restore Ethernet params 1
         ipTextField.setText(Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1"));
-        portTextField.setText(Params.SETTINGS.getString("ethernet-port", "80"));
-        txFrequencyTextField.setText(Params.SETTINGS.getString("rx_UPS_frequency", "128000"));
+        //txFrequencyTextField.setText(Params.SETTINGS.getString("rx_UPS_frequency", "128000"));
 
     }
 }

@@ -2,8 +2,9 @@
   "filename": "settings",
   "items": {
     "ethernet_ip": "192.168.0.1",
-    "ethernet_port": "80",
+    "ethernet_port": "81",
     "rx_UPS_frequency": "128000",
-    "tx_UPS_frequency": "128000"
+    "tx_UPS_frequency": "128000",
+    "border_procent": "6"
   }
 }

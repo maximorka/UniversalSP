@@ -1,8 +1,5 @@
 package comUniversal.BitLevel;
 
-import comUniversal.lowLevel.Demodulator.Symbol;
-import comUniversal.util.Complex;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +89,7 @@ public class GroupAdd {
 
         if(Math.abs(different) >= 1){
             oldPercent = currentPercent;
-            System.out.println(currentPercent + " %");
+            //System.out.println(currentPercent + " %");
             toRadiogramPercentListener(currentPercent);
         }
 

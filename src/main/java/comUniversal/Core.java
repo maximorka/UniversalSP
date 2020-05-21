@@ -7,12 +7,10 @@ import comUniversal.lowLevel.Demodulator.DemodulatorPsk;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.Modulator.ModulatorPsk;
-import comUniversal.lowLevel.Modulator.SymbolSource;
+import comUniversal.ui.InformationWindow;
 import comUniversal.ui.MainUI;
 import comUniversal.ui.ReceiverUPSWindowUI;
-import comUniversal.ui.TransiverUPSWindow;
 import comUniversal.ui.TransmitterUPSWindowUI;
-import comUniversal.util.Complex;
 
 import java.io.IOException;
 
@@ -25,10 +23,11 @@ public class Core {
     public BufferController bufferController;
     public ModulatorPsk modulatorPsk;
     public DemodulatorPsk demodulatorPsk;
+    public KylymDecoder kylymDecoder;
     public MainUI mainUI = new MainUI();
     public ReceiverUPSWindowUI receiverUPSWindowUI = new ReceiverUPSWindowUI();
-    public TransiverUPSWindow transiverUPSWindow = new TransiverUPSWindow();
     public TransmitterUPSWindowUI transmitterUPSWindowUI = new TransmitterUPSWindowUI();
+    public InformationWindow informationWindow = new InformationWindow();
     private Update update;
     private boolean running = false;
     /**
@@ -44,16 +43,28 @@ public class Core {
         @Override
         public void run() {
 
-            Complex sempl = new Complex(0.f, 0.f);
-
+            while (!ethernetDriver.isConect()){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             while (true) {
 
                 if(running){
+                    driverHorizon.ducGetFrequency();
+                    driverHorizon.ducGetWidth();
+                    driverHorizon.ducGetMode();
 
-                    //String string = "P11111P11111P11111P11111P11111P01234P56789P";
-                    //groupAdd.add(string);
-                    //try {Thread.sleep(5000);} catch (InterruptedException e) {}
-
+                    driverHorizon.ddcGetFrequency();
+                    driverHorizon.ddcGetWidth();
+                    driverHorizon.ddcGetMode();
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -62,33 +73,37 @@ public class Core {
         this.running = running;
     }
     private Core(){
-
         try {debuger = new Debuger();} catch (IOException e) {}
-
         groupAdd = new GroupAdd();
-        ethernetDriver = new EthernetDriver();
+        this.ethernetDriver = new EthernetDriver();
         driverHorizon = new DriverHorizon();
-        bufferController = new BufferController(3000);
+        kylymDecoder = new KylymDecoder();
         modulatorPsk = new ModulatorPsk();
         modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
+        bufferController = new BufferController(3000);
         demodulatorPsk = new DemodulatorPsk(100.f,3000.f);
 
         ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
         driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
-        driverHorizon.addInit(data->transiverUPSWindow.getInit(data));
-        driverHorizon.addDdcMode(data->transiverUPSWindow.getModeRx(data));
-        driverHorizon.addDdcWidth(data->transiverUPSWindow.getWidthRx(data));
-        driverHorizon.addDdcFrequency(data->transiverUPSWindow.getFrequencyRx(data));
-        driverHorizon.addDucMode(data->transiverUPSWindow.getModeTx(data));
-        driverHorizon.addDucWidth(data->transiverUPSWindow.getWidthTx(data));
-        driverHorizon.addDucFrequency(data->transiverUPSWindow.getFrequencyTx(data));
-        driverHorizon.addDucBufferPercent(data->transiverUPSWindow.updatePercent(data));
-        driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
+
+       driverHorizon.addDucMode(data->transmitterUPSWindowUI.getModeTx(data));
+       driverHorizon.addDucWidth(data->transmitterUPSWindowUI.getWidthTx(data));
+       driverHorizon.addDucFrequency(data->transmitterUPSWindowUI.getFrequencyTx(data));
+       driverHorizon.addDucBufferPercent(data->transmitterUPSWindowUI.updatePercent(data));
+
+       driverHorizon.addDdcMode(data->receiverUPSWindowUI.getModeRx(data));
+       driverHorizon.addDdcWidth(data->receiverUPSWindowUI.getWidthRx(data));
+       driverHorizon.addDdcFrequency(data->receiverUPSWindowUI.getFrequencyRx(data));
+
+//      driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
         bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
         driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
         bufferController.setSources(() -> modulatorPsk.getSempl());
         driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+
+        demodulatorPsk.addListenerSymbol(data->kylymDecoder.addData(data));
         modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
+        groupAdd.addRadiogramPercentListener(percent -> informationWindow.updatePercentRadiogram(percent));
 
         update = new Update();
         update.start();

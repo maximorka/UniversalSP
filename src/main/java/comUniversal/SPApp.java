@@ -18,8 +18,10 @@ public class SPApp extends Application {
 
         Scene scene = new Scene(root);
 
-        stage.setTitle("Universal Special Program");
+        stage.setTitle("Універсальне програмне забезпечення");
         stage.setScene(scene);
+        stage.setX(212);
+        stage.setY(20);
         stage.show();
         stage.setOnCloseRequest(event -> {
             System.out.println("platform exit");

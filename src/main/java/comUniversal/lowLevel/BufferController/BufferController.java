@@ -1,6 +1,8 @@
 package comUniversal.lowLevel.BufferController;
 
+import comUniversal.Core;
 import comUniversal.util.Complex;
+import comUniversal.util.Params;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +13,13 @@ public class BufferController {
     protected volatile int sampleCountPer10ms = sampleFreq / 100;
     protected volatile int sampleCountPer1ms = sampleFreq / 1000;
 
-    private boolean finishingWork = false;
+    private boolean startWork = false;
 
     private int percentBuffer = 0 ;
     private WorkingThread workingThread;
     private float k = 0;
     private GetIQSource getIQSource;
+    private int borderProcent;
 
     // Listeners
     private List<IBufferController> controllers = new ArrayList<>();
@@ -27,7 +30,6 @@ public class BufferController {
             for(IBufferController listener: controllers)
                 listener.sendData(sample);
     }
-
 
     public void setSources(GetIQSource sources) {
         this.getIQSource = sources;
@@ -43,11 +45,9 @@ public class BufferController {
 
     public BufferController(int sampleFreq ){
 
+        borderProcent = Integer.parseInt(Params.SETTINGS.getString("border_procent", "6"));
+
         this.sampleFreq = sampleFreq;
-        if(sampleFreq == 48000){
-            k = 4;
-        }else
-            k = (float) 0.6;
 
         sampleCountPer10ms = sampleFreq / 100;
         sampleCountPer1ms = sampleFreq / 1000;
@@ -60,33 +60,35 @@ public class BufferController {
         @Override
         public void run() {
             long start = System.currentTimeMillis();
-            long executeTime  = 1;
+            long executeTime = 0;
 
             while (true) {
-                long delay  = 5;
-
-                if (finishingWork) {
-                    continue;
+                while ((System.currentTimeMillis() - start) < 10) {
+                    try {
+                        Thread.sleep(0,100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                if (percentBuffer < 60) {
+                executeTime = System.currentTimeMillis() - start;
+                start = System.currentTimeMillis();
+                if(executeTime>100){
+                    executeTime=100;
+                }
+                //System.out.println("wokr");
+                if (Core.getCore().ethernetDriver.isConect()) {
                     int needSendSample = sampleCountPer1ms * (int) executeTime;
-                    needSendSample+= (int) ((int)(k*executeTime)*sampleCountPer1ms);
-                    for (int i = 0; i < needSendSample ; i++) {
+                    if (percentBuffer < borderProcent) {
+                        needSendSample += sampleCountPer1ms * 2;
+                    }
+                    for (int i = 0; i < needSendSample; i++) {
                         Complex sample = new Complex(0.0F, 0.0F);
                         if (getIQSource != null) {
                             sample = getIQSource.getIQ();
                         }
                         toListenersTransferDataBytes(sample);
                     }
-                }
 
-                executeTime = System.currentTimeMillis() - start;
-                start = System.currentTimeMillis();
-
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
         }

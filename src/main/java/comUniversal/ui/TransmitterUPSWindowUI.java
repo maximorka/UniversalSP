@@ -133,6 +133,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
 
     public void updatePercent(int percent) {
         String procent = Integer.toString(percent);
+
         Platform.runLater(() -> {
             procentTxText.setText(procent);
         });
@@ -165,6 +166,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
             changeIPTxButton.setDisable(state);
         });
     }
+
     @Override
     public void restoreAll(Params params) {
         //Restore Ethernet params 1

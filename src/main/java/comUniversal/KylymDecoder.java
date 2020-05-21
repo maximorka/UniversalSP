@@ -66,124 +66,84 @@ public class KylymDecoder {
             }
         }
     }
-    public void symbolForBit(){
-        System.arraycopy(bufInput,1,bufInput,0,bufInput.length-1);
 
-        bufInput[bufInput.length-1]=data.poll();
+    public void symbolForBit() {
+        System.arraycopy(bufInput, 1, bufInput, 0, bufInput.length - 1);
 
-            for (int i = 0; i < 6; i++) {
-                if (bufInput[(i)] == P[i]) {
-                    symbol++;
-                }
+        bufInput[bufInput.length - 1] = data.poll();
+
+        for (int i = 0; i < 6; i++) {
+            if (bufInput[(i)] == P[i]) {
+                symbol++;
             }
-            countP += (symbol == 6) ? 1 : 0;
-            symbol = 0;
+        }
+        countP += (symbol == 6) ? 1 : 0;
+        symbol = 0;
 
-            for (int i = 0; i < 6; i++) {
-                if (bufInput[i + 36] == P[i]) {
-                    symbol++;
-                }
+        for (int i = 0; i < 6; i++) {
+            if (bufInput[i + 36] == P[i]) {
+                symbol++;
             }
-            countP += (symbol == 6) ? 1 : 0;
-            symbol = 0;
+        }
+        countP += (symbol == 6) ? 1 : 0;
+        symbol = 0;
 
-        for (int i = 0; i <6 ; i++) {
-            if(bufInput[i+72] == P[i] ){
+        for (int i = 0; i < 6; i++) {
+            if (bufInput[i + 72] == P[i]) {
                 symbol++;
             }
         }
 
-        countP+=(symbol==6)?1:0;
+        countP += (symbol == 6) ? 1 : 0;
         symbol = 0;
-            if (countP >= 3) {
+        if (countP >= 3) {
 
-                for (int j = 0; j <5; j++) {
-                    int[]number = {0,0,0,0,0,0,0,0,0,0};
+            for (int j = 0; j < 5; j++) {
+                int[] number = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-                for (int i = 6*(j+1); i < (6*(j+1)+6); i++) {
-                    if (bufInput[i] == N0[i-(6*(j+1))]) {
+                for (int i = 6 * (j + 1); i < (6 * (j + 1) + 6); i++) {
+                    if (bufInput[i] == N0[i - (6 * (j + 1))]) {
                         number[0]++;
                     }
-                    if (bufInput[i] == N1[i-(6*(j+1))]) {
+                    if (bufInput[i] == N1[i - (6 * (j + 1))]) {
                         number[1]++;
                     }
-                    if (bufInput[i] == N2[i-(6*(j+1))]) {
+                    if (bufInput[i] == N2[i - (6 * (j + 1))]) {
                         number[2]++;
                     }
-                    if (bufInput[i] == N3[i-(6*(j+1))]) {
+                    if (bufInput[i] == N3[i - (6 * (j + 1))]) {
                         number[3]++;
                     }
-                    if (bufInput[i] == N4[i-(6*(j+1))]) {
+                    if (bufInput[i] == N4[i - (6 * (j + 1))]) {
                         number[4]++;
                     }
-                    if (bufInput[i] == N5[i-(6*(j+1))]) {
+                    if (bufInput[i] == N5[i - (6 * (j + 1))]) {
                         number[5]++;
                     }
-                    if (bufInput[i] == N6[i-(6*(j+1))]) {
+                    if (bufInput[i] == N6[i - (6 * (j + 1))]) {
                         number[6]++;
                     }
-                    if (bufInput[i] == N7[i-(6*(j+1))]) {
+                    if (bufInput[i] == N7[i - (6 * (j + 1))]) {
                         number[7]++;
                     }
-                    if (bufInput[i] == N8[i-(6*(j+1))]) {
+                    if (bufInput[i] == N8[i - (6 * (j + 1))]) {
                         number[8]++;
                     }
-                    if (bufInput[i] == N9[i-(6*(j+1))]) {
+                    if (bufInput[i] == N9[i - (6 * (j + 1))]) {
                         number[9]++;
                     }
                 }
-                    int res = 0;
-                    for (int i = 0; i <10 ; i++) {
-                        if(number[i]==6) {
-                            res = i;
-                            continue;
-                        }
+                int res = 12;
+                for (int i = 0; i < 10; i++) {
+                    if (number[i] == 6) {
+                        res = i;
+                        continue;
                     }
-                    Core.getCore().informationWindow.setTextMessage(res);
-            }
-            }
-                countP = 0;
-    }
-private boolean findMask(int symbol){
-        String value = number.get(symbol);
-        if(value == "P"){
-            System.out.println("mask");
-
-            return true;
-        }
-        return false;
-}
-
-    public static void main(String[] args) {
-        KylymDecoder kylymDecoder = new KylymDecoder();
-
-        for (int i = 0; i <1 ; i++) {
-            kylymDecoder.addData(0);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(0);
-            kylymDecoder.addData(0);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(0);
-            kylymDecoder.addData(0);
-            kylymDecoder.addData(0);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(1);
-            kylymDecoder.addData(0);
-            for (int j = 0; j <18 ; j++) {
-                kylymDecoder.symbolForBit();
+                }
+                Core.getCore().informationWindow.setTextMessage(res);
             }
         }
-
-        //kylymDecoder.checkCadr();
-        //System.out.println("parseData:"+);
-
-
+        countP = 0;
     }
+
 }

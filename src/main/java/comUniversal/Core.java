@@ -7,8 +7,10 @@ import comUniversal.lowLevel.Demodulator.DemodulatorPsk;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.Modulator.ModulatorPsk;
-import comUniversal.ui.*;
-import comUniversal.util.Complex;
+import comUniversal.ui.InformationWindow;
+import comUniversal.ui.MainUI;
+import comUniversal.ui.ReceiverUPSWindowUI;
+import comUniversal.ui.TransmitterUPSWindowUI;
 
 import java.io.IOException;
 
@@ -24,7 +26,6 @@ public class Core {
     public KylymDecoder kylymDecoder;
     public MainUI mainUI = new MainUI();
     public ReceiverUPSWindowUI receiverUPSWindowUI = new ReceiverUPSWindowUI();
-    public TransiverUPSWindow transiverUPSWindow = new TransiverUPSWindow();
     public TransmitterUPSWindowUI transmitterUPSWindowUI = new TransmitterUPSWindowUI();
     public InformationWindow informationWindow = new InformationWindow();
     private Update update;
@@ -42,8 +43,13 @@ public class Core {
         @Override
         public void run() {
 
-            Complex sempl = new Complex(0.f, 0.f);
-
+            while (!ethernetDriver.isConect()){
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             while (true) {
 
                 if(running){
@@ -54,7 +60,6 @@ public class Core {
                     driverHorizon.ddcGetFrequency();
                     driverHorizon.ddcGetWidth();
                     driverHorizon.ddcGetMode();
-
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -68,16 +73,14 @@ public class Core {
         this.running = running;
     }
     private Core(){
-
         try {debuger = new Debuger();} catch (IOException e) {}
-
         groupAdd = new GroupAdd();
-        ethernetDriver = new EthernetDriver();
+        this.ethernetDriver = new EthernetDriver();
         driverHorizon = new DriverHorizon();
         kylymDecoder = new KylymDecoder();
-        bufferController = new BufferController(3000);
         modulatorPsk = new ModulatorPsk();
         modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
+        bufferController = new BufferController(3000);
         demodulatorPsk = new DemodulatorPsk(100.f,3000.f);
 
         ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
@@ -92,7 +95,7 @@ public class Core {
        driverHorizon.addDdcWidth(data->receiverUPSWindowUI.getWidthRx(data));
        driverHorizon.addDdcFrequency(data->receiverUPSWindowUI.getFrequencyRx(data));
 
-//        driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
+//      driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
         bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
         driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
         bufferController.setSources(() -> modulatorPsk.getSempl());
@@ -100,6 +103,7 @@ public class Core {
 
         demodulatorPsk.addListenerSymbol(data->kylymDecoder.addData(data));
         modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
+        groupAdd.addRadiogramPercentListener(percent -> informationWindow.updatePercentRadiogram(percent));
 
         update = new Update();
         update.start();

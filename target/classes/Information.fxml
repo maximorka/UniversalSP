@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.*?>
-<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.InformationWindow">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.InformationWindow">
    <center>
       <AnchorPane prefHeight="480.0" prefWidth="500.0" stylesheets="@/css/Main.css" BorderPane.alignment="CENTER">
          <children>
@@ -21,7 +18,7 @@
                                  <children>
                                     <AnchorPane prefHeight="33.0" prefWidth="70.0">
                                        <children>
-                                          <Label layoutX="44.0" layoutY="11.0" text="Швидкість" AnchorPane.leftAnchor="5.0" />
+                                          <Label fx:id="speedLabel" layoutX="44.0" layoutY="11.0" text="Швидкість" AnchorPane.leftAnchor="5.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="33.0" prefWidth="51.0">

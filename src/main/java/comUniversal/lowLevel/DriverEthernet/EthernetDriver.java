@@ -125,6 +125,9 @@ public class EthernetDriver {
                 }
             }
         }
+        else{
+            System.out.println("try");
+        }
     }
     public void writeBytes(byte[] data) {
 

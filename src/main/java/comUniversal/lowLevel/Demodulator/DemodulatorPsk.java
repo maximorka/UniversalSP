@@ -15,7 +15,6 @@ public class DemodulatorPsk {
     private Movingaverage filter;
     private Clocker clocker;
 
-
     public DemodulatorPsk(float baudeRate, float samplingFrequency){
         this.baudeRate = baudeRate;
         this.samplingFrequency = samplingFrequency;
@@ -24,6 +23,13 @@ public class DemodulatorPsk {
         this.clocker = new Clocker(this.baudeRate/this.samplingFrequency);
     }
 
+    public void setParametrs(float baudeRate, float samplingFrequency) {
+        this.baudeRate = baudeRate;
+        this.samplingFrequency = samplingFrequency;
+        this.lineDelay = new LineDelay((int) (this.samplingFrequency / this.baudeRate));
+        this.filter = new Movingaverage((int) (this.samplingFrequency / this.baudeRate));
+        this.clocker = new Clocker(this.baudeRate / this.samplingFrequency);
+    }
     private List<Symbol> symbol = new ArrayList<>();
     public void addListenerSymbol(Symbol listener){symbol.add(listener);}
     public void clearListenersSymbol(){symbol.clear();}
@@ -47,7 +53,6 @@ public class DemodulatorPsk {
 
         if(clocker.update(mixer))
             toListenersSymbol(clocker.symbol);
-
     }
 
 }

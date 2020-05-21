@@ -2,6 +2,9 @@ package comUniversal.ui;
 
 
 import comUniversal.Core;
+import comUniversal.lowLevel.DriverHorizon.Mode;
+import comUniversal.lowLevel.DriverHorizon.Width;
+import comUniversal.util.Params;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,8 +65,6 @@ public class MainUI {
 
         typeRxChoicebox.getSelectionModel().selectFirst();
         typeTxChoicebox.getSelectionModel().selectFirst();
-      
-
 
         modeWorkChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -177,9 +178,7 @@ public class MainUI {
                     ip = ipRx;
                 }
 
-                //String ip = Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1");
-                String portText = "80";// Core.getCore().transiverUPSWindow.getPort();
-                int port = 81;// Integer.parseInt(portText);
+                int port = Integer.parseInt(Params.SETTINGS.getString("ethernet_port", "80"));
 
 
                 String con = "-fx-background-color: #00cd00";
@@ -197,6 +196,12 @@ public class MainUI {
                             Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
                             Core.getCore().receiverUPSWindowUI.updateVisibility(false);
                         });
+                        Core.getCore().driverHorizon.ducSetWidth(Width.kHz_3);
+                        Core.getCore().driverHorizon.ddcSetWidth(Width.kHz_3);
+
+                        Core.getCore().driverHorizon.ducSetMode(Mode.ENABLE);
+                        Core.getCore().driverHorizon.ddcSetMode(Mode.ENABLE);
+
                     }
 
                 } else {

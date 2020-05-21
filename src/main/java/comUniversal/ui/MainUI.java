@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -22,10 +23,16 @@ public class MainUI {
     Stage stageRx = new Stage();
     Stage stageTx = new Stage();
     public static Button connect;
-    String oldTypeRx = "";
+
+
+    @FXML
+    private Label rxLabel;
     @FXML
     private ChoiceBox typeRxChoicebox;
-
+    @FXML
+    private Label txLabel;
+    @FXML
+    private Label typeProgramLabel;
     @FXML
     private ChoiceBox typeTxChoicebox;
     @FXML
@@ -42,6 +49,7 @@ public class MainUI {
         connect =  connectButton;
         connectButton.setDisable(true);
         modeWorkChoicebox.setDisable(true);
+        typeProgramLabel.setDisable(true);
 
         ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт");
         typeRxChoicebox.setItems(typeRx);
@@ -49,8 +57,12 @@ public class MainUI {
         ObservableList <String> typeTx = FXCollections.observableArrayList("Відсутній","Горизонт");
         typeTxChoicebox.setItems(typeTx);
 
-        ObservableList <String> typeMode = FXCollections.observableArrayList("Горизонт","Килим");
+        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим");
         modeWorkChoicebox.setItems(typeMode);
+
+        typeRxChoicebox.getSelectionModel().selectFirst();
+        typeTxChoicebox.getSelectionModel().selectFirst();
+      
 
 
         modeWorkChoicebox.setOnAction(new EventHandler<ActionEvent>() {
@@ -70,9 +82,12 @@ public class MainUI {
                         e.printStackTrace();
                     }
                     Stage stage = new Stage();
-                    stage.setTitle("Information");
+                    stage.setX(447);
+                    stage.setY(112);
+                    stage.setTitle("Килим");
                     stage.setScene(scene);
                     stage.show();
+                    connectButton.setDisable(false);
                 }
             }
         });
@@ -98,14 +113,17 @@ public class MainUI {
                         }
                     });
                     stageRx.setX(212);
-                    stageRx.setY(160);
-                    stageRx.setTitle("Receiver UPS");
+                    stageRx.setY(112);
+                    stageRx.setTitle("Приймач");
                     stageRx.setScene(scene);
                     stageRx.show();
-                    connectButton.setDisable(false);
+                    typeProgramLabel.setDisable(false);
                     modeWorkChoicebox.setDisable(false);
                 }else if(typeRxChoicebox.getValue() == "Відсутній"){
                     stageRx.close();
+                    if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
+                        typeProgramLabel.setDisable(true);
+                    }
                 }
             }
         });
@@ -131,15 +149,18 @@ public class MainUI {
                         }
                     });
                     stageTx.setX(212);
-                    stageTx.setY(490);
-                    stageTx.setTitle("Receiver UPS");
+                    stageTx.setY(367);
+                    stageTx.setTitle("Передавач");
                     stageTx.setScene(scene);
                     stageTx.show();
-                    connectButton.setDisable(false);
+                   typeProgramLabel.setDisable(false);
                     modeWorkChoicebox.setDisable(false);
 
                 }else if(typeTxChoicebox.getValue() == "Відсутній"){
                     stageTx.close();
+                    if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
+                        typeProgramLabel.setDisable(true);
+                    }
                 }
 
             }
@@ -158,7 +179,7 @@ public class MainUI {
 
                 //String ip = Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1");
                 String portText = "80";// Core.getCore().transiverUPSWindow.getPort();
-                int port = 80;// Integer.parseInt(portText);
+                int port = 81;// Integer.parseInt(portText);
 
 
                 String con = "-fx-background-color: #00cd00";
@@ -167,9 +188,14 @@ public class MainUI {
                         Platform.runLater(()->{
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
-
-                            Core.getCore().transmitterUPSWindowUI.updateVisibility();
-                            Core.getCore().receiverUPSWindowUI.updateVisibility();
+                            rxLabel.setDisable(true);
+                            txLabel.setDisable(true);
+                            typeProgramLabel.setDisable(true);
+                            modeWorkChoicebox.setDisable(true);
+                            typeRxChoicebox.setDisable(true);
+                            typeTxChoicebox.setDisable(true);
+                            Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
+                            Core.getCore().receiverUPSWindowUI.updateVisibility(false);
                         });
                     }
 
@@ -178,6 +204,14 @@ public class MainUI {
                     Platform.runLater(()-> {
                         connectButton.setText("Підключитись");
                         connectButton.setStyle("-fx-background-color: #c0ae9d");
+                        rxLabel.setDisable(false);
+                        txLabel.setDisable(false);
+                        typeProgramLabel.setDisable(false);
+                        modeWorkChoicebox.setDisable(false);
+                        typeRxChoicebox.setDisable(false);
+                        typeTxChoicebox.setDisable(false);
+                        Core.getCore().transmitterUPSWindowUI.updateVisibility(true);
+                        Core.getCore().receiverUPSWindowUI.updateVisibility(true);
                     });
 
                 }

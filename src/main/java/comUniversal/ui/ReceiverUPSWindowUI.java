@@ -26,9 +26,10 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     Image Ok = new Image("/images/check.png");
     Image notOk = new Image("/images/close.png");
 
-
     public static TextField ipTextRx;
     public static TextField freqRxText;
+    public static Label freqRxLabel;
+    public static Label freqHzRxLabel;
     public static Label widthRxText;
     public static Label modeRxText;
     public static Button changeIPRxButton;
@@ -48,7 +49,10 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     private Label modeDeviceLabel;
     @FXML
     private Label widthDeviceLabel;
-
+    @FXML
+    private Label rxFrequencyLabel;
+    @FXML
+    private Label rxFrequencyHzLabel;
     @FXML
     public void initialize() {
         System.out.println("initialize() setting receiver");
@@ -66,9 +70,17 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
 
         changeIPRxButton = new Button();
         changeIPRxButton = changeSettingsbutton;
+
+        freqRxLabel = new Label();
+        freqRxLabel = rxFrequencyLabel;
+
+        freqHzRxLabel = new Label();
+        freqHzRxLabel = rxFrequencyHzLabel;
         restoreAll(Params.SETTINGS);
 
-        changeSettingsbutton.setVisible(false);
+        rxFrequencyHzLabel.setDisable(true);
+        rxFrequencyLabel.setDisable(true);
+        changeSettingsbutton.setDisable(true);
         rxFrequencyTextField.setDisable(true);
         rxFrequencyTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -103,11 +115,13 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
             String ipAddress = ipTextField.getText();
             InetAddress inet = InetAddress.getByName(ipAddress);
             if (inet.isReachable(500)) {
-                testIpImageView.setImage(Ok);
+
+                ipTextField.setStyle("-fx-text-fill: green;");
+
 
             } else {
 
-                testIpImageView.setImage(notOk);
+                ipTextField.setStyle("-fx-text-fill: red;");
             }
         } catch (Exception e) {
             System.out.println("Exception:" + e.getMessage());
@@ -132,8 +146,15 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
             widthRxText.setText(tmp);
         });
     }
-    public void updateVisibility(){
-        changeIPRxButton.setVisible(true);
+
+    public void updateVisibility(boolean state) {
+        Platform.runLater(() -> {
+            freqHzRxLabel.setDisable(state);
+            freqRxLabel.setDisable(state);
+            freqRxText.setDisable(state);
+            changeIPRxButton.setDisable(state);
+
+        });
     }
     @Override
     public void saveAll(Params params) {

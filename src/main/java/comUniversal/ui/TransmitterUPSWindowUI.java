@@ -2,30 +2,25 @@
 package comUniversal.ui;
 
         import comUniversal.Core;
-        import comUniversal.lowLevel.DriverHorizon.Mode;
-        import comUniversal.lowLevel.DriverHorizon.Width;
-        import comUniversal.ui.setting.ParamsSettings;
-        import comUniversal.util.Params;
-        import javafx.application.Platform;
-        import javafx.event.ActionEvent;
-        import javafx.event.EventHandler;
-        import javafx.fxml.FXML;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.Label;
-        import javafx.scene.control.TextField;
-        import javafx.scene.image.Image;
-        import javafx.scene.image.ImageView;
+import comUniversal.lowLevel.DriverHorizon.Mode;
+import comUniversal.lowLevel.DriverHorizon.Width;
+import comUniversal.ui.setting.ParamsSettings;
+import comUniversal.util.Params;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
-        import java.net.InetAddress;
-        import java.util.ArrayList;
-        import java.util.List;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransmitterUPSWindowUI implements ParamsSettings {
 
     private List<ParamsSettings> settings = new ArrayList<>();
-
-    Image Ok = new Image("/images/check.png");
-    Image notOk = new Image("/images/close.png");
 
     public static TextField ipTextTx;
 
@@ -34,15 +29,14 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
     public static Label procentTxText;
     public static TextField freqTxText;
     public static Button changeIPTxButton;
+    public static Label freqTxLabel;
+    public static Label freqHzTxLabel;
 
     @FXML
     private TextField txFrequencyTextField;
 
     @FXML
     private TextField ipTextField;
-
-    @FXML
-    private ImageView testIpImageView;
 
     @FXML
     private Button changeSettingsbutton;
@@ -52,7 +46,10 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
     private Label modeDeviceLabel;
     @FXML
     private Label widthDeviceLabel;
-
+    @FXML
+    private Label txFrequencyHzLabel;
+    @FXML
+    private Label txFrequencyLabel;
     @FXML
     public void initialize() {
         System.out.println("initialize() setting transmitter");
@@ -72,8 +69,18 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         freqTxText = txFrequencyTextField;
         changeIPTxButton = new Button();
         changeIPTxButton = changeSettingsbutton;
+
+        freqTxLabel = new Label();
+        freqTxLabel = txFrequencyLabel;
+
+        freqHzTxLabel = new Label();
+        freqHzTxLabel = txFrequencyHzLabel;
+
         restoreAll(Params.SETTINGS);
-        changeSettingsbutton.setVisible(false);
+
+        txFrequencyHzLabel.setDisable(true);
+        txFrequencyLabel.setDisable(true);
+        changeSettingsbutton.setDisable(true);
         txFrequencyTextField.setDisable(true);
         txFrequencyTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -105,11 +112,11 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
             InetAddress inet = InetAddress.getByName(ipAddress);
 
             if (inet.isReachable(500)) {
-                testIpImageView.setImage(Ok);
+                ipTextField.setStyle("-fx-text-fill: green;");
 
             } else {
 
-                testIpImageView.setImage(notOk);
+                ipTextField.setStyle("-fx-text-fill: red;");
             }
         } catch (Exception e) {
             System.out.println("Exception:" + e.getMessage());
@@ -149,8 +156,14 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
             widthTxText.setText(tmp);
         });
     }
-    public void updateVisibility(){
-        changeIPTxButton.setVisible(true);
+
+    public void updateVisibility(boolean state) {
+        Platform.runLater(() -> {
+            freqHzTxLabel.setDisable(state);
+            freqTxLabel.setDisable(state);
+            freqTxText.setDisable(state);
+            changeIPTxButton.setDisable(state);
+        });
     }
     @Override
     public void restoreAll(Params params) {

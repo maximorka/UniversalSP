@@ -58,7 +58,7 @@ public int procent1 = 0;
             public void handle(ActionEvent actionEvent) {
                 String txt = messageTransmitter.getText();
                 System.out.println("Fine");
-                Core.getCore().groupAdd.add(txt);
+                Core.getCore().device[0].groupAdd.add(txt);
                 sendButton.setDisable(true);
                 speed100RadioButton.setDisable(true);
                 speed200RadioButton.setDisable(true);
@@ -70,16 +70,26 @@ public int procent1 = 0;
             @Override
             public void handle(ActionEvent actionEvent) {
                 speed200RadioButton.setSelected(false);
-                Core.getCore().modulatorPsk.setRelativeBaudeRate(100.f/3000.f);
-                Core.getCore().demodulatorPsk.setParametrs(100.f,3000.f);
+                if(Core.getCore().countConectedDevice == 1) {
+                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
+                    Core.getCore().device[0].demodulatorPsk.setParametrs(100.f,3000.f);
+                }else if(Core.getCore().countConectedDevice == 2) {
+                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
+                    Core.getCore().device[1].demodulatorPsk.setParametrs(100.f,3000.f);
+                }
             }
         });
         speed200RadioButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 speed100RadioButton.setSelected(false);
-                Core.getCore().modulatorPsk.setRelativeBaudeRate(250.f/3000.f);
-                Core.getCore().demodulatorPsk.setParametrs(250.f,3000.f);
+                if(Core.getCore().countConectedDevice == 1) {
+                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
+                    Core.getCore().device[0].demodulatorPsk.setParametrs(250.f,3000.f);
+                }else if(Core.getCore().countConectedDevice == 2) {
+                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
+                    Core.getCore().device[1].demodulatorPsk.setParametrs(250.f,3000.f);
+                }
             }
         });
 

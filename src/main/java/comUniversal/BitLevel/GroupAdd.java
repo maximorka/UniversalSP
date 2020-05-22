@@ -83,18 +83,13 @@ public class GroupAdd {
     private int oldPercent = 0;
 
     private void updatePercent(){
-
         int currentPercent = (100 * bits.size()) /  totalSize;
         int different = oldPercent - currentPercent;
-
         if(Math.abs(different) >= 1){
             oldPercent = currentPercent;
             //System.out.println(currentPercent + " %");
             toRadiogramPercentListener(currentPercent);
         }
-
-
-
     }
 
     public int getBit(){

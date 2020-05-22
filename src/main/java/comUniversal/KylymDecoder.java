@@ -29,6 +29,11 @@ public class KylymDecoder {
     int countP = 0;
     Map<Integer, String> number = new HashMap<Integer, String>();
     WorkingThread workingThread = new WorkingThread();
+    private boolean running = false;
+
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
 
     public void addData(int input){
         data.add(input);
@@ -53,13 +58,13 @@ public class KylymDecoder {
     class WorkingThread extends Thread{
         @Override
         public void run() {
-            while (true){
+            while (running){
 
                 if(data.size() !=0){
                     symbolForBit();
                 }
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(2);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

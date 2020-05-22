@@ -15,7 +15,6 @@ public class DemodulatorPsk {
     private Movingaverage filter;
     private Clocker clocker;
 
-
     public DemodulatorPsk(float baudeRate, float samplingFrequency){
         this.baudeRate = baudeRate;
         this.samplingFrequency = samplingFrequency;
@@ -24,13 +23,22 @@ public class DemodulatorPsk {
         this.clocker = new Clocker(this.baudeRate/this.samplingFrequency);
     }
 
+    public void setParametrs(float baudeRate, float samplingFrequency) {
+        this.baudeRate = baudeRate;
+        this.samplingFrequency = samplingFrequency;
+        this.lineDelay = new LineDelay((int) (this.samplingFrequency / this.baudeRate));
+        this.filter = new Movingaverage((int) (this.samplingFrequency / this.baudeRate));
+        this.clocker = new Clocker(this.baudeRate / this.samplingFrequency);
+    }
     private List<Symbol> symbol = new ArrayList<>();
     public void addListenerSymbol(Symbol listener){symbol.add(listener);}
     public void clearListenersSymbol(){symbol.clear();}
     private void toListenersSymbol(int data) {
         if (!symbol.isEmpty())
-            for (Symbol listener : symbol)
+            for (Symbol listener : symbol) {
+                //System.out.print(data);
                 listener.symbol(data);
+            }
     }
 
     public void demodulate(Complex sempl){
@@ -45,7 +53,6 @@ public class DemodulatorPsk {
 
         if(clocker.update(mixer))
             toListenersSymbol(clocker.symbol);
-
     }
 
 }
@@ -127,10 +134,10 @@ class Clocker{
             symbol = (sempl.re >= 0.f)? 1 : 0;
 
 
-            char bit = (symbol==0)? '1' : '0';
+            char bit = (symbol==0)? '0' : '1';
             bitData += bit;
             if(bitData.length() == 100) {
-                System.out.println(bitData);
+                //System.out.println(bitData);
                 bitData = new String();
             }
 

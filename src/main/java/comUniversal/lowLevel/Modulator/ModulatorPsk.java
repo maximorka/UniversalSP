@@ -13,7 +13,7 @@ public class ModulatorPsk {
     private SymbolSource symbolSource;
     private float relativeBaudeRate = 0.f;
     private float symbolPhase = 0.f;
-    private int symbol = 0;
+    private int symbol = -1;
     private Complex[] constellation = {
             new Complex(1.f, 0.f),
             new Complex(-1.f, 0.f)
@@ -45,10 +45,10 @@ public class ModulatorPsk {
             symbolUpdate();
         }
         symbolPhase += relativeBaudeRate;
-
         Complex result = new Complex(0.f, 0.f);
         if(symbol != -1)
             result = constellation[symbol];
+
         return result;
     }
 

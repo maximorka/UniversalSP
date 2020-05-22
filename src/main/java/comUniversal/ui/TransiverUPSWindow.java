@@ -31,8 +31,7 @@ public class TransiverUPSWindow implements ParamsSettings {
     public static TextField widthTxText;
     public static TextField modeTxText;
     public static Label initLabel;
-    public static TextField freqRxText;
-    public static TextField freqTxText;
+
     public static Label procentText;
     public static TextField ipText;
     public static TextField portText;
@@ -108,11 +107,11 @@ public class TransiverUPSWindow implements ParamsSettings {
 
 
 
-        freqRxText = new TextField("");
-        freqRxText = this.rxFrequencyTextField;
-
-        freqTxText = new TextField("");
-        freqTxText = this.txFrequencyTextField;
+//        freqRxText = new TextField("");
+//        freqRxText = this.rxFrequencyTextField;
+//
+//        freqTxText = new TextField("");
+//        freqTxText = this.txFrequencyTextField;
 
         widthRxText = new TextField("");
         widthRxText = rxWidthTextField;
@@ -254,8 +253,8 @@ public class TransiverUPSWindow implements ParamsSettings {
         });
     }
     public void updateVisibility(){
-        freqRxText.setVisible(true);
-        freqTxText.setVisible(true);
+        //freqRxText.setVisible(true);
+        //freqTxText.setVisible(true);
     }
     public void updatePercent(int percent) {
         String procent = Integer.toString(percent);
@@ -267,14 +266,14 @@ public class TransiverUPSWindow implements ParamsSettings {
     public void getFrequencyRx(int data) {
         String tmp = Integer.toString(data);
         Platform.runLater(() -> {
-            freqRxText.setText(tmp);
+           // freqRxText.setText(tmp);
         });
     }
 
     public void getFrequencyTx(int data) {
         String tmp = Integer.toString(data);
         Platform.runLater(() -> {
-            freqTxText.setText(tmp);
+            //freqTxText.setText(tmp);
         });
     }
 

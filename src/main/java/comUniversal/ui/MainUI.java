@@ -2,6 +2,9 @@ package comUniversal.ui;
 
 
 import comUniversal.Core;
+import comUniversal.lowLevel.DriverHorizon.Mode;
+import comUniversal.lowLevel.DriverHorizon.Width;
+import comUniversal.util.Params;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,18 +16,26 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
 public class MainUI {
-
+    Stage stageRx = new Stage();
+    Stage stageTx = new Stage();
     public static Button connect;
-    String oldTypeRx = "";
+
+
+    @FXML
+    private Label rxLabel;
     @FXML
     private ChoiceBox typeRxChoicebox;
-
+    @FXML
+    private Label txLabel;
+    @FXML
+    private Label typeProgramLabel;
     @FXML
     private ChoiceBox typeTxChoicebox;
     @FXML
@@ -32,24 +43,28 @@ public class MainUI {
 
     @FXML
     private Button connectButton;
-    @FXML
-    private ComboBox test;
+
 
     @FXML
     public void initialize() {
 
         connect = new Button();
         connect =  connectButton;
+        connectButton.setDisable(true);
+        modeWorkChoicebox.setDisable(true);
+        typeProgramLabel.setDisable(true);
 
-        ObservableList <String> typeRx = FXCollections.observableArrayList("УПС");
+        ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт");
         typeRxChoicebox.setItems(typeRx);
-//test.setItems(typeRx);
-        ObservableList <String> typeTx = FXCollections.observableArrayList("УПС", "УПС1");
+
+        ObservableList <String> typeTx = FXCollections.observableArrayList("Відсутній","Горизонт");
         typeTxChoicebox.setItems(typeTx);
 
-        ObservableList <String> typeMode = FXCollections.observableArrayList("Горизонт","Килим");
+        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим");
         modeWorkChoicebox.setItems(typeMode);
 
+        typeRxChoicebox.getSelectionModel().selectFirst();
+        typeTxChoicebox.getSelectionModel().selectFirst();
 
         modeWorkChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -68,9 +83,12 @@ public class MainUI {
                         e.printStackTrace();
                     }
                     Stage stage = new Stage();
-                    stage.setTitle("Information");
+                    stage.setX(447);
+                    stage.setY(112);
+                    stage.setTitle("Килим");
                     stage.setScene(scene);
                     stage.show();
+                    connectButton.setDisable(false);
                 }
             }
         });
@@ -78,139 +96,89 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                if (((typeRxChoicebox.getValue() != null) && (typeTxChoicebox.getValue() != null))){
-                    if(typeRxChoicebox.getValue() == "УПС" && typeTxChoicebox.getValue() == "УПС" ){
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/Transiver.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene = null;
-                        try {
-                            scene = new Scene(fxmlLoader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage = new Stage();
-                        stage.setTitle("Transiver UPS");
-                        stage.setScene(scene);
-                        stage.show();
-                    }else{
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene = null;
-                        try {
-                            scene = new Scene(fxmlLoader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage = new Stage();
-                        stage.setTitle("Receiver UPS");
-                        stage.setScene(scene);
-                        stage.show();
+                if(typeRxChoicebox.getValue() == "Горизонт") {
 
-
-                        FXMLLoader fxmlLoader1 = new FXMLLoader();
-                        fxmlLoader1.setLocation(getClass().getResource("/TransmiterUPSWindow.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene1 = null;
-                        try {
-                            scene1 = new Scene(fxmlLoader1.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage1 = new Stage();
-                        stage1.setTitle("Transmiter UPS");
-                        stage1.setScene(scene1);
-                        stage1.show();
-
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
+                    Scene scene = null;
+                    try {
+                        scene = new Scene(fxmlLoader.load());
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
 
+                    stageRx.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent windowEvent) {
+                            windowEvent.consume();
+                        }
+                    });
+                    stageRx.setX(212);
+                    stageRx.setY(112);
+                    stageRx.setTitle("Приймач");
+                    stageRx.setScene(scene);
+                    stageRx.show();
+                    typeProgramLabel.setDisable(false);
+                    modeWorkChoicebox.setDisable(false);
+                }else if(typeRxChoicebox.getValue() == "Відсутній"){
+                    stageRx.close();
+                    if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
+                        typeProgramLabel.setDisable(true);
+                    }
                 }
             }
         });
-
-
-
 
         typeTxChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                if(typeTxChoicebox.getValue() == "Горизонт") {
 
-                if (((typeRxChoicebox.getValue() != null) && (typeTxChoicebox.getValue() != null))){
-                    if (typeRxChoicebox.getValue() == "УПС" && typeTxChoicebox.getValue() == "УПС") {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/Transiver.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene = null;
-                        try {
-                            scene = new Scene(fxmlLoader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage = new Stage();
-                        stage.setTitle("Transiver UPS");
-                        stage.setScene(scene);
-                        stage.show();
-                    } else {
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.setLocation(getClass().getResource("/TransmiterUPSWindow.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene = null;
-                        try {
-                            scene = new Scene(fxmlLoader.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Stage stage = new Stage();
-                        stage.setTitle("Transmiter UPS");
-                        stage.setScene(scene);
-                        stage.show();
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/TransmiterUPSWindow.fxml"));
+                    Scene scene = null;
+                    try {
+                        scene = new Scene(fxmlLoader.load());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-                        FXMLLoader fxmlLoader1 = new FXMLLoader();
-                        fxmlLoader1.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
-                        /*
-                         * if "fx:controller" is not set in fxml
-                         * fxmlLoader.setController(NewWindowController);
-                         */
-                        Scene scene1 = null;
-                        try {
-                            scene1 = new Scene(fxmlLoader1.load());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    stageTx.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent windowEvent) {
+                            windowEvent.consume();
                         }
-                        Stage stage1 = new Stage();
-                        stage1.setTitle("Receiver UPS");
-                        stage1.setScene(scene1);
-                        stage1.show();
+                    });
+                    stageTx.setX(212);
+                    stageTx.setY(367);
+                    stageTx.setTitle("Передавач");
+                    stageTx.setScene(scene);
+                    stageTx.show();
+                   typeProgramLabel.setDisable(false);
+                    modeWorkChoicebox.setDisable(false);
 
+                }else if(typeTxChoicebox.getValue() == "Відсутній"){
+                    stageTx.close();
+                    if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
+                        typeProgramLabel.setDisable(true);
                     }
                 }
+
             }
         });
-//        ipTextField.setText("192.168.0.1");
-        //portTextField.setText("81");
+
         connectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String ip = Core.getCore().transiverUPSWindow.getIP();
-                //String ip = Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1");
-                String portText = Core.getCore().transiverUPSWindow.getPort();
-                int port = Integer.parseInt(portText);
+                String ip = "";
+                String ipRx = Core.getCore().receiverUPSWindowUI.getIP();
+                String ipTx = Core.getCore().transmitterUPSWindowUI.getIP();
+
+                if (ipRx.equals(ipTx)){
+                    ip = ipRx;
+                }
+
+                int port = Integer.parseInt(Params.SETTINGS.getString("ethernet_port", "80"));
 
 
                 String con = "-fx-background-color: #00cd00";
@@ -219,9 +187,21 @@ public class MainUI {
                         Platform.runLater(()->{
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
-
-                            Core.getCore().transiverUPSWindow.updateVisibility();
+                            rxLabel.setDisable(true);
+                            txLabel.setDisable(true);
+                            typeProgramLabel.setDisable(true);
+                            modeWorkChoicebox.setDisable(true);
+                            typeRxChoicebox.setDisable(true);
+                            typeTxChoicebox.setDisable(true);
+                            Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
+                            Core.getCore().receiverUPSWindowUI.updateVisibility(false);
                         });
+                        Core.getCore().driverHorizon.ducSetWidth(Width.kHz_3);
+                        Core.getCore().driverHorizon.ddcSetWidth(Width.kHz_3);
+
+                        Core.getCore().driverHorizon.ducSetMode(Mode.ENABLE);
+                        Core.getCore().driverHorizon.ddcSetMode(Mode.ENABLE);
+
                     }
 
                 } else {
@@ -229,6 +209,14 @@ public class MainUI {
                     Platform.runLater(()-> {
                         connectButton.setText("Підключитись");
                         connectButton.setStyle("-fx-background-color: #c0ae9d");
+                        rxLabel.setDisable(false);
+                        txLabel.setDisable(false);
+                        typeProgramLabel.setDisable(false);
+                        modeWorkChoicebox.setDisable(false);
+                        typeRxChoicebox.setDisable(false);
+                        typeTxChoicebox.setDisable(false);
+                        Core.getCore().transmitterUPSWindowUI.updateVisibility(true);
+                        Core.getCore().receiverUPSWindowUI.updateVisibility(true);
                     });
 
                 }

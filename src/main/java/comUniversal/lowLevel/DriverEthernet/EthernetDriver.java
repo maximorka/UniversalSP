@@ -65,17 +65,20 @@ public class EthernetDriver {
         }
     }
 
-    public void closeSocket(){
+    public boolean closeSocket(){
+        boolean con = true;
         if (socket != null && !socket.isClosed()) {
             try {
                 if (readThread != null) {
                     readThread.running = false;
                 }
                 socket.close();
+                con = false;
             } catch ( IOException e) {
                 e.printStackTrace();
             }
         }
+        return con;
     }
 
     class ReadThread extends Thread{
@@ -98,6 +101,7 @@ public class EthernetDriver {
                             for(ReceiverDataBytes listener: receiver)
                                 for (int i = 0; i < data ; i++) {
                                     listener.ReceiveData(inputBuffer[i]);
+
                                 }
 
                     }
@@ -115,16 +119,17 @@ public class EthernetDriver {
         }
     }
     public void writeByte(byte data) {
-        if(socket!=null) {
-            if (!socket.isClosed()) {
+        //if(socket!=null) {
+            if (connect) {
                 try {
+
                     outputStream.write(data);
                     outputStream.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        }
+       // }
         else{
             System.out.println("try");
         }

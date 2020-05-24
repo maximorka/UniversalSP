@@ -1,6 +1,5 @@
 package comUniversal.lowLevel.BufferController;
 
-import comUniversal.Core;
 import comUniversal.util.Complex;
 import comUniversal.util.Params;
 
@@ -55,7 +54,9 @@ public class BufferController {
         workingThread = new WorkingThread();
         workingThread.start();
     }
-
+public void setWorkingThread(boolean work){
+    workingThread.stop();
+}
     class WorkingThread extends Thread {
         @Override
         public void run() {
@@ -76,7 +77,7 @@ public class BufferController {
                     executeTime=100;
                 }
                 //System.out.println("wokr");
-                if (Core.getCore().ethernetDriver.isConect()) {
+               // if (Core.getCore().device[0].ethernetDriver.isConect()) {
                     int needSendSample = sampleCountPer1ms * (int) executeTime;
                     if (percentBuffer < borderProcent) {
                         needSendSample += sampleCountPer1ms * 2;
@@ -89,7 +90,7 @@ public class BufferController {
                         toListenersTransferDataBytes(sample);
                     }
 
-                }
+              //  }
             }
         }
     }

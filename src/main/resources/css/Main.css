@@ -8,7 +8,11 @@
 	-fx-border-color: grey;
 }
 
+.text-area{
+  -fx-font-family: Consolas;
+  -fx-font-size: 13;
 
+}
 .buttonSend{
 	-fx-text-fill: black;
 	-fx-background-color: 

@@ -26,7 +26,7 @@ public class KylymDecoder {
     private int symbol =0;
     private int symbolNumber[] = new int[10];
     int countSymbol = 0;
-    int countP = 0;
+    int countP[] = new int[2];
     Map<Integer, String> number = new HashMap<Integer, String>();
     WorkingThread workingThread = new WorkingThread();
     private boolean running = false;
@@ -82,7 +82,8 @@ public class KylymDecoder {
                 symbol++;
             }
         }
-        countP += (symbol == 6) ? 1 : 0;
+        countP[0] += (symbol == 6) ? 1 : 0;
+        countP[1] += (symbol >= 5) ? 1 : 0;
         symbol = 0;
 
         for (int i = 0; i < 6; i++) {
@@ -90,7 +91,8 @@ public class KylymDecoder {
                 symbol++;
             }
         }
-        countP += (symbol == 6) ? 1 : 0;
+        countP[0] += (symbol == 6) ? 1 : 0;
+        countP[1] += (symbol >= 5) ? 1 : 0;
         symbol = 0;
 
         for (int i = 0; i < 6; i++) {
@@ -99,10 +101,14 @@ public class KylymDecoder {
             }
         }
 
-        countP += (symbol == 6) ? 1 : 0;
+        countP[0] += (symbol == 6) ? 1 : 0;
+        countP[1] += (symbol >= 5) ? 1 : 0;
         symbol = 0;
-        if (countP >= 3) {
 
+
+
+        if (countP[0] >= 2 || ((countP[1] == 3) && (countP[0]>1 ))) {
+            System.out.println(countP[0]+", "+countP[1]);
             for (int j = 0; j < 5; j++) {
                 int[] number = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -138,7 +144,7 @@ public class KylymDecoder {
                         number[9]++;
                     }
                 }
-                int res = 12;
+                int res = 10;
                 for (int i = 0; i < 10; i++) {
                     if (number[i] == 6) {
                         res = i;
@@ -148,7 +154,10 @@ public class KylymDecoder {
                 Core.getCore().informationWindow.setTextMessage(res);
             }
         }
-        countP = 0;
+        countP[0] = 0;
+        countP[1] = 0;
     }
+
+
 
 }

@@ -73,11 +73,7 @@
                      <children>
                         <Label fx:id="widthDeviceLabel" layoutX="8.0" layoutY="3.0" prefHeight="17.0" prefWidth="57.0" textFill="#b5a9a9" AnchorPane.topAnchor="2.0" />
                      </children></AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Label text="Гц" textFill="#d6d1d1" />
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                </children>
             </HBox>

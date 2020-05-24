@@ -103,7 +103,6 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
                 String Getaway = "192.168.0.0";
                 int port = 80;
 
-
                 byte[] ipBytes = EthernetUtils.ipToByteArray(ipAddress);
                 byte[] maskBytes = EthernetUtils.ipToByteArray(mask);
                 byte[] gatewayBytes = EthernetUtils.ipToByteArray(Getaway);
@@ -153,11 +152,9 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
                     Core.getCore().device[1].ethernetDriver.closeSocket();
                     Core.getCore().mainUI.setConnectButton();
                 }
-
-
             }
         });
-        testIP();
+        //testIP();
         ipTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -215,9 +212,16 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         });
     }
     public void getWidthTx(Width data) {
-        String tmp = String.valueOf(data);
+        String tmp = new String("");
+        switch (data){
+            case kHz_3 -> tmp="3 кГц";
+            case kHz_6 -> tmp="6 кГц";
+            case kHz_12 -> tmp="12 кГц";
+            case kHz_48 -> tmp="48 кГц";
+        }
+        String qwe = tmp.toString();
         Platform.runLater(() -> {
-            widthTxText.setText(tmp);
+            widthTxText.setText(qwe);
         });
     }
 

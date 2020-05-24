@@ -75,7 +75,7 @@
                      </children></AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label text="Гц" textFill="#d6d1d1" AnchorPane.leftAnchor="2.0" />
+                        <Label textFill="#d6d1d1" AnchorPane.leftAnchor="2.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" />

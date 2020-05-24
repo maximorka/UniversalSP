@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.InformationWindow">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.InformationWindow">
    <center>
       <AnchorPane prefHeight="480.0" prefWidth="500.0" stylesheets="@/css/Main.css" BorderPane.alignment="CENTER">
          <children>
@@ -82,7 +83,7 @@
                                        <children>
                                           <AnchorPane prefHeight="206.0" prefWidth="538.0">
                                              <children>
-                                                <TextArea fx:id="messageReceived" layoutX="7.0" prefHeight="186.0" prefWidth="518.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                                                <TextArea fx:id="messageReceived" layoutX="7.0" prefHeight="186.0" prefWidth="518.0" styleClass="text-area" stylesheets="@css/Main.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                                                 <Separator layoutX="6.0" layoutY="3.0" prefHeight="2.0" prefWidth="41.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="3.0" />
                                                 <Label layoutX="52.0" layoutY="-6.0" text="ПРИЙОМ">
                                                    <font>

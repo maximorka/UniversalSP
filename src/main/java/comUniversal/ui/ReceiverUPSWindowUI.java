@@ -155,7 +155,7 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
             }
         });
 
-        testIP();
+        //testIP();
         ipTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -197,9 +197,16 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     }
 
     public void getWidthRx(Width data) {
-        String tmp = String.valueOf(data);
+        String tmp = new String("");
+        switch (data){
+            case kHz_3 -> tmp="3 кГц";
+            case kHz_6 -> tmp="6 кГц";
+            case kHz_12 -> tmp="12 кГц";
+            case kHz_48 -> tmp="48 кГц";
+        }
+        String qwe = tmp.toString();
         Platform.runLater(() -> {
-            widthRxText.setText(tmp);
+            widthRxText.setText(qwe);
         });
     }
 

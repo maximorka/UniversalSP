@@ -2,10 +2,11 @@
 package comUniversal.ui;
 
         import comUniversal.Core;
-import comUniversal.lowLevel.DriverHorizon.Mode;
+        import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
 import comUniversal.ui.setting.ParamsSettings;
-import comUniversal.util.Params;
+        import comUniversal.util.EthernetUtils;
+        import comUniversal.util.Params;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,7 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
+        import java.nio.ByteBuffer;
+        import java.util.ArrayList;
 import java.util.List;
 
 public class TransmitterUPSWindowUI implements ParamsSettings {
@@ -39,7 +41,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
     private TextField ipTextField;
 
     @FXML
-    private Button changeSettingsbutton;
+    private Button changeSettingsIPbutton;
     @FXML
     private Label procentDeviceLabel;
     @FXML
@@ -68,7 +70,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         freqTxText = new TextField();
         freqTxText = txFrequencyTextField;
         changeIPTxButton = new Button();
-        changeIPTxButton = changeSettingsbutton;
+        changeIPTxButton = changeSettingsIPbutton;
 
         freqTxLabel = new Label();
         freqTxLabel = txFrequencyLabel;
@@ -80,23 +82,79 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
 
         txFrequencyHzLabel.setDisable(true);
         txFrequencyLabel.setDisable(true);
-        changeSettingsbutton.setDisable(true);
+        changeSettingsIPbutton.setDisable(true);
         txFrequencyTextField.setDisable(true);
         txFrequencyTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 int frequency = Integer.parseInt(txFrequencyTextField.getText());
 
-                Core.getCore().driverHorizon.ducSetFrequency(frequency);
+                    Core.getCore().device[0].driverHorizon.ducSetFrequency(frequency);
+
+
             }
         });
-        changeSettingsbutton.setOnAction(new EventHandler<ActionEvent>() {
+        changeSettingsIPbutton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Core.getCore().driverHorizon.ddcGetFrequency();
+
+                String ipAddress = ipTextField.getText();
+                String mask = "255.255.255.0";
+                String Getaway = "192.168.0.0";
+                int port = 80;
+
+                byte[] ipBytes = EthernetUtils.ipToByteArray(ipAddress);
+                byte[] maskBytes = EthernetUtils.ipToByteArray(mask);
+                byte[] gatewayBytes = EthernetUtils.ipToByteArray(Getaway);
+                int ip = ByteBuffer.wrap(ipBytes).getInt();
+                int maskInt = ByteBuffer.wrap(maskBytes).getInt();
+                int get = ByteBuffer.wrap(gatewayBytes).getInt();
+                if(Core.getCore().countConectedDevice == 1){
+
+                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
+                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
+                    Core.getCore().device[0].kylymDecoder.setRunning(false);
+                    Core.getCore().countConectedDevice = 0;
+                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
+                    changeSettingsIPbutton.setDisable(true);
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    changeSettingsIPbutton.setDisable(false);
+                    Core.getCore().device[0].bufferController.setWorkingThread(false);
+                    Core.getCore().device[0].ethernetDriver.closeSocket();
+                    Core.getCore().mainUI.setConnectButton();
+                }else{
+
+                    Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
+                    Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
+                    Core.getCore().device[1].kylymDecoder.setRunning(false);
+
+                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
+                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
+
+                    Core.getCore().countConectedDevice = 0;
+                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
+                    changeSettingsIPbutton.setDisable(true);
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                    changeSettingsIPbutton.setDisable(false);
+                    Core.getCore().device[0].bufferController.setWorkingThread(false);
+
+                    Core.getCore().device[0].ethernetDriver.closeSocket();
+                    Core.getCore().device[1].ethernetDriver.closeSocket();
+                    Core.getCore().mainUI.setConnectButton();
+                }
             }
         });
-        testIP();
+        //testIP();
         ipTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -142,7 +200,9 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
     public void getFrequencyTx(int data) {
         String tmp = Integer.toString(data);
         Platform.runLater(() -> {
-            freqTxText.setText(tmp);
+            if(!freqTxText.isFocused()){
+                freqTxText.setText(tmp);
+            }
         });
     }
     public void getModeTx(Mode data) {
@@ -152,9 +212,16 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         });
     }
     public void getWidthTx(Width data) {
-        String tmp = String.valueOf(data);
+        String tmp = new String("");
+        switch (data){
+            case kHz_3 -> tmp="3 кГц";
+            case kHz_6 -> tmp="6 кГц";
+            case kHz_12 -> tmp="12 кГц";
+            case kHz_48 -> tmp="48 кГц";
+        }
+        String qwe = tmp.toString();
         Platform.runLater(() -> {
-            widthTxText.setText(tmp);
+            widthTxText.setText(qwe);
         });
     }
 

@@ -2,9 +2,6 @@ package comUniversal.ui;
 
 
 import comUniversal.Core;
-import comUniversal.lowLevel.DriverHorizon.Mode;
-import comUniversal.lowLevel.DriverHorizon.Width;
-import comUniversal.util.Params;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,10 +51,10 @@ public class MainUI {
         modeWorkChoicebox.setDisable(true);
         typeProgramLabel.setDisable(true);
 
-        ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт");
+        ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
         typeRxChoicebox.setItems(typeRx);
 
-        ObservableList <String> typeTx = FXCollections.observableArrayList("Відсутній","Горизонт");
+        ObservableList <String> typeTx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
         typeTxChoicebox.setItems(typeTx);
 
         ObservableList <String> typeMode = FXCollections.observableArrayList("Килим");
@@ -96,7 +93,7 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                if(typeRxChoicebox.getValue() == "Горизонт") {
+                if(typeRxChoicebox.getValue() == "Горизонт"|| typeRxChoicebox.getValue() == "Горизонт+") {
 
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
@@ -132,7 +129,7 @@ public class MainUI {
         typeTxChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if(typeTxChoicebox.getValue() == "Горизонт") {
+                if(typeTxChoicebox.getValue() == "Горизонт" || typeTxChoicebox.getValue() == "Горизонт+" ) {
 
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/TransmiterUPSWindow.fxml"));
@@ -170,21 +167,10 @@ public class MainUI {
         connectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String ip = "";
-                String ipRx = Core.getCore().receiverUPSWindowUI.getIP();
-                String ipTx = Core.getCore().transmitterUPSWindowUI.getIP();
-
-                if (ipRx.equals(ipTx)){
-                    ip = ipRx;
-                }
-
-                int port = Integer.parseInt(Params.SETTINGS.getString("ethernet_port", "80"));
-
-
                 String con = "-fx-background-color: #00cd00";
                 if (connectButton.getStyle() != con) {
-                    if(Core.getCore().ethernetDriver.doInit(ip, port)){
-                        Platform.runLater(()->{
+                    if(Core.getCore().setDriverConnect(true, typeRxChoicebox.getValue().toString(),typeTxChoicebox.getValue().toString())) {
+                        Platform.runLater(() -> {
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
                             rxLabel.setDisable(true);
@@ -196,16 +182,10 @@ public class MainUI {
                             Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
                             Core.getCore().receiverUPSWindowUI.updateVisibility(false);
                         });
-                        Core.getCore().driverHorizon.ducSetWidth(Width.kHz_3);
-                        Core.getCore().driverHorizon.ddcSetWidth(Width.kHz_3);
-
-                        Core.getCore().driverHorizon.ducSetMode(Mode.ENABLE);
-                        Core.getCore().driverHorizon.ddcSetMode(Mode.ENABLE);
-
                     }
-
                 } else {
-                    Core.getCore().ethernetDriver.closeSocket();
+
+                    Core.getCore().setDriverConnect(false, "","");
                     Platform.runLater(()-> {
                         connectButton.setText("Підключитись");
                         connectButton.setStyle("-fx-background-color: #c0ae9d");
@@ -218,10 +198,7 @@ public class MainUI {
                         Core.getCore().transmitterUPSWindowUI.updateVisibility(true);
                         Core.getCore().receiverUPSWindowUI.updateVisibility(true);
                     });
-
                 }
-
-
             }
         });
 

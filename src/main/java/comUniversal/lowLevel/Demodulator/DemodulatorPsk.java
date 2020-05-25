@@ -131,7 +131,7 @@ class Clocker{
             timeError = loopFilter.update(timeError);
             halfRight = 0.f;
             halfLeft = 0.f;
-            symbol = (sempl.re >= 0.f)? 1 : 0;
+            symbol = (sempl.re >= 0.f)? 0 : 1;
 
 
             char bit = (symbol==0)? '0' : '1';

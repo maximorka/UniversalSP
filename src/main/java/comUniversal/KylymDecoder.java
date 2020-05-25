@@ -108,7 +108,7 @@ public class KylymDecoder {
 
 
         if (countP[0] >= 2 || ((countP[1] == 3) && (countP[0]>1 ))) {
-            System.out.println(countP[0]+", "+countP[1]);
+//            System.out.println(countP[0]+", "+countP[1]);
             for (int j = 0; j < 5; j++) {
                 int[] number = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 

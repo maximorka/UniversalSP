@@ -214,10 +214,22 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
     public void getWidthTx(Width data) {
         String tmp = new String("");
         switch (data){
-            case kHz_3 -> tmp="3 кГц";
-            case kHz_6 -> tmp="6 кГц";
-            case kHz_12 -> tmp="12 кГц";
-            case kHz_48 -> tmp="48 кГц";
+            case kHz_48:
+                tmp="48 кГц";
+                break;
+            case kHz_24:
+                tmp="48 кГц";
+                break;
+            case kHz_12:
+                tmp="12 кГц";
+                break;
+            case kHz_6:
+                tmp="6 кГц";
+                break;
+            case kHz_3:
+                tmp="3 кГц";
+                break;
+
         }
         String qwe = tmp.toString();
         Platform.runLater(() -> {

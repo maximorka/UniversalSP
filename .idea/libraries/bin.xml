@@ -3,7 +3,7 @@
     <CLASSES />
     <JAVADOC />
     <NATIVE>
-      <root url="file://C:/Program Files/Java/jdk-14.0.1/bin" />
+      <root url="file://C:/Program Files/Java/jdk1.8.0_251/bin" />
     </NATIVE>
     <SOURCES />
   </library>

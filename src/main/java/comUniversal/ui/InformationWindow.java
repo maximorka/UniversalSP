@@ -2,12 +2,13 @@ package comUniversal.ui;
 
 import comUniversal.Core;
 import javafx.application.Platform;
-//import javafx.css.Style;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.TextFlow;
+
+//import javafx.css.Style;
 
 public class InformationWindow {
     public static TextArea message;
@@ -37,6 +38,7 @@ public class InformationWindow {
     private TextFlow tx;
 
     int countSymbol=0;
+    int countSymbolTx=0;
 
 //private Style styledDocument;
 public int procent1 = 0;
@@ -69,8 +71,9 @@ public int procent1 = 0;
             @Override
             public void handle(ActionEvent actionEvent) {
                 String txt = messageTransmitter.getText();
-                System.out.println("Fine");
-                Core.getCore().device[0].groupAdd.add(txt);
+                String ne = new String();
+                ne= txt.replaceAll("\\s","");
+                Core.getCore().device[0].groupAdd.add(ne);
                 sendButton.setDisable(true);
                 speed100RadioButton.setDisable(true);
                 speed200RadioButton.setDisable(true);
@@ -125,8 +128,8 @@ public int procent1 = 0;
     public void setTextMessage(int data){
         String newLine = System.getProperty("line.separator");
         String tmp = Integer.toString(data);
-
-
+//int countTextArea = message.getLength();
+        //System.out.println(countTextArea);
         if(tmp.equals("10")){
             Platform.runLater(() -> {
 
@@ -147,9 +150,9 @@ public int procent1 = 0;
 
         }
         if(countSymbol % 50== 0){
-            int countgroup = countSymbol/5;
+            //int countgroup = countSymbol/5;
             Platform.runLater(() -> {
-                message.appendText(" "+countgroup);
+                //message.appendText(" "+countgroup);
                 message.appendText(newLine);
             });
         }

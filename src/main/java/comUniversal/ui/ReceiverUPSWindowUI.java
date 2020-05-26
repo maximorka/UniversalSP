@@ -200,19 +200,19 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
         String tmp = "h";
         switch (data){
             case kHz_48:
-                tmp="48 ÐºÐ“Ñ†";
+                tmp="48 êÃö";
                 break;
             case kHz_24:
-                tmp="48 ÐºÐ“Ñ†";
+                tmp="48 êÃö";
                 break;
             case kHz_12:
-                tmp="12 ÐºÐ“Ñ†";
+                tmp="12 êÃö";
                 break;
             case kHz_6:
-                tmp="6 ÐºÐ“Ñ†";
+                tmp="6 êÃö";
                 break;
             case kHz_3:
-                tmp="3 ÐºÐ“Ñ†";
+                tmp="3 êÃö";
                 break;
 
         }

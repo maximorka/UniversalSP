@@ -51,13 +51,13 @@ public class MainUI {
         modeWorkChoicebox.setDisable(true);
         typeProgramLabel.setDisable(true);
 
-        ObservableList <String> typeRx = FXCollections.observableArrayList("Р’С–РґСЃСѓС‚РЅС–Р№","Р“РѕСЂРёР·РѕРЅС‚","Р“РѕСЂРёР·РѕРЅС‚+");
+        ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
         typeRxChoicebox.setItems(typeRx);
 
-        ObservableList <String> typeTx = FXCollections.observableArrayList("Р’С–РґСЃСѓС‚РЅС–Р№","Р“РѕСЂРёР·РѕРЅС‚","Р“РѕСЂРёР·РѕРЅС‚+");
+        ObservableList <String> typeTx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
         typeTxChoicebox.setItems(typeTx);
 
-        ObservableList <String> typeMode = FXCollections.observableArrayList("РљРёР»РёРј");
+        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим");
         modeWorkChoicebox.setItems(typeMode);
 
         typeRxChoicebox.getSelectionModel().selectFirst();
@@ -66,7 +66,7 @@ public class MainUI {
         modeWorkChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if(modeWorkChoicebox.getValue() == "РљРёР»РёРј" ){
+                if(modeWorkChoicebox.getValue() == "Килим" ){
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/Information.fxml"));
                     /*
@@ -82,7 +82,7 @@ public class MainUI {
                     Stage stage = new Stage();
                     stage.setX(447);
                     stage.setY(112);
-                    stage.setTitle("РљРёР»РёРј");
+                    stage.setTitle("Килим");
                     stage.setScene(scene);
                     stage.show();
                     connectButton.setDisable(false);
@@ -93,7 +93,7 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                if(typeRxChoicebox.getValue() == "Р“РѕСЂРёР·РѕРЅС‚"|| typeRxChoicebox.getValue() == "Р“РѕСЂРёР·РѕРЅС‚+") {
+                if(typeRxChoicebox.getValue() == "Горизонт"|| typeRxChoicebox.getValue() == "Горизонт+") {
 
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
@@ -112,14 +112,14 @@ public class MainUI {
                     });
                     stageRx.setX(212);
                     stageRx.setY(112);
-                    stageRx.setTitle("РџСЂРёР№РјР°С‡");
+                    stageRx.setTitle("Приймач");
                     stageRx.setScene(scene);
                     stageRx.show();
                     typeProgramLabel.setDisable(false);
                     modeWorkChoicebox.setDisable(false);
-                }else if(typeRxChoicebox.getValue() == "Р’С–РґСЃСѓС‚РЅС–Р№"){
+                }else if(typeRxChoicebox.getValue() == "Відсутній"){
                     stageRx.close();
-                    if(typeRxChoicebox.getValue() == "Р’С–РґСЃСѓС‚РЅС–Р№" && typeTxChoicebox.getValue() == "Р’С–РґСЃСѓС‚РЅС–Р№"){
+                    if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
                         typeProgramLabel.setDisable(true);
                     }
                 }
@@ -129,7 +129,7 @@ public class MainUI {
         typeTxChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if(typeTxChoicebox.getValue() == "Р“РѕСЂРёР·РѕРЅС‚" || typeTxChoicebox.getValue() == "Р“РѕСЂРёР·РѕРЅС‚+" ) {
+                if(typeTxChoicebox.getValue() == "Горизонт" || typeTxChoicebox.getValue() == "Горизонт+" ) {
 
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/TransmiterUPSWindow.fxml"));
@@ -148,15 +148,15 @@ public class MainUI {
                     });
                     stageTx.setX(212);
                     stageTx.setY(367);
-                    stageTx.setTitle("РџРµСЂРµРґР°РІР°С‡");
+                    stageTx.setTitle("Передавач");
                     stageTx.setScene(scene);
                     stageTx.show();
                    typeProgramLabel.setDisable(false);
                     modeWorkChoicebox.setDisable(false);
 
-                }else if(typeTxChoicebox.getValue() == "Р’С–РґСЃСѓС‚РЅС–Р№"){
+                }else if(typeTxChoicebox.getValue() == "Відсутній"){
                     stageTx.close();
-                    if(typeRxChoicebox.getValue() == "Р’С–РґСЃСѓС‚РЅС–Р№" && typeTxChoicebox.getValue() == "Р’С–РґСЃСѓС‚РЅС–Р№"){
+                    if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
                         typeProgramLabel.setDisable(true);
                     }
                 }
@@ -171,7 +171,7 @@ public class MainUI {
                 if (connectButton.getStyle() != con) {
                     if(Core.getCore().setDriverConnect(true, typeRxChoicebox.getValue().toString(),typeTxChoicebox.getValue().toString())) {
                         Platform.runLater(() -> {
-                            connectButton.setText("Р’С–РґРєР»СЋС‡РёС‚РёСЃСЊ");
+                            connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
                             rxLabel.setDisable(true);
                             txLabel.setDisable(true);
@@ -187,7 +187,7 @@ public class MainUI {
 
                     Core.getCore().setDriverConnect(false, "","");
                     Platform.runLater(()-> {
-                        connectButton.setText("РџС–РґРєР»СЋС‡РёС‚РёСЃСЊ");
+                        connectButton.setText("Підключитись");
                         connectButton.setStyle("-fx-background-color: #c0ae9d");
                         rxLabel.setDisable(false);
                         txLabel.setDisable(false);
@@ -208,7 +208,7 @@ public class MainUI {
 
 public void setConnectButton(){
     Platform.runLater(()-> {
-        connect.setText("РџС–РґРєР»СЋС‡РёС‚РёСЃСЊ");
+        connect.setText("Підключитись");
         connect.setStyle("-fx-background-color: #c0ae9d");
     });
 }
@@ -237,7 +237,7 @@ public void setConnectButton(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(text);
         alert.setHeaderText(null);
-        alert.setContentText("РќРµ РєРѕСЂРµРєС‚РЅРµ Р·РЅР°С‡РµРЅРЅСЏ");
+        alert.setContentText("Не коректне значення");
         alert.showAndWait();
     }
 
@@ -245,7 +245,7 @@ public void setConnectButton(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(" ");
         alert.setHeaderText(null);
-        alert.setContentText("Р’РІРµРґС–С‚СЊ Р·РЅР°С‡РµРЅРЅСЏ");
+        alert.setContentText("Введіть значення");
         alert.showAndWait();
     }
 

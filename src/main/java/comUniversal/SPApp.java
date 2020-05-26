@@ -18,7 +18,7 @@ public class SPApp extends Application {
 
         Scene scene = new Scene(root);
 
-        stage.setTitle("РЈРЅС–РІРµСЂСЃР°Р»СЊРЅРµ РїСЂРѕРіСЂР°РјРЅРµ Р·Р°Р±РµР·РїРµС‡РµРЅРЅСЏ");
+        stage.setTitle("Універсальне програмне забезпечення");
         stage.setScene(scene);
         stage.setX(212);
         stage.setY(20);

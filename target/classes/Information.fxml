@@ -1,103 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.InformationWindow">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.InformationWindow">
    <center>
-      <AnchorPane prefHeight="480.0" prefWidth="500.0" stylesheets="@/css/Main.css" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="423.0" prefWidth="550.0" stylesheets="@/css/Main.css" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="493.0" prefWidth="500.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0">
+            <VBox prefHeight="420.0" prefWidth="544.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0">
                <children>
-                  <AnchorPane prefHeight="473.0" prefWidth="545.0">
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="184.0" prefWidth="540.0">
                      <children>
-                        <VBox layoutX="3.0" layoutY="1.0" prefHeight="477.0" prefWidth="539.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0">
+                        <TextArea fx:id="messageTransmitter" layoutX="11.0" layoutY="17.0" prefHeight="168.0" prefWidth="530.0" styleClass="text-area" stylesheets="@css/Main.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="17.0" />
+                        <Separator layoutX="111.0" layoutY="9.0" prefHeight="5.0" prefWidth="410.0" AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="9.0" />
+                        <Separator layoutX="3.0" layoutY="189.0" prefHeight="12.0" prefWidth="527.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="189.0" />
+                        <Separator layoutX="7.0" layoutY="7.0" prefHeight="6.0" prefWidth="41.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="7.0" />
+                        <Label layoutX="48.0" layoutY="1.0" text="ПЕРЕДАЧА" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="27.0" prefWidth="544.0">
+                     <children>
+                        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="544.0">
                            <children>
-                              <HBox prefHeight="35.0" prefWidth="916.0">
+                              <AnchorPane prefHeight="41.0" prefWidth="70.0">
                                  <children>
-                                    <AnchorPane prefHeight="33.0" prefWidth="70.0">
-                                       <children>
-                                          <Label fx:id="speedLabel" layoutX="44.0" layoutY="11.0" text="Швидкість" AnchorPane.leftAnchor="5.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane prefHeight="33.0" prefWidth="51.0">
-                                       <children>
-                                          <RadioButton fx:id="speed100RadioButton" layoutX="8.0" layoutY="10.0" mnemonicParsing="false" selected="true" text="100" AnchorPane.topAnchor="10.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane prefHeight="33.0" prefWidth="97.0">
-                                       <children>
-                                          <RadioButton fx:id="speed200RadioButton" layoutX="20.0" layoutY="13.0" mnemonicParsing="false" text="250" AnchorPane.rightAnchor="38.0" AnchorPane.topAnchor="10.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane prefHeight="33.0" prefWidth="109.0">
-                                       <children>
-                                          <Button fx:id="sendButton" layoutX="69.0" layoutY="1.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="103.0" styleClass="buttonSend" stylesheets="@../css/Main.css" text="Надіслати" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="1.0">
-                                             <font>
-                                                <Font name="System Bold Italic" size="14.0" />
-                                             </font>
-                                          </Button>
-                                       </children></AnchorPane>
-                                    <AnchorPane prefHeight="33.0" prefWidth="174.0">
-                                       <children>
-                                          <ProgressBar fx:id="txProgressBar" layoutX="13.0" layoutY="5.0" prefHeight="25.0" prefWidth="191.0" progress="0.0" />
-                                       </children>
-                                    </AnchorPane>
+                                    <Label fx:id="speedLabel" prefHeight="17.0" prefWidth="8.0" text="Швидкість" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="0.0" />
                                  </children>
-                              </HBox>
-                              <HBox prefHeight="27.0" prefWidth="539.0">
+                              </AnchorPane>
+                              <AnchorPane prefHeight="27.0" prefWidth="52.0">
                                  <children>
-                                    <AnchorPane prefHeight="36.0" prefWidth="166.0" />
-                                    <AnchorPane prefHeight="26.0" prefWidth="347.0" />
-                                    <AnchorPane prefHeight="37.0" prefWidth="148.0" />
+                                    <RadioButton fx:id="speed100RadioButton" mnemonicParsing="false" selected="true" text="100" AnchorPane.topAnchor="0.0" />
                                  </children>
-                              </HBox>
-                              <VBox prefHeight="200.0" prefWidth="544.0">
+                              </AnchorPane>
+                              <AnchorPane prefHeight="48.0" prefWidth="61.0">
                                  <children>
-                                    <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="216.0" prefWidth="538.0">
-                                       <children>
-                                          <TextArea fx:id="messageTransmitter" layoutX="21.0" prefHeight="185.0" prefWidth="518.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                                          <Separator layoutX="122.0" layoutY="3.0" prefHeight="5.0" prefWidth="410.0" AnchorPane.leftAnchor="122.0" AnchorPane.topAnchor="3.0" />
-                                          <Separator layoutX="5.0" layoutY="6.0" orientation="VERTICAL" prefHeight="193.0" prefWidth="7.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="529.0" />
-                                          <Separator layoutX="532.0" layoutY="6.0" orientation="VERTICAL" prefHeight="193.0" prefWidth="6.0" />
-                                          <Separator layoutX="5.0" layoutY="199.0" prefHeight="6.0" prefWidth="527.0" AnchorPane.bottomAnchor="9.0" AnchorPane.topAnchor="199.0" />
-                                          <Separator layoutX="4.0" layoutY="3.0" prefHeight="2.0" prefWidth="41.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="3.0" />
-                                          <Label layoutX="48.0" layoutY="-8.0" text="ПЕРЕДАЧА">
-                                             <font>
-                                                <Font size="14.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </AnchorPane>
+                                    <RadioButton fx:id="speed200RadioButton" layoutX="6.0" mnemonicParsing="false" text="250" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
-                              </VBox>
-                              <HBox prefHeight="10.0" prefWidth="544.0">
+                              </AnchorPane>
+                              <AnchorPane maxHeight="-Infinity" maxWidth="266.0" minHeight="-Infinity" prefHeight="30.0" prefWidth="218.0">
                                  <children>
-                                    <AnchorPane prefHeight="30.0" prefWidth="200.0" />
-                                 </children></HBox>
-                              <AnchorPane prefHeight="213.0" prefWidth="539.0">
+                                    <Button fx:id="sendButton" layoutX="109.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="99.0" styleClass="buttonSend" text="Надіслати" AnchorPane.leftAnchor="109.0" AnchorPane.rightAnchor="8.0">
+                                       <font>
+                                          <Font name="System Bold Italic" size="14.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane prefHeight="30.0" prefWidth="156.0">
                                  <children>
-                                    <VBox prefHeight="227.0" prefWidth="494.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
-                                       <children>
-                                          <AnchorPane prefHeight="206.0" prefWidth="538.0">
-                                             <children>
-                                                <TextArea fx:id="messageReceived" layoutX="7.0" prefHeight="186.0" prefWidth="518.0" styleClass="text-area" stylesheets="@css/Main.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                                                <Separator layoutX="6.0" layoutY="3.0" prefHeight="2.0" prefWidth="41.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="3.0" />
-                                                <Label layoutX="52.0" layoutY="-6.0" text="ПРИЙОМ">
-                                                   <font>
-                                                      <Font size="14.0" />
-                                                   </font>
-                                                </Label>
-                                                <Separator layoutX="72.0" layoutY="3.0" prefHeight="5.0" prefWidth="410.0" AnchorPane.leftAnchor="122.0" AnchorPane.topAnchor="3.0" />
-                                                <Separator layoutX="532.0" layoutY="6.0" orientation="VERTICAL" prefHeight="190.0" prefWidth="6.0" />
-                                                <Separator layoutX="4.0" layoutY="195.0" prefHeight="6.0" prefWidth="527.0" />
-                                                <Separator layoutX="1.0" layoutY="3.0" orientation="VERTICAL" prefHeight="193.0" prefWidth="6.0" />
-                                             </children>
-                                          </AnchorPane>
-                                       </children>
-                                    </VBox>
+                                    <ProgressBar fx:id="txProgressBar" layoutX="20.0" layoutY="1.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="20.0" prefWidth="127.0" progress="0.0" AnchorPane.rightAnchor="7.0" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="196.0" prefWidth="544.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="494.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane prefHeight="202.0" prefWidth="538.0">
+                                 <children>
+                                    <TextArea fx:id="messageReceived" layoutX="7.0" layoutY="10.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="176.0" prefWidth="528.0" styleClass="text-area" stylesheets="@css/Main.css" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0" />
+                                    <Separator layoutX="3.0" layoutY="4.0" prefHeight="2.0" prefWidth="41.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="4.0" />
+                                    <Label layoutX="52.0" layoutY="-4.0" text="ПРИЙОМ" AnchorPane.topAnchor="-4.0" />
+                                    <Separator layoutX="122.0" layoutY="3.0" prefHeight="5.0" prefWidth="410.0" AnchorPane.leftAnchor="122.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
+                                    <Separator layoutX="4.0" layoutY="189.0" prefHeight="6.0" prefWidth="527.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" />
                                  </children>
                               </AnchorPane>
                            </children>
@@ -109,4 +81,99 @@
          </children>
       </AnchorPane>
    </center>
+   <top>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="103.0" prefWidth="544.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="106.0" prefWidth="111.0">
+               <children>
+                  <AnchorPane prefHeight="12.0" prefWidth="111.0">
+                     <children>
+                        <TextField layoutX="5.0" layoutY="13.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="94.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="13.0" />
+                        <Label layoutX="20.0" layoutY="-3.0" text="НАКОПИЧЕННЯ" />
+                        <Separator layoutX="3.0" layoutY="5.0" prefHeight="5.0" prefWidth="15.0" AnchorPane.leftAnchor="3.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="111.0">
+                     <children>
+                        <TextField layoutX="5.0" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="94.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="1.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="111.0">
+                     <children>
+                        <TextField layoutX="5.0" layoutY="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="94.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="1.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="111.0">
+                     <children>
+                        <Button layoutX="5.0" layoutY="4.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="96.0" text="СТВОРИТИ" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="3.0" />
+                        <Separator layoutX="38.0" layoutY="28.0" prefHeight="2.0" prefWidth="41.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+            <VBox prefHeight="114.0" prefWidth="115.0">
+               <children>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="5.0" layoutY="18.0" text="Позивний" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="18.0" />
+                        <Separator layoutX="5.0" layoutY="3.0" prefHeight="6.0" prefWidth="85.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="3.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="22.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="4.0" layoutY="6.0" text="Номер радіограми" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="6.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="5.0" layoutY="4.0" text="Кількість груп" AnchorPane.leftAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Separator layoutY="25.0" prefHeight="2.0" prefWidth="41.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+            <VBox prefHeight="105.0" prefWidth="320.0">
+               <children>
+                  <AnchorPane prefHeight="26.0" prefWidth="320.0">
+                     <children>
+                        <Label layoutX="93.0" layoutY="13.0" text="Label" />
+                        <Separator layoutX="41.0" layoutY="3.0" prefHeight="7.0" prefWidth="218.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="31.0" prefWidth="320.0">
+                     <children>
+                        <TextField layoutX="95.0" layoutY="7.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="183.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="25.0" prefWidth="320.0">
+                     <children>
+                        <Label layoutX="94.0" layoutY="6.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="26.0" prefWidth="320.0">
+                     <children>
+                        <HBox layoutX="47.0" layoutY="19.0" prefHeight="24.0" prefWidth="259.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label prefHeight="20.0" prefWidth="34.0" text="Час" />
+                              <AnchorPane prefHeight="31.0" prefWidth="14.0" />
+                              <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="77.0" />
+                              <AnchorPane prefHeight="31.0" prefWidth="15.0" />
+                              <Label prefHeight="17.0" prefWidth="30.0" text="Дата" />
+                              <AnchorPane prefHeight="31.0" prefWidth="13.0" />
+                              <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="85.0" />
+                              <AnchorPane prefHeight="31.0" prefWidth="4.0" />
+                           </children>
+                        </HBox>
+                        <Separator layoutY="19.0" prefHeight="9.0" prefWidth="192.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

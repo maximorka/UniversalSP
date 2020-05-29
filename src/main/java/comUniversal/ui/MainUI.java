@@ -80,8 +80,8 @@ public class MainUI {
                         e.printStackTrace();
                     }
                     Stage stage = new Stage();
-                    stage.setX(447);
-                    stage.setY(112);
+                    stage.setX(443);
+                    stage.setY(90);
                     stage.setTitle("Килим");
                     stage.setScene(scene);
                     stage.show();

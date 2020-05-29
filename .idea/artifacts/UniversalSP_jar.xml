@@ -7,7 +7,6 @@
       </element>
       <element id="module-output" name="UniversalSP" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar" path-in-jar="/" />
-      <element id="library" level="project" name="java" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.3.1/gson-2.3.1.jar" path-in-jar="/" />
       <element id="library" level="project" name="bin" />
     </root>

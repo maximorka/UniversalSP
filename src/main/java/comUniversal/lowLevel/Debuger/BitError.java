@@ -26,4 +26,8 @@ public class BitError {
         return out;
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> master

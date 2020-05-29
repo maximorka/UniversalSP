@@ -1,12 +1,9 @@
 package comUniversal.lowLevel.Demodulator;
-
-import comUniversal.lowLevel.DriverHorizon.DdcIQ;
 import comUniversal.util.Complex;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class OptimalNonCoherentDеmodulatorPsk {
+public class OptimalNonCoherentDemodulatorPsk{
 
     private float baudeRate = 0.f;
     private float samplingFrequency = 0.f;
@@ -15,7 +12,7 @@ public class OptimalNonCoherentDеmodulatorPsk {
     private Movingaverage integrator;
     private Clocker clocker;
 
-    public OptimalNonCoherentDеmodulatorPsk(float baudeRate, float samplingFrequency){
+    public OptimalNonCoherentDemodulatorPsk(float baudeRate, float samplingFrequency){
         this.baudeRate = baudeRate;
         this.samplingFrequency = samplingFrequency;
         this.integrator = new Movingaverage((int)(this.samplingFrequency/this.baudeRate));

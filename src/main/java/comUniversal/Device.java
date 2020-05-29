@@ -4,7 +4,10 @@ import comUniversal.BitLevel.GroupAdd;
 import comUniversal.lowLevel.BufferController.BufferController;
 import comUniversal.lowLevel.Debuger.Debuger;
 import comUniversal.lowLevel.Demodulator.DemodulatorPsk;
+import comUniversal.lowLevel.Demodulator.IqOutDebug;
+import comUniversal.lowLevel.Demodulator.OptimalNonCoherentDеmodulatorPsk;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
+import comUniversal.lowLevel.DriverHorizon.DdcIQ;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
@@ -12,6 +15,9 @@ import comUniversal.lowLevel.Modulator.ModulatorPsk;
 import comUniversal.ui.InformationWindow;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransmitterUPSWindowUI;
+import comUniversal.util.Complex;
+
+import java.io.IOException;
 
 public class Device {
     private Debuger debuger;
@@ -20,18 +26,27 @@ public class Device {
     public DriverHorizon driverHorizon;
     public BufferController bufferController;
     public ModulatorPsk modulatorPsk;
-    public DemodulatorPsk demodulatorPsk;
+    //public DemodulatorPsk demodulatorPsk;
+    public OptimalNonCoherentDеmodulatorPsk optimalNonCoherentDеmodulatorPsk;
     public KylymDecoder kylymDecoder;
 
     public Device(){
         this.ethernetDriver = new EthernetDriver();
+        try {debuger = new Debuger();} catch (IOException e) {}
     }
-public void sendCommand(String command){
 
-
-}
-    public boolean initRxTx(String typeDevice, String typeProg, String typeModulator, String speedModulator, String typeDemodulator, String speedDemodulator, TransmitterUPSWindowUI transmitterUPSWindowUI,
-                     ReceiverUPSWindowUI receiverUPSWindowUI, InformationWindow informationWindow, String ip, boolean state ){
+    public void sendCommand(String command){
+    }
+    public boolean initRxTx(String typeDevice,
+                            String typeProg,
+                            String typeModulator,
+                            String speedModulator,
+                            String typeDemodulator,
+                            String speedDemodulator,
+                            TransmitterUPSWindowUI transmitterUPSWindowUI,
+                            ReceiverUPSWindowUI receiverUPSWindowUI,
+                            InformationWindow informationWindow,
+                            String ip, boolean state ){
         boolean stateCon = false;
         if(state) {
             int port = typeDevice.equals("Горизонт")?80:81;
@@ -48,7 +63,8 @@ public void sendCommand(String command){
 
             bufferController = new BufferController(3000);
 
-            demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
+            //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
+            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f, 48000.f);
 
             ethernetDriver.clearReceiverListener();
             ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
@@ -67,13 +83,18 @@ public void sendCommand(String command){
             bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
             driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
             bufferController.setSources(() -> modulatorPsk.getSempl());
-            driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+            //driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+            driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk.demodulate(sempl));
+            optimalNonCoherentDеmodulatorPsk.addListenerIq(sempl -> debuger.show(sempl));
 
-            demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
+
+            //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
+            optimalNonCoherentDеmodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
+
             modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
             groupAdd.addRadiogramPercentListener(percent -> informationWindow.updatePercentRadiogram(percent));
             driverHorizon.ducSetWidth(Width.kHz_3);
-            driverHorizon.ddcSetWidth(Width.kHz_3);
+            driverHorizon.ddcSetWidth(Width.kHz_48);
 
             driverHorizon.ducSetMode(Mode.ENABLE);
             driverHorizon.ddcSetMode(Mode.ENABLE);
@@ -85,8 +106,14 @@ public void sendCommand(String command){
         return stateCon;
     }
 
-    public boolean initTx(String typeDevice, String typeProg, String typeModulator, String speedModulator, TransmitterUPSWindowUI transmitterUPSWindowUI,
-                          InformationWindow informationWindow, String ip,  boolean state) {
+    public boolean initTx(String typeDevice,
+                          String typeProg,
+                          String typeModulator,
+                          String speedModulator,
+                          TransmitterUPSWindowUI transmitterUPSWindowUI,
+                          InformationWindow informationWindow,
+                          String ip,
+                          boolean state) {
         boolean stateCon = false;
         if (state) {
             int port = typeDevice.equals("Горизонт")?80:81;
@@ -125,15 +152,21 @@ public void sendCommand(String command){
         return stateCon;
     }
 
-    public boolean initRx(String typeDevice, String typeProg, String typeDemodulator, String speedDemodulator,
-                          ReceiverUPSWindowUI receiverUPSWindowUI, InformationWindow informationWindow, String ip, boolean state) {
+    public boolean initRx(String typeDevice,
+                          String typeProg,
+                          String typeDemodulator,
+                          String speedDemodulator,
+                          ReceiverUPSWindowUI receiverUPSWindowUI,
+                          InformationWindow informationWindow,
+                          String ip, boolean state) {
         boolean stateCon = false;
         if (state) {
             int port = typeDevice.equals("Горизонт")?80:81;
             System.out.println("ïnitRx");
             stateCon = ethernetDriver.doInit(ip, port);
             driverHorizon = new DriverHorizon();
-            demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
+            //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
+            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f, 48000.f);
             kylymDecoder = new KylymDecoder();
             kylymDecoder.setRunning(true);
             ethernetDriver.clearReceiverListener();
@@ -146,12 +179,15 @@ public void sendCommand(String command){
 
 //      driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
 
-            driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+            //driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+            driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk.demodulate(sempl));
+            optimalNonCoherentDеmodulatorPsk.addListenerIq(sempl -> debuger.show(sempl));
 
-            demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
+            //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
+            optimalNonCoherentDеmodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
             //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
             //groupAdd.addRadiogramPercentListener(percent -> informationWindow.updatePercentRadiogram(percent));
-            driverHorizon.ddcSetWidth(Width.kHz_3);
+            driverHorizon.ddcSetWidth(Width.kHz_48);
             driverHorizon.ddcSetMode(Mode.ENABLE);
         } else {
             closeDeviceRx();

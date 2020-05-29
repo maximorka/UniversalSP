@@ -52,7 +52,7 @@ public class DemodulatorPsk {
         mixer.im = filtered.im * delay.re - filtered.re * delay.im;
 
         if(clocker.update(mixer))
-            toListenersSymbol(clocker.symbol);
+            toListenersSymbol(clocker.getBit());
     }
 
 }
@@ -98,18 +98,25 @@ class Movingaverage{
 
 class Clocker{
 
-    private String bitData = new String();
-    private LoopFilter loopFilter = new LoopFilter();
-    private float relativeBaudeRate = 0.f;
-    private float timer = 0.f;
-    private float halfRight = 0.f;
-    private float halfLeft = 0.f;
-    public int symbol = 0;
-    private float timeError = 0.f;
+    private String bitData;
+    private LoopFilter loopFilter;
+    private float relativeBaudeRate, timer, timeError, halfRight, halfLeft;
+    private Complex lastSempl;
+    private int symbol;
 
     public Clocker(float relativeBaudeRate){
         this.relativeBaudeRate = relativeBaudeRate;
+        this.loopFilter = new LoopFilter(0.00001f, 0.000001f, 1.f/48000.f);
+        this.timer = 0.f;
+        this.halfRight = 0.f;
+        this.halfLeft = 0.f;
+        this.lastSempl = new Complex(0.f, 0.f);
+        this.timeError = 0.f;
+        this.bitData = new String();
+        this.symbol = 0;
     }
+
+    public int getBit(){return this.symbol;}
 
     public boolean update(Complex sempl){
         boolean result = false;
@@ -121,7 +128,7 @@ class Clocker{
             halfRight += sempl.re;
 
         timer += relativeBaudeRate;
-        timer += timeError;
+        //timer += timeError;
 
         if (timer >= 1.f) {
             timer -= 1.f;
@@ -131,13 +138,18 @@ class Clocker{
             timeError = loopFilter.update(timeError);
             halfRight = 0.f;
             halfLeft = 0.f;
-            symbol = (sempl.re >= 0.f)? 1 : 0;
 
+            Complex out = new Complex(0.f, 0.f);
+            out.re = sempl.re * lastSempl.re + sempl.im * lastSempl.im;
+            out.im = sempl.im * lastSempl.re - sempl.re * lastSempl.im;
+            lastSempl = sempl;
 
-            char bit = (symbol==0)? '0' : '1';
-            bitData += bit;
+            symbol = (out.re >= 0.f)? 0 : 1;
+
+            char s = (symbol == 0)? '0' : '1';
+            bitData += s;
             if(bitData.length() == 100) {
-                //System.out.println(bitData);
+                System.out.println(bitData);
                 bitData = new String();
             }
 
@@ -148,23 +160,26 @@ class Clocker{
 
 class LoopFilter{
 
-    private float integrator = 0.f;
-    public float kp = 0.01f;
-    public float ki = 0.0001f;
-    public float upTheshhold = 0.0001f;
-    public float downTheshhold = -0.0001f;
+    private float integrator, kp, ki, theshhold;
+
+    public LoopFilter(float kp, float ki, float theshhold){
+        this.kp = kp;
+        this.ki = ki;
+        this.theshhold = theshhold;
+        this.integrator = 0.f;
+    }
 
     public float update(float data){
         float result = integrator + data * kp;
-        if(result > upTheshhold)
-            result = upTheshhold;
-        if(result < downTheshhold)
-            result = downTheshhold;
+        if(result > theshhold)
+            result = theshhold;
+        if(result < -theshhold)
+            result = -theshhold;
         integrator += data * ki;
-        if(integrator > upTheshhold)
-            integrator = upTheshhold;
-        if(integrator < downTheshhold)
-            integrator = downTheshhold;
+        if(integrator > theshhold)
+            integrator = theshhold;
+        if(integrator < -theshhold)
+            integrator = -theshhold;
         return  result;
     }
 }

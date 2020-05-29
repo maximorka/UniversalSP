@@ -2,7 +2,7 @@ package comUniversal.ui;
 
 import comUniversal.Core;
 import javafx.application.Platform;
-import javafx.css.Style;
+//import javafx.css.Style;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -38,7 +38,7 @@ public class InformationWindow {
 
     int countSymbol=0;
 
-private Style styledDocument;
+//private Style styledDocument;
 public int procent1 = 0;
     @FXML
     public void initialize() {

@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="UniversalSP:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/UniversalSP_jar</output-path>
+    <root id="archive" name="UniversalSP.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="UniversalSP" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-lang3/3.1/commons-lang3-3.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.3.1/gson-2.3.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="F:/WORK_GORIZONT/horizon/lib/gson-2.8.5.jar" path-in-jar="/" />
+      <element id="library" level="project" name="bin" />
+    </root>
+  </artifact>
+</component>

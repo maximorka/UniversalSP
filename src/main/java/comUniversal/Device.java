@@ -21,7 +21,10 @@ public class Device {
     public BufferController bufferController;
     public ModulatorPsk modulatorPsk;
     public DemodulatorPsk demodulatorPsk;
+    public DemodulatorPsk demodulatorPsk100;
+    public DemodulatorPsk demodulatorPsk250;
     public KylymDecoder kylymDecoder;
+    public KylymDecoder kylymDecodersecond;
 
     public Device(){
         this.ethernetDriver = new EthernetDriver();
@@ -130,12 +133,16 @@ public void sendCommand(String command){
         boolean stateCon = false;
         if (state) {
             int port = typeDevice.equals("Горизонт")?80:81;
-            System.out.println("ïnitRx");
+            System.out.println("initRx");
             stateCon = ethernetDriver.doInit(ip, port);
             driverHorizon = new DriverHorizon();
-            demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
+            demodulatorPsk100 = new DemodulatorPsk(250.f, 3000.f);
+           // demodulatorPsk250 = new DemodulatorPsk(250.f, 3000.f);
             kylymDecoder = new KylymDecoder();
             kylymDecoder.setRunning(true);
+
+           // kylymDecodersecond = new KylymDecoder();
+            //kylymDecodersecond.setRunning(true);
             ethernetDriver.clearReceiverListener();
             ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
             driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
@@ -146,15 +153,19 @@ public void sendCommand(String command){
 
 //      driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
 
-            driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+            driverHorizon.addDdcIQ(sempl -> demodulatorPsk100.demodulate(sempl));
+            demodulatorPsk100.addListenerSymbol(data -> kylymDecoder.addData(data));
 
-            demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
-            //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
-            //groupAdd.addRadiogramPercentListener(percent -> informationWindow.updatePercentRadiogram(percent));
+           // driverHorizon.addDdcIQ(sempl -> demodulatorPsk250.demodulate(sempl));
+          //  demodulatorPsk250.addListenerSymbol(data -> kylymDecodersecond.addData(data));
+
             driverHorizon.ddcSetWidth(Width.kHz_3);
             driverHorizon.ddcSetMode(Mode.ENABLE);
         } else {
-            closeDeviceRx();
+            driverHorizon.ducSetMode(Mode.DISABLE);
+            driverHorizon.ddcSetMode(Mode.DISABLE);
+            kylymDecoder.setRunning(false);
+            //kylymDecodersecond.setRunning(false);
             stateCon=ethernetDriver.closeSocket();
         }
         return stateCon;

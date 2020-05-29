@@ -239,10 +239,13 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
 
     public void updateVisibility(boolean state) {
         Platform.runLater(() -> {
-            freqHzTxLabel.setDisable(state);
-            freqTxLabel.setDisable(state);
-            freqTxText.setDisable(state);
-            changeIPTxButton.setDisable(state);
+            if(freqHzTxLabel!=null){
+                freqHzTxLabel.setDisable(state);
+                freqTxLabel.setDisable(state);
+                freqTxText.setDisable(state);
+                changeIPTxButton.setDisable(state);
+            }
+
         });
     }
 

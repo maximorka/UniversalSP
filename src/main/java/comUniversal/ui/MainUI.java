@@ -23,7 +23,7 @@ public class MainUI {
     Stage stageRx = new Stage();
     Stage stageTx = new Stage();
     public static Button connect;
-
+    public static ChoiceBox typeModeWork;
 
     @FXML
     private Label rxLabel;
@@ -45,11 +45,16 @@ public class MainUI {
     @FXML
     public void initialize() {
 
+        typeModeWork = new ChoiceBox();
+        typeModeWork = modeWorkChoicebox;
         connect = new Button();
         connect =  connectButton;
         connectButton.setDisable(true);
-        modeWorkChoicebox.setDisable(true);
-        typeProgramLabel.setDisable(true);
+        rxLabel.setDisable(true);
+        txLabel.setDisable(true);
+        typeTxChoicebox.setDisable(true);
+        typeTxChoicebox.setDisable(true);
+        typeRxChoicebox.setDisable(true);
 
         ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
         typeRxChoicebox.setItems(typeRx);
@@ -85,7 +90,11 @@ public class MainUI {
                     stage.setTitle("Килим");
                     stage.setScene(scene);
                     stage.show();
-                    connectButton.setDisable(false);
+
+                    typeRxChoicebox.setDisable(false);
+                    rxLabel.setDisable(false);
+                    typeTxChoicebox.setDisable(false);
+                    rxLabel.setDisable(false);
                 }
             }
         });
@@ -115,8 +124,7 @@ public class MainUI {
                     stageRx.setTitle("Приймач");
                     stageRx.setScene(scene);
                     stageRx.show();
-                    typeProgramLabel.setDisable(false);
-                    modeWorkChoicebox.setDisable(false);
+                    connectButton.setDisable(false);
                 }else if(typeRxChoicebox.getValue() == "Відсутній"){
                     stageRx.close();
                     if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
@@ -179,7 +187,10 @@ public class MainUI {
                             modeWorkChoicebox.setDisable(true);
                             typeRxChoicebox.setDisable(true);
                             typeTxChoicebox.setDisable(true);
-                            Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
+                            if( Core.getCore().transmitterUPSWindowUI!=null){
+                                Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
+                            }
+
                             Core.getCore().receiverUPSWindowUI.updateVisibility(false);
                         });
                     }
@@ -195,7 +206,9 @@ public class MainUI {
                         modeWorkChoicebox.setDisable(false);
                         typeRxChoicebox.setDisable(false);
                         typeTxChoicebox.setDisable(false);
-                        Core.getCore().transmitterUPSWindowUI.updateVisibility(true);
+                        if( Core.getCore().transmitterUPSWindowUI!=null){
+                            Core.getCore().transmitterUPSWindowUI.updateVisibility(true);
+                        }
                         Core.getCore().receiverUPSWindowUI.updateVisibility(true);
                     });
                 }
@@ -206,13 +219,16 @@ public class MainUI {
 
     }
 
-public void setConnectButton(){
-    Platform.runLater(()-> {
-        connect.setText("Підключитись");
-        connect.setStyle("-fx-background-color: #c0ae9d");
-    });
-}
+    public void setConnectButton(){
+        Platform.runLater(()-> {
+            connect.setText("Підключитись");
+            connect.setStyle("-fx-background-color: #c0ae9d");
+        });
+    }
+    public boolean getModeProgram(){
+        return typeModeWork.getValue() == "Килим";
 
+    }
 
     class UpdateUIThread extends Thread {
         @Override

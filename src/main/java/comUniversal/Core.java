@@ -37,7 +37,7 @@ public class Core {
         @Override
         public void run() {
 
-            while (!(Core.getCore().device[0].ethernetDriver.isConect())) {
+            while (!(Core.getCore().device[0].ethernetDriver.isConect())&&!(Core.getCore().device[1].ethernetDriver.isConect())) {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
@@ -46,25 +46,24 @@ public class Core {
             }
 
             while (true) {
-                    if (running) {
-                        if (countConectedDevice == 1) {
+                if (running) {
+                    System.out.println("work");
+                    if (Core.getCore().device[1].ethernetDriver.isConect()) {
+                        device[1].getParamsRx();
+                    }
+                    if (Core.getCore().device[0].ethernetDriver.isConect()) {
+                        device[0].getParamsTx();
+                    }
 
-                            device[0].getParamsRxTx();
-                        } else {
-                            if (countConectedDevice == 2) {
-                                device[0].getParamsTx();
-                                device[1].getParamsRx();
-                            }
-                        }
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }
         }
+    }
     public void setRunning(boolean running) {
         this.running = running;
     }
@@ -110,11 +109,17 @@ public class Core {
     }
     public boolean setDriverConnect(boolean ifConnect, String typeRx, String typeTx) {
         boolean state = false;
-        System.out.println(typeRx+" "+typeTx);
-        if (receiverUPSWindowUI.getIP().equals(transmitterUPSWindowUI.getIP())){
+        System.out.println("Hel");
+        System.out.println((mainUI.getModeProgram()));
+//if((mainUI.getModeProgram())){
+//    state = device[1].initRx(typeRx,"Килим","PSK","100",receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
+//    countConectedDevice =state?1:0;
+//}
+//        else
+            if ( receiverUPSWindowUI.getIP().equals(transmitterUPSWindowUI.getIP())){
             state = device[0].initRxTx(typeRx,"Килим","PSK","100","PSK","100",transmitterUPSWindowUI,receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
             countConectedDevice = state?1:0;
-        }else {
+        }else  {
             state  = device[0].initTx(typeTx,"Килим","PSK","100",transmitterUPSWindowUI,informationWindow,transmitterUPSWindowUI.getIP(),ifConnect);
             state &= device[1].initRx(typeRx,"Килим","PSK","100",receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
             countConectedDevice =state?2:0;

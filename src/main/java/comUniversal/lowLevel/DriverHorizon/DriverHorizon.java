@@ -155,6 +155,9 @@ public class DriverHorizon {
     private Complex[] samplePacket = new Complex[64];
     public void ducSetIq(Complex sempl){
 
+//        if((sempl.re != 0.f) || (sempl.im != 0.f)) {
+//            System.out.println("Re = " + sempl.re + " Im = " + sempl.im);
+//        }
         samplePacket[semplCounter%64] = sempl;
         semplCounter++;
         if(semplCounter >= 64) {

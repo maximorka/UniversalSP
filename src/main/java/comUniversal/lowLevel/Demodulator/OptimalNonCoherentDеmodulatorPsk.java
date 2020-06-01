@@ -9,16 +9,19 @@ public class OptimalNonCoherentDеmodulatorPsk {
     private Bpf bpf;
     private Pll pll;
     private MovingAverage integrator;
+    private LineDelay lineDelay;
     private Clocker clocker;
 
     public OptimalNonCoherentDеmodulatorPsk(float relativeBaudRate){
         bpf = new Bpf(bpfCoefficients);
         pll = new Pll();
+        lineDelay = new LineDelay((int)(1.f/relativeBaudRate));
         integrator = new MovingAverage((int)(1.f/relativeBaudRate));
         clocker = new Clocker(relativeBaudRate);
     }
 
     public void setRelativeBaudRate(float relativeBaudRate){
+        lineDelay = new LineDelay((int)(1.f/relativeBaudRate));
         integrator = new MovingAverage((int)(1.f/relativeBaudRate));
         clocker.setRelativeBaudRate(relativeBaudRate);
     }
@@ -46,18 +49,24 @@ public class OptimalNonCoherentDеmodulatorPsk {
                 listener.sempl(sempl);
     }
 
+
     public void demodulate(Complex sempl){
 
         Complex outBpf = bpf.filter(sempl);
         Complex outPll = pll.add(outBpf);
         Complex outInt = integrator.average(outPll);
+//        Complex outDelay = lineDelay.delay(outInt);
+//        outDelay.im *= -1.f;
+//        Complex outMixer = mixer(outInt, outDelay);
+
         if(clocker.update(outInt)) {
-            sempl.im = 0.1f;
+            outInt.im = 1.f / 1024.f;
             toListenersSymbol(clocker.getBit());
         }
-
-
-        toListenersIq(sempl);
+//
+//        outMixer.re *= 1024.f;
+//        outMixer.im *= 1024.f;
+        toListenersIq(outInt);
     }
 
     private Complex mixer(Complex x, Complex y){
@@ -191,7 +200,7 @@ public class OptimalNonCoherentDеmodulatorPsk {
 
 class Pll{
 
-    private Vco vco;
+    public Vco vco;
     private LoopFilter loopFilter;
 
     private Complex mixer(Complex x, Complex y){
@@ -200,11 +209,11 @@ class Pll{
 
     public Pll(){
         vco = new Vco();
-        loopFilter = new LoopFilter(0.01f, 0.00001f, 2.f* (float)Math.PI * 500.f / 48000.f);
+        loopFilter = new LoopFilter(0.01f, 0.000001f, 2.f* (float)Math.PI * 500.f / 48000.f);
     }
 
     private float phaseDetect(Complex sempl){
-        if(sempl.im == 0.f){
+        if(sempl.re == 0.f){
             return 0.f;
         } else {
             return (float) Math.atan(sempl.im / sempl.re);
@@ -226,9 +235,15 @@ class Pll{
 class Vco{
 
     private float phaseAccum = 0.f;
+    private Complex out = new Complex(1.f, 0.f);
+
+    public Complex getOut(){
+        return out;
+    }
 
     public Complex generate(){
-        return new Complex((float)Math.cos(phaseAccum), (float)Math.sin(phaseAccum));
+        out = new Complex((float)Math.cos(phaseAccum), (float)Math.sin(phaseAccum));
+        return out;
     }
 
     public void update(float phase){

@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class ModulatorPsk {
 
-    private int[] sinchroSequence = {1,1,0,0};
+    private int[] sinchroSequence = {0,0,0,0,0,1, 0,0,0,1,1,1, 0,0,1,0,1,1, 0,0,1,1,0,1, 0,1,0,0,1,1, 0,1,0,1,0,1};
     private int index = 0;
 
     private Random random = new Random();
@@ -28,15 +28,14 @@ public class ModulatorPsk {
     }
 
     public void symbolUpdate(){
-        if(symbolSource != null)
+        if(symbolSource != null) {
             symbol = symbolSource.symbol();
-        // for testing
-        //else{
-
-            //symbol = random.nextInt(2);
-            //symbol = sinchroSequence[index % 4];
-            //index++;
-        //}
+            if(symbol == -1) {
+                //symbol = random.nextInt(2);
+                symbol = sinchroSequence[index % 36];
+                index++;
+            }
+        }
     }
 
     public Complex getSempl(){

@@ -160,7 +160,7 @@ class Clocker{
 
             char s = (symbol == 0)? '0' : '1';
             bitData += s;
-            if(bitData.length() == 100) {
+            if(bitData.length() == 36) {
                 System.out.println(bitData);
                 bitData = new String();
             }

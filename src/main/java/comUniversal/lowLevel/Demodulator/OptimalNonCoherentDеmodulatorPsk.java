@@ -1,37 +1,28 @@
 package comUniversal.lowLevel.Demodulator;
 
-import comUniversal.lowLevel.DriverHorizon.DdcIQ;
 import comUniversal.util.Complex;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class OptimalNonCoherentDеmodulatorPsk {
 
-    private float baudeRate = 0.f;
-    private float samplingFrequency = 0.f;
     private Bpf bpf;
     private Pll pll;
-    private Movingaverage integrator;
+    private MovingAverage integrator;
     private Clocker clocker;
 
-    public OptimalNonCoherentDеmodulatorPsk(float baudeRate, float samplingFrequency){
-        this.baudeRate = baudeRate;
-        this.samplingFrequency = samplingFrequency;
-        this.integrator = new Movingaverage((int)(this.samplingFrequency/this.baudeRate));
-        this.clocker = new Clocker(this.baudeRate/this.samplingFrequency);
+    public OptimalNonCoherentDеmodulatorPsk(float relativeBaudRate){
         bpf = new Bpf(bpfCoefficients);
         pll = new Pll();
+        integrator = new MovingAverage((int)(1.f/relativeBaudRate));
+        clocker = new Clocker(relativeBaudRate);
     }
 
-    public void setParametrs(float baudeRate, float samplingFrequency) {
-        this.baudeRate = baudeRate;
-        this.samplingFrequency = samplingFrequency;
-        this.integrator = new Movingaverage((int)(this.samplingFrequency/this.baudeRate));
-        this.clocker = new Clocker(this.baudeRate/this.samplingFrequency);
-//        bpf = new Bpf(bpfCoefficients);
-//        pll = new Pll();
+    public void setRelativeBaudRate(float relativeBaudRate){
+        integrator = new MovingAverage((int)(1.f/relativeBaudRate));
+        clocker.setRelativeBaudRate(relativeBaudRate);
     }
+
 
     private List<Symbol> symbol = new ArrayList<>();
     public void addListenerSymbol(Symbol listener){symbol.add(listener);}
@@ -57,14 +48,20 @@ public class OptimalNonCoherentDеmodulatorPsk {
 
     public void demodulate(Complex sempl){
 
-        Complex outBpf = bpf.update(sempl);
-        Complex outPll = pll.update(outBpf);
-        Complex outInt = integrator.update(outPll);
-
+        Complex outBpf = bpf.filter(sempl);
+        Complex outPll = pll.add(outBpf);
+        Complex outInt = integrator.average(outPll);
         if(clocker.update(outInt)) {
+            sempl.im = 0.1f;
             toListenersSymbol(clocker.getBit());
         }
-        toListenersIq(outInt);
+
+
+        toListenersIq(sempl);
+    }
+
+    private Complex mixer(Complex x, Complex y){
+        return new Complex(x.re * y.re - x.im * y.im, x.im * y.re + x.re * y.im);
     }
 
     private float[] bpfCoefficients = {
@@ -203,32 +200,25 @@ class Pll{
 
     public Pll(){
         vco = new Vco();
-        loopFilter = new LoopFilter(0.01f, 0.00001f, 2.f* (float)Math.PI * 500.f /48000.f);
+        loopFilter = new LoopFilter(0.01f, 0.00001f, 2.f* (float)Math.PI * 500.f / 48000.f);
     }
 
     private float phaseDetect(Complex sempl){
-//        float angle = (float) Math.atan2(sempl.im, sempl.re);
-//        angle += Math.PI;
-//        angle %= Math.PI;
-//        angle -= Math.PI / 2.f;
-//        return angle;
-        return (float) Math.atan(sempl.im / sempl.re);
+        if(sempl.im == 0.f){
+            return 0.f;
+        } else {
+            return (float) Math.atan(sempl.im / sempl.re);
+        }
     }
 
-    public Complex update(Complex sempl){
-
-        Complex gen = vco.get();
+    public Complex add(Complex sempl){
+        Complex gen = vco.generate();
         gen.im *= -1.f;
-
         Complex out = mixer(sempl, gen);
-
         float error = phaseDetect(out);
-
-        error = loopFilter.update(error);
-        vco.update(error);
-
+        float errorLoopFilter = loopFilter.update(error);
+        vco.update(errorLoopFilter);
         return out;
-
     }
 
 }
@@ -237,7 +227,7 @@ class Vco{
 
     private float phaseAccum = 0.f;
 
-    public Complex get(){
+    public Complex generate(){
         return new Complex((float)Math.cos(phaseAccum), (float)Math.sin(phaseAccum));
     }
 
@@ -259,7 +249,7 @@ class Bpf{
             lineDelay[i] = new Complex(0.f, 0.f);
     }
 
-    public Complex update(Complex sempl){
+    public Complex filter(Complex sempl){
         System.arraycopy(lineDelay, 1, lineDelay, 0, lineDelay.length - 1);
         lineDelay[lineDelay.length - 1] = sempl;
         Complex out = new Complex(0.f, 0.f);

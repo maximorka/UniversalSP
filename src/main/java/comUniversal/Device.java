@@ -64,7 +64,7 @@ public class Device {
             bufferController = new BufferController(3000);
 
             //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
-            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f, 48000.f);
+            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f / 48000.f);
 
             ethernetDriver.clearReceiverListener();
             ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
@@ -166,7 +166,7 @@ public class Device {
             stateCon = ethernetDriver.doInit(ip, port);
             driverHorizon = new DriverHorizon();
             //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
-            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f, 48000.f);
+            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f / 48000.f);
             kylymDecoder = new KylymDecoder();
             kylymDecoder.setRunning(true);
             ethernetDriver.clearReceiverListener();

@@ -30,11 +30,11 @@ public class ModulatorPsk {
     public void symbolUpdate(){
         if(symbolSource != null) {
             symbol = symbolSource.symbol();
-            if(symbol == -1) {
-                //symbol = random.nextInt(2);
-                symbol = sinchroSequence[index % 36];
-                index++;
-            }
+//            if(symbol == -1) {
+//                //symbol = random.nextInt(2);
+//                symbol = sinchroSequence[index % 36];
+//                index++;
+//            }
         }
     }
 

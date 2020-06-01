@@ -11,6 +11,7 @@ public class KylymDecoder {
     //private RandomGeneratorBit randomGeneratorBit = new RandomGeneratorBit();
     private final int windowLength = 150;
     private final float bitErrorRate = 0.1f;
+    private int speed = 100;
 
     private Queue<Integer> data = new ArrayDeque<>();
     private int bufInput[] = new int[windowLength];
@@ -101,7 +102,8 @@ public class KylymDecoder {
         //data.add(bitError.get(input));
     }
 
-    public KylymDecoder() {
+    public KylymDecoder(int speed) {
+        this.speed = speed;
         workingThread.start();
     }
 
@@ -130,7 +132,7 @@ public class KylymDecoder {
             System.arraycopy(bufInput, 0, groupArray, 0, 30);
             int[] group = toGroup(groupArray);
             for (int number : group)
-                Core.getCore().informationWindow.setTextMessage(number);
+                Core.getCore().informationWindow.setTextMessage(number,speed);
         }
     }
 }

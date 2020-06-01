@@ -14,6 +14,17 @@
                <children>
                   <HBox layoutX="5.0" layoutY="4.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" prefWidth="756.0" styleClass="Hbox" stylesheets="@css/Main.css" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="4.0">
                      <children>
+                        <AnchorPane prefHeight="26.0" prefWidth="67.0">
+                           <children>
+                              <Label fx:id="typeProgramLabel" prefHeight="21.0" prefWidth="57.0" text="Програма" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="3.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="36.0" prefWidth="41.0" />
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <ChoiceBox fx:id="modeWorkChoicebox" prefHeight="27.0" prefWidth="99.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="1.0" />
+                           </children>
+                        </AnchorPane>
                         <AnchorPane prefHeight="36.0" prefWidth="77.0">
                            <children>
                               <Label fx:id="rxLabel" prefHeight="21.0" prefWidth="57.0" text="Приймач" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="3.0">
@@ -41,17 +52,6 @@
                         <AnchorPane prefHeight="36.0" prefWidth="114.0">
                            <children>
                               <ChoiceBox fx:id="typeTxChoicebox" prefHeight="27.0" prefWidth="99.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="1.0" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane prefHeight="36.0" prefWidth="41.0" />
-                        <AnchorPane prefHeight="26.0" prefWidth="67.0">
-                           <children>
-                              <Label fx:id="typeProgramLabel" prefHeight="21.0" prefWidth="57.0" text="Програма" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="3.0" />
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                           <children>
-                              <ChoiceBox fx:id="modeWorkChoicebox" prefHeight="27.0" prefWidth="99.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="1.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="36.0" prefWidth="116.0" />

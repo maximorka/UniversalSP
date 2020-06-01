@@ -48,8 +48,12 @@ public class MainUI {
         connect = new Button();
         connect =  connectButton;
         connectButton.setDisable(true);
-        modeWorkChoicebox.setDisable(true);
-        typeProgramLabel.setDisable(true);
+
+        rxLabel.setDisable(true);
+        typeRxChoicebox.setDisable(true);
+
+        txLabel.setDisable(true);
+        typeTxChoicebox.setDisable(true);
 
         ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
         typeRxChoicebox.setItems(typeRx);
@@ -85,7 +89,9 @@ public class MainUI {
                     stage.setTitle("Килим");
                     stage.setScene(scene);
                     stage.show();
-                    connectButton.setDisable(false);
+                    rxLabel.setDisable(false);
+                    typeRxChoicebox.setDisable(false);
+
                 }
             }
         });
@@ -111,16 +117,16 @@ public class MainUI {
                         }
                     });
                     stageRx.setX(212);
-                    stageRx.setY(112);
+                    stageRx.setY(90);
                     stageRx.setTitle("Приймач");
                     stageRx.setScene(scene);
                     stageRx.show();
-                    typeProgramLabel.setDisable(false);
-                    modeWorkChoicebox.setDisable(false);
+                    connectButton.setDisable(false);
+
                 }else if(typeRxChoicebox.getValue() == "Відсутній"){
                     stageRx.close();
                     if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
-                        typeProgramLabel.setDisable(true);
+                        connectButton.setDisable(true);
                     }
                 }
             }
@@ -151,13 +157,13 @@ public class MainUI {
                     stageTx.setTitle("Передавач");
                     stageTx.setScene(scene);
                     stageTx.show();
-                   typeProgramLabel.setDisable(false);
-                    modeWorkChoicebox.setDisable(false);
+                    connectButton.setDisable(false);
+
 
                 }else if(typeTxChoicebox.getValue() == "Відсутній"){
                     stageTx.close();
                     if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
-                        typeProgramLabel.setDisable(true);
+                        connectButton.setDisable(true);
                     }
                 }
 
@@ -168,8 +174,11 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String con = "-fx-background-color: #00cd00";
+
+               int typeProgram = modeWorkChoicebox.getValue()=="Килим"?1:0;
                 if (connectButton.getStyle() != con) {
-                    if(Core.getCore().setDriverConnect(true, typeRxChoicebox.getValue().toString(),typeTxChoicebox.getValue().toString())) {
+
+                    if(Core.getCore().setDriverConnect(true, typeRxChoicebox.getValue().toString(),typeTxChoicebox.getValue().toString(),typeProgram)) {
                         Platform.runLater(() -> {
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
@@ -185,7 +194,7 @@ public class MainUI {
                     }
                 } else {
 
-                    Core.getCore().setDriverConnect(false, "","");
+                    Core.getCore().setDriverConnect(false, "","",typeProgram);
                     Platform.runLater(()-> {
                         connectButton.setText("Підключитись");
                         connectButton.setStyle("-fx-background-color: #c0ae9d");

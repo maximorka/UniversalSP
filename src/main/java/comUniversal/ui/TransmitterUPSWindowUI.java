@@ -113,7 +113,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
 
                     Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
                     Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].kylymDecoder.setRunning(false);
+                    Core.getCore().device[0].kylymDecoder100.setRunning(false);
                     Core.getCore().countConectedDevice = 0;
                     Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
                     changeSettingsIPbutton.setDisable(true);
@@ -131,7 +131,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
 
                     Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
                     Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[1].kylymDecoder.setRunning(false);
+                    Core.getCore().device[1].kylymDecoder100.setRunning(false);
 
                     Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
                     Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
@@ -239,10 +239,13 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
 
     public void updateVisibility(boolean state) {
         Platform.runLater(() -> {
-            freqHzTxLabel.setDisable(state);
-            freqTxLabel.setDisable(state);
-            freqTxText.setDisable(state);
-            changeIPTxButton.setDisable(state);
+            if(freqHzTxLabel != null ){
+                freqHzTxLabel.setDisable(state);
+                freqTxLabel.setDisable(state);
+                freqTxText.setDisable(state);
+                changeIPTxButton.setDisable(state);
+            }
+
         });
     }
 

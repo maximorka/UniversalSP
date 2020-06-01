@@ -1,8 +1,11 @@
 comUniversal\ui\TransmitterUPSWindowUI$2.class
+comUniversal\lowLevel\Demodulator\Bpf.class
 comUniversal\lowLevel\DriverHorizon\EthernetSettings.class
 comUniversal\BitLevel\RadiogramPercent.class
 comUniversal\lowLevel\Demodulator\LineDelay.class
 comUniversal\ui\MainUI$4.class
+comUniversal\lowLevel\Demodulator\Pll.class
+comUniversal\lowLevel\Demodulator\OptimalNonCoherentDemodulatorPsk.class
 comUniversal\ui\setting\ParamsSettings.class
 comUniversal\util\Complex.class
 comUniversal\util\ByteUtils.class
@@ -23,7 +26,9 @@ comUniversal\ui\TransmitterUPSWindowUI$3.class
 comUniversal\ui\MainUI$3.class
 comUniversal\ui\InformationWindow$3.class
 comUniversal\ui\ReceiverUPSWindowUI$4.class
+comUniversal\lowLevel\Demodulator\IqOutDebug.class
 comUniversal\lowLevel\Demodulator\LoopFilter.class
+comUniversal\lowLevel\Demodulator\Vco.class
 comUniversal\ui\MainUI$UpdateUIThread.class
 comUniversal\Device.class
 comUniversal\ui\ReceiverUPSWindowUI$1.class

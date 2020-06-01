@@ -112,7 +112,7 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
                 if(Core.getCore().countConectedDevice == 1){
                     Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
                     Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].kylymDecoder.setRunning(false);
+                    Core.getCore().device[0].kylymDecoder100.setRunning(false);
                     Core.getCore().countConectedDevice = 0;
                     Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
                     changeSettingsIPbutton.setDisable(true);
@@ -129,7 +129,7 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
                 }else{
                     Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
                     Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[1].kylymDecoder.setRunning(false);
+                    Core.getCore().device[1].kylymDecoder100.setRunning(false);
 
                     Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
                     Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);

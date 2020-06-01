@@ -3,7 +3,7 @@ package comUniversal;
 import comUniversal.BitLevel.GroupAdd;
 import comUniversal.lowLevel.BufferController.BufferController;
 import comUniversal.lowLevel.Debuger.Debuger;
-import comUniversal.lowLevel.Demodulator.OptimalNonCoherentDemodulatorPsk;
+import comUniversal.lowLevel.Demodulator.OptimalNonCoherent;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.DriverHorizon.Mode;
@@ -23,7 +23,7 @@ public class Device {
     public BufferController bufferController;
     public ModulatorPsk modulatorPsk;
     //public DemodulatorPsk demodulatorPsk;
-    public OptimalNonCoherentDemodulatorPsk optimalNonCoherentDеmodulatorPsk;
+    public OptimalNonCoherent optimalNonCoherentDеmodulatorPsk;
     public KylymDecoder kylymDecoder;
 
     public Device(){
@@ -60,7 +60,7 @@ public class Device {
             bufferController = new BufferController(3000);
 
             //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
-            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDemodulatorPsk(100.f, 48000.f);
+            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherent(100.f, 48000.f);
 
             ethernetDriver.clearReceiverListener();
             ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
@@ -162,7 +162,7 @@ public class Device {
             stateCon = ethernetDriver.doInit(ip, port);
             driverHorizon = new DriverHorizon();
             //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
-            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDemodulatorPsk(100.f, 48000.f);
+            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherent(100.f, 48000.f);
             kylymDecoder = new KylymDecoder();
             kylymDecoder.setRunning(true);
             ethernetDriver.clearReceiverListener();

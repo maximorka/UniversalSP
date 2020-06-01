@@ -1,14 +1,11 @@
 package comUniversal.ui;
 
-import comUniversal.Core;
-import comUniversal.lowLevel.Demodulator.OptimalNonCoherentDеmodulatorPsk;
 import javafx.application.Platform;
-//import javafx.css.Style;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.TextFlow;
+
+//import javafx.css.Style;
 
 public class InformationWindow {
     public static TextArea message;
@@ -65,46 +62,7 @@ public int procent1 = 0;
 
 
 
-        //styledDocument =messageReceived.getStyle();
-        sendButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String txt = messageTransmitter.getText();
-                System.out.println("Fine");
-                Core.getCore().device[0].groupAdd.add(txt);
-                sendButton.setDisable(true);
-                speed100RadioButton.setDisable(true);
-                speed200RadioButton.setDisable(true);
-                speedLabel.setDisable(true);
 
-            }
-        });
-        speed100RadioButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                speed200RadioButton.setSelected(false);
-                if(Core.getCore().countConectedDevice == 1) {
-                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-                    Core.getCore().device[0].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(100.f / 48000.f);
-                }else if(Core.getCore().countConectedDevice == 2) {
-                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-                    Core.getCore().device[1].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(100.f / 48000.f);
-                }
-            }
-        });
-        speed200RadioButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                speed100RadioButton.setSelected(false);
-                if(Core.getCore().countConectedDevice == 1) {
-                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-                    Core.getCore().device[0].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(250.f / 48000.f);
-                }else if(Core.getCore().countConectedDevice == 2) {
-                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-                    Core.getCore().device[1].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(250.f / 48000.f);
-                }
-            }
-        });
 
     }
     public void updatePercentRadiogram(int percent) {

@@ -3,19 +3,19 @@ import comUniversal.util.Complex;
 
 import java.util.ArrayList;
 import java.util.List;
-public class OptimalNonCoherentDemodulatorPsk{
+public class OptimalNonCoherent{
 
     private float baudeRate = 0.f;
     private float samplingFrequency = 0.f;
     private Bpf bpf;
     private Pll pll;
-    private Movingaverage integrator;
+    private MovingAverage integrator;
     private Clocker clocker;
 
-    public OptimalNonCoherentDemodulatorPsk(float baudeRate, float samplingFrequency){
+    public OptimalNonCoherent(float baudeRate, float samplingFrequency){
         this.baudeRate = baudeRate;
         this.samplingFrequency = samplingFrequency;
-        this.integrator = new Movingaverage((int)(this.samplingFrequency/this.baudeRate));
+        this.integrator = new MovingAverage((int)(this.samplingFrequency/this.baudeRate));
         this.clocker = new Clocker(this.baudeRate/this.samplingFrequency);
         bpf = new Bpf(bpfCoefficients);
         pll = new Pll();
@@ -24,7 +24,7 @@ public class OptimalNonCoherentDemodulatorPsk{
     public void setParametrs(float baudeRate, float samplingFrequency) {
         this.baudeRate = baudeRate;
         this.samplingFrequency = samplingFrequency;
-        this.integrator = new Movingaverage((int)(this.samplingFrequency/this.baudeRate));
+        this.integrator = new MovingAverage((int)(this.samplingFrequency/this.baudeRate));
         this.clocker = new Clocker(this.baudeRate/this.samplingFrequency);
 //        bpf = new Bpf(bpfCoefficients);
 //        pll = new Pll();
@@ -56,7 +56,7 @@ public class OptimalNonCoherentDemodulatorPsk{
 
         Complex outBpf = bpf.update(sempl);
         Complex outPll = pll.update(outBpf);
-        Complex outInt = integrator.update(outPll);
+        Complex outInt = integrator.average(outPll);
 
         if(clocker.update(outInt)) {
             toListenersSymbol(clocker.getBit());

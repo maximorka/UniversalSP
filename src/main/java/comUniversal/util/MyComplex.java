@@ -1,10 +1,10 @@
 package comUniversal.util;
 
-public class Complex {
+public class MyComplex {
     public float re = 0;
     public float im = 0;
 
-    public Complex(float re, float im){
+    public MyComplex(float re, float im){
         this.re = re;
         this.im = im;
     }

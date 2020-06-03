@@ -1,6 +1,6 @@
 package comUniversal.lowLevel.BufferController;
 
-import comUniversal.util.Complex;
+import comUniversal.util.MyComplex;
 import comUniversal.util.Params;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class BufferController {
     private List<IBufferController> controllers = new ArrayList<>();
     public void addTransferListener(IBufferController listener){controllers.add(listener);}
     public void clearTransferListener(){controllers.clear();}
-    private void toListenersTransferDataBytes(Complex sample){
+    private void toListenersTransferDataBytes(MyComplex sample){
         if(!controllers.isEmpty())
             for(IBufferController listener: controllers)
                 listener.sendData(sample);
@@ -83,7 +83,7 @@ public void setWorkingThread(boolean work){
                         needSendSample += sampleCountPer1ms * 2;
                     }
                     for (int i = 0; i < needSendSample; i++) {
-                        Complex sample = new Complex(0.0F, 0.0F);
+                        MyComplex sample = new MyComplex(0.0F, 0.0F);
                         if (getIQSource != null) {
                             sample = getIQSource.getIQ();
                         }

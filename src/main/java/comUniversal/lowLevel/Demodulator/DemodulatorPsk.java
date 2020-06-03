@@ -1,11 +1,10 @@
 package comUniversal.lowLevel.Demodulator;
 
-import comUniversal.util.Complex;
+import comUniversal.util.MyComplex;
+import org.apache.commons.math3.complex.Complex;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class DemodulatorPsk {
 
@@ -41,18 +40,18 @@ public class DemodulatorPsk {
             }
     }
 
-    public void demodulate(Complex sempl){
+    public void demodulate(MyComplex sempl){
 
-        Complex filtered = filter.average(sempl);
+        //MyComplex filtered = filter.average(sempl);
 
-        Complex delay = lineDelay.delay(filtered);
+        //MyComplex delay = lineDelay.delay(filtered);
 
-        Complex mixer = new Complex(0.f, 0.f);
-        mixer.re = filtered.re * delay.re + filtered.im * delay.im;
-        mixer.im = filtered.im * delay.re - filtered.re * delay.im;
+        MyComplex mixer = new MyComplex(0.f, 0.f);
+//        mixer.re = filtered.re * delay.re + filtered.im * delay.im;
+//        mixer.im = filtered.im * delay.re - filtered.re * delay.im;
 
-        if(clocker.update(mixer))
-            toListenersSymbol(clocker.getBit());
+//        if(clocker.update(mixer))
+//            toListenersSymbol(clocker.getBit());
     }
 
 }
@@ -68,7 +67,7 @@ class LineDelay{
     }
 
     public Complex delay(Complex sempl){
-        Complex out = new Complex(line[0].re, line[0].im);
+        Complex out = new Complex(line[0].getReal(), line[0].getImaginary());
         System.arraycopy(line, 1, line, 0, line.length - 1);
         line[line.length - 1] = sempl;
         return out;
@@ -88,10 +87,11 @@ class MovingAverage{
     }
 
     public Complex average(Complex sempl){
+        integrator = integrator.add(sempl);
         Complex last = lineDelay.delay(sempl);
-        integrator.re += sempl.re - last.re;
-        integrator.im += sempl.im - last.im;
-        return new Complex(integrator.re / window, integrator.im / window);
+
+        integrator = integrator.subtract(last);
+        return new Complex(integrator.getReal() / window, integrator.getImaginary() / window);
     }
 }
 
@@ -100,16 +100,16 @@ class Clocker{
     private String bitData;
     private LoopFilter loopFilter;
     private float relativeBaudRate, timer, timeError, halfRight, halfLeft;
-    private Complex lastSempl;
+    private MyComplex lastSempl;
     private int symbol;
 
     public Clocker(float relativeBaudRate){
         this.relativeBaudRate = relativeBaudRate;
-        this.loopFilter = new LoopFilter(0.0001f, 0.00001f, 1.f/48000.f);
+        this.loopFilter = new LoopFilter(0.0001f, 0.00001f, 1.f/3000.f);
         this.timer = 0.f;
         this.halfRight = 0.f;
         this.halfLeft = 0.f;
-        this.lastSempl = new Complex(0.f, 0.f);
+        this.lastSempl = new MyComplex(0.f, 0.f);
         this.timeError = 0.f;
         this.bitData = new String();
         this.symbol = 0;
@@ -120,7 +120,7 @@ class Clocker{
         this.timer = 0.f;
         this.halfRight = 0.f;
         this.halfLeft = 0.f;
-        this.lastSempl = new Complex(0.f, 0.f);
+        this.lastSempl = new MyComplex(0.f, 0.f);
         this.timeError = 0.f;
         this.bitData = new String();
         this.symbol = 0;
@@ -134,10 +134,10 @@ class Clocker{
         boolean result = false;
 
         if(timer < 0.75f)
-            halfLeft += sempl.re;
+            halfLeft += sempl.getReal();
 
         if(timer >= 0.25f)
-            halfRight += sempl.re;
+            halfRight += sempl.getReal();
 
         timer += relativeBaudRate;
         timer += timeError;
@@ -151,12 +151,12 @@ class Clocker{
             halfRight = 0.f;
             halfLeft = 0.f;
 
-            Complex out = new Complex(0.f, 0.f);
-            out.re = sempl.re * lastSempl.re + sempl.im * lastSempl.im;
-            out.im = sempl.im * lastSempl.re - sempl.re * lastSempl.im;
-            lastSempl = new Complex(sempl.re, sempl.im);
+//            MyComplex out = new MyComplex(0.f, 0.f);
+//            out.re = sempl.re * lastSempl.re + sempl.im * lastSempl.im;
+//            out.im = sempl.im * lastSempl.re - sempl.re * lastSempl.im;
+//            lastSempl = new MyComplex(sempl.re, sempl.im);
 
-            symbol = (out.re >= 0.f)? 0 : 1;
+            symbol = (sempl.getReal() >= 0.f)? 0 : 1;
 
             char s = (symbol == 0)? '0' : '1';
             bitData += s;

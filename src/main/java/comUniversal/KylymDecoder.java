@@ -19,9 +19,10 @@ public class KylymDecoder {
     private int bufInput[] = new int[windowLength];
     WorkingThread workingThread = new WorkingThread();
     private boolean running = false;
-    private int startReceive = 0;
-    private int count = 0;
-    private int corectGr = 0;
+    private int maxGroupValue;
+    private int bitCounter;
+    private boolean startReceive = false;
+
 
 
 //    private final int[] N1 = {1,0,0,1,0,0};
@@ -141,6 +142,7 @@ public class KylymDecoder {
 
     public KylymDecoder(int speed) {
         this.speed = speed;
+        maxGroupValue = Integer.parseInt(Params.SETTINGS.getString("group_print", "40"));
         workingThread.start();
     }
 
@@ -160,31 +162,28 @@ public class KylymDecoder {
         }
     }
 
+    private void creatGroup(){
+        int[] groupArray = new int[30];
+        System.arraycopy(bufInput, 0, groupArray, 0, 30);
+        int[] group = toGroup(groupArray);
+        for (int number : group)
+            Core.getCore().informationWindow.setTextMessage(number,speed);
+    }
+
     public void symbolForBit() {
         System.arraycopy(bufInput, 1, bufInput, 0, bufInput.length - 1);
         bufInput[bufInput.length - 1] = data.poll();
-        count++;
 
         if (compareToStandardSequence(bufInput)) {
-            count = 0 ;
-            startReceive = (Integer.parseInt(Params.SETTINGS.getString("group_print", "40"))+2)*30;;
-
-            int[] groupArray = new int[30];
-            System.arraycopy(bufInput, 0, groupArray, 0, 30);
-            int[] group = toGroup(groupArray);
-            for (int number : group)
-                Core.getCore().informationWindow.setTextMessage(number,speed);
-        }
-        else if(startReceive>0 && count==36){
-            count = 0;
-            startReceive-=30;
-
-            System.out.println("Start receive: "+startReceive);
-            int[] groupArray = new int[30];
-            System.arraycopy(bufInput, 0, groupArray, 0, 30);
-            int[] group = toGroup(groupArray);
-            for (int number : group)
-                Core.getCore().informationWindow.setTextMessage(number,speed);
+            startReceive = true;
+            bitCounter = 0;
+            creatGroup();
+        } else if (startReceive) {
+            bitCounter++;
+            if (bitCounter % 36 == 0)
+                creatGroup();
+            if (bitCounter == maxGroupValue * 36)
+                startReceive = false;
         }
     }
 }

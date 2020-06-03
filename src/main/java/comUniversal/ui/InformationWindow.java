@@ -2,12 +2,8 @@ package comUniversal.ui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-
-import javafx.scene.control.*;
-import javafx.scene.text.TextFlow;
 
 //import javafx.css.Style;
 
@@ -37,11 +33,8 @@ String text;
         message250 = new TextArea();
         message250 = messageReceived250;
 
-
-        messageReceived100.setEditable(false);
-        messageReceived250.setEditable(false);
-
-
+        messageReceived100.setEditable(true);
+        messageReceived250.setEditable(true);
     }
     public void setTextMessage(int data, int speed) {
         String newLine = System.getProperty("line.separator");

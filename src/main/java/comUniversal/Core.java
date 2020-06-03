@@ -1,9 +1,12 @@
 package comUniversal;
 
+import comUniversal.lowLevel.Debuger.Debuger;
 import comUniversal.ui.InformationWindow;
 import comUniversal.ui.MainUI;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransmitterUPSWindowUI;
+
+import java.io.IOException;
 
 public class Core {
     private static Core core = new Core();
@@ -67,7 +70,7 @@ public class Core {
     }
     private Core(){
 
-        //try {debuger = new Debuger();} catch (IOException e) {}
+
         device[0] = new Device();
         device[1] = new Device();
 //        groupAdd = new GroupAdd();

@@ -1,1 +1,0 @@
-java -jar USP.jar

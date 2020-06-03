@@ -31,7 +31,10 @@ public class Device {
 
     public Device(){
         this.ethernetDriver = new EthernetDriver();
-        try {debuger = new Debuger();} catch (IOException e) {}
+//        try {debuger = new Debuger();} catch (
+//                IOException e) {
+//            System.out.println(e);
+//        }
     }
 
     public void sendCommand(String command){
@@ -83,7 +86,7 @@ public class Device {
             bufferController.setSources(() -> modulatorPsk.getSempl());
             //driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk100.demodulate(sempl));
-            optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
+            //optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
 
             //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
@@ -159,7 +162,10 @@ public class Device {
                           String ip, boolean state) {
         boolean stateCon = false;
         if (state) {
-
+            try {debuger = new Debuger();} catch (
+                    IOException e) {
+                System.out.println(e);
+            }
             int port = typeDevice.equals("Горизонт")?80:81;
             System.out.println("initRx");
             stateCon = ethernetDriver.doInit(ip, port);
@@ -186,7 +192,9 @@ public class Device {
             //driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk100.demodulate(sempl));
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk250.demodulate(sempl));
-            //optimalNonCoherentDеmodulatorPsk.addListenerIq(sempl -> debuger.show(sempl));
+            driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+
+//            optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
             //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
             optimalNonCoherentDеmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));

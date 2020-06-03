@@ -1,31 +1,35 @@
 package comUniversal.lowLevel.Demodulator;
 
-import comUniversal.util.Complex;
+import comUniversal.util.MyComplex;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.transform.DftNormalization;
+import org.apache.commons.math3.transform.FastFourierTransformer;
+import org.apache.commons.math3.transform.TransformType;
+
 public class OptimalNonCoherentDеmodulatorPsk {
 
-    private Bpf bpf;
-    private Pll pll;
-    private MovingAverage integrator;
+    private AutomaticFrequencyTuning automaticFrequencyTuning;
+    private MovingAverage channelFilter;
     private LineDelay lineDelay;
     private Clocker clocker;
 
+
     public OptimalNonCoherentDеmodulatorPsk(float relativeBaudRate){
-        bpf = new Bpf(bpfCoefficients);
-        pll = new Pll();
+
+        automaticFrequencyTuning = new AutomaticFrequencyTuning();
         lineDelay = new LineDelay((int)(1.f/relativeBaudRate));
-        integrator = new MovingAverage((int)(1.f/relativeBaudRate));
+        channelFilter = new MovingAverage((int)(1.f/relativeBaudRate));
         clocker = new Clocker(relativeBaudRate);
     }
 
     public void setRelativeBaudRate(float relativeBaudRate){
         lineDelay = new LineDelay((int)(1.f/relativeBaudRate));
-        integrator = new MovingAverage((int)(1.f/relativeBaudRate));
+        channelFilter = new MovingAverage((int)(1.f/relativeBaudRate));
         clocker.setRelativeBaudRate(relativeBaudRate);
     }
-
 
     private List<Symbol> symbol = new ArrayList<>();
     public void addListenerSymbol(Symbol listener){symbol.add(listener);}
@@ -43,158 +47,39 @@ public class OptimalNonCoherentDеmodulatorPsk {
     public void clearListenerIq(){
         listeners.clear();
     }
-    private void toListenersIq(Complex sempl){
+    private void toListenersIq(MyComplex sempl){
         if(!listeners.isEmpty())
             for(IqOutDebug listener: listeners)
                 listener.sempl(sempl);
     }
 
 
-    public void demodulate(Complex sempl){
+    public void demodulate(MyComplex sempl){
 
-        Complex outBpf = bpf.filter(sempl);
-        Complex outPll = pll.add(outBpf);
-        Complex outInt = integrator.average(outPll);
-//        Complex outDelay = lineDelay.delay(outInt);
-//        outDelay.im *= -1.f;
-//        Complex outMixer = mixer(outInt, outDelay);
+        Complex inSempl = new Complex(sempl.re, sempl.im);
 
-        if(clocker.update(outInt)) {
-            outInt.im = 1.f / 1024.f;
+        Complex outAft = automaticFrequencyTuning.tuning(inSempl);
+
+        Complex outCf = channelFilter.average(outAft);
+
+        Complex outLd = lineDelay.delay(outCf);
+
+        Complex outLd_ = outLd.conjugate();
+
+        Complex mul = outLd_.multiply(outCf);
+
+        if(clocker.update(mul))
             toListenersSymbol(clocker.getBit());
-        }
-//
-//        outMixer.re *= 1024.f;
-//        outMixer.im *= 1024.f;
-        toListenersIq(outInt);
+
+
+        toListenersIq(sempl);
+
     }
 
-    private Complex mixer(Complex x, Complex y){
-        return new Complex(x.re * y.re - x.im * y.im, x.im * y.re + x.re * y.im);
+    private MyComplex mixer(MyComplex x, MyComplex y){
+        return new MyComplex(x.re * y.re - x.im * y.im, x.im * y.re + x.re * y.im);
     }
 
-    private float[] bpfCoefficients = {
-            64.99876624632977950E-6f,
-            151.3981568291913220E-6f,
-            256.1165611330516190E-6f,
-            374.8966222027231650E-6f,
-            502.3723304823811870E-6f,
-            632.1809798303781920E-6f,
-            757.1191118444295400E-6f,
-            869.3401019265502330E-6f,
-            960.5895742391986690E-6f,
-            0.001022473419369444f,
-            0.001046751874708127f,
-            0.001025651958339496f,
-            952.1895647241250340E-6f,
-            820.4917723598478010E-6f,
-            626.1094119423132720E-6f,
-            366.3097234773005650E-6f,
-            40.33900963611274900E-6f,
-            -350.3544208971329110E-6f,
-            -801.9460326705500390E-6f,
-            -0.001308117586779536f,
-            -0.001860003160272496f,
-            -0.002446203893938310f,
-            -0.003052874967215413f,
-            -0.003663886395526519f,
-            -0.004261057222307981f,
-            -0.004824460590646086f,
-            -0.005332795086484512f,
-            -0.005763815707333121f,
-            -0.006094815887802823f,
-            -0.006303150264833393f,
-            -0.006366786346309174f,
-            -0.006264872006715505f,
-            -0.005978304815538262f,
-            -0.005490288642919710f,
-            -0.004786862807843792f,
-            -0.003857389251612930f,
-            -0.002694983837335242f,
-            -0.001296878886947844f,
-            335.2945479988514420E-6f,
-            0.002195314456926102f,
-            0.004272273424972350f,
-            0.006550587428221161f,
-            0.009010110842722812f,
-            0.011626358025148893f,
-            0.014370829143809681f,
-            0.017211435267674928f,
-            0.020113015130453167f,
-            0.023037933547947757f,
-            0.025946749247784347f,
-            0.028798937933906248f,
-            0.031553654809584573f,
-            0.034170519568976251f,
-            0.036610406075227593f,
-            0.038836218598237667f,
-            0.040813636600860445f,
-            0.042511810639391690f,
-            0.043903992970865433f,
-            0.044968087911795622f,
-            0.045687108834592052f,
-            0.046049530872193545f,
-            0.046049530872193545f,
-            0.045687108834592052f,
-            0.044968087911795622f,
-            0.043903992970865433f,
-            0.042511810639391690f,
-            0.040813636600860445f,
-            0.038836218598237667f,
-            0.036610406075227593f,
-            0.034170519568976251f,
-            0.031553654809584573f,
-            0.028798937933906248f,
-            0.025946749247784347f,
-            0.023037933547947757f,
-            0.020113015130453167f,
-            0.017211435267674928f,
-            0.014370829143809681f,
-            0.011626358025148893f,
-            0.009010110842722812f,
-            0.006550587428221161f,
-            0.004272273424972350f,
-            0.002195314456926102f,
-            335.2945479988514420E-6f,
-            -0.001296878886947844f,
-            -0.002694983837335242f,
-            -0.003857389251612930f,
-            -0.004786862807843792f,
-            -0.005490288642919710f,
-            -0.005978304815538262f,
-            -0.006264872006715505f,
-            -0.006366786346309174f,
-            -0.006303150264833393f,
-            -0.006094815887802823f,
-            -0.005763815707333121f,
-            -0.005332795086484512f,
-            -0.004824460590646086f,
-            -0.004261057222307981f,
-            -0.003663886395526519f,
-            -0.003052874967215413f,
-            -0.002446203893938310f,
-            -0.001860003160272496f,
-            -0.001308117586779536f,
-            -801.9460326705500390E-6f,
-            -350.3544208971329110E-6f,
-            40.33900963611274900E-6f,
-            366.3097234773005650E-6f,
-            626.1094119423132720E-6f,
-            820.4917723598478010E-6f,
-            952.1895647241250340E-6f,
-            0.001025651958339496f,
-            0.001046751874708127f,
-            0.001022473419369444f,
-            960.5895742391986690E-6f,
-            869.3401019265502330E-6f,
-            757.1191118444295400E-6f,
-            632.1809798303781920E-6f,
-            502.3723304823811870E-6f,
-            374.8966222027231650E-6f,
-            256.1165611330516190E-6f,
-            151.3981568291913220E-6f,
-            64.99876624632977950E-6f
-    };
 
 }
 
@@ -203,8 +88,8 @@ class Pll{
     public Vco vco;
     private LoopFilter loopFilter;
 
-    private Complex mixer(Complex x, Complex y){
-        return new Complex(x.re * y.re - x.im * y.im, x.im * y.re + x.re * y.im);
+    private MyComplex mixer(MyComplex x, MyComplex y){
+        return new MyComplex(x.re * y.re - x.im * y.im, x.im * y.re + x.re * y.im);
     }
 
     public Pll(){
@@ -212,7 +97,7 @@ class Pll{
         loopFilter = new LoopFilter(0.01f, 0.000001f, 2.f* (float)Math.PI * 500.f / 48000.f);
     }
 
-    private float phaseDetect(Complex sempl){
+    private float phaseDetect(MyComplex sempl){
         if(sempl.re == 0.f){
             return 0.f;
         } else {
@@ -220,10 +105,10 @@ class Pll{
         }
     }
 
-    public Complex add(Complex sempl){
-        Complex gen = vco.generate();
+    public MyComplex add(MyComplex sempl){
+        MyComplex gen = vco.generate();
         gen.im *= -1.f;
-        Complex out = mixer(sempl, gen);
+        MyComplex out = mixer(sempl, gen);
         float error = phaseDetect(out);
         float errorLoopFilter = loopFilter.update(error);
         vco.update(errorLoopFilter);
@@ -235,14 +120,14 @@ class Pll{
 class Vco{
 
     private float phaseAccum = 0.f;
-    private Complex out = new Complex(1.f, 0.f);
+    private MyComplex out = new MyComplex(1.f, 0.f);
 
-    public Complex getOut(){
+    public MyComplex getOut(){
         return out;
     }
 
-    public Complex generate(){
-        out = new Complex((float)Math.cos(phaseAccum), (float)Math.sin(phaseAccum));
+    public MyComplex generate(){
+        out = new MyComplex((float)Math.cos(phaseAccum), (float)Math.sin(phaseAccum));
         return out;
     }
 
@@ -267,12 +152,297 @@ class Bpf{
     public Complex filter(Complex sempl){
         System.arraycopy(lineDelay, 1, lineDelay, 0, lineDelay.length - 1);
         lineDelay[lineDelay.length - 1] = sempl;
-        Complex out = new Complex(0.f, 0.f);
+        float re = 0.f, im = 0.f;
         for(int i = 0; i < lineDelay.length; i++){
-            out.re += lineDelay[i].re * coefficients[i];
-            out.im += lineDelay[i].im * coefficients[i];
+            re += lineDelay[i].getReal() * coefficients[i];
+            im += lineDelay[i].getImaginary() * coefficients[i];
         }
-        return out;
+        return new Complex(re, im);
     }
+
+}
+
+class AutomaticFrequencyTuning{
+
+    private Bpf bpf;
+    private FastFourierTransformer fft;
+    private LineDelay delayForFft, delayForBpf;
+    private float accumVco, phaseVco;
+    private int timeTuning, semplCounter;
+    private Complex[] inFft, outFft, collect;
+
+    public AutomaticFrequencyTuning(){
+        int lengthFft = 8192;
+        timeTuning = 3000 / 100;
+        semplCounter = 0;
+        accumVco = 0.f;
+        phaseVco = 0.f;
+        bpf = new Bpf(bpfCoefficients);
+        delayForFft = new LineDelay(lengthFft/2);
+        delayForBpf = new LineDelay(bpfCoefficients.length/2);
+        fft = new FastFourierTransformer(DftNormalization.STANDARD);
+        inFft = new Complex[lengthFft];
+        outFft = new Complex[lengthFft];
+        collect = new Complex[timeTuning];
+        for(int i = 0; i < lengthFft; i++){
+            inFft[i] = new Complex(0.f, 0.f);
+            outFft[i] = new Complex(0.f, 0.f);
+        }
+    }
+
+
+    public Complex tuning(Complex sempl){
+
+        Complex outBpf = bpf.filter(sempl);
+
+        Complex outMix = outBpf.multiply(outBpf);
+
+        collect[semplCounter++] = outMix;
+
+        Complex vco = new Complex((float)Math.cos(accumVco), (float)Math.sin(accumVco));
+
+        Complex delayBpf = delayForBpf.delay(sempl);
+        Complex delayFft = delayForFft.delay(delayBpf);
+
+        Complex result = delayFft.multiply(vco);
+
+        if(semplCounter == timeTuning){
+
+            semplCounter = 0;
+
+            System.arraycopy(inFft, collect.length, inFft, 0, inFft.length - collect.length);
+            System.arraycopy(collect,0, inFft,inFft.length - collect.length, collect.length);
+
+            outFft = fft.transform(inFft, TransformType.FORWARD);
+
+            int index = 0;
+            float energy = 0;
+
+            for(int i = 0; i < outFft.length; i++){
+                if(outFft[i].abs() > energy) {
+                    energy = (float) outFft[i].abs();
+                    index = i;
+                }
+            }
+
+            if(index > outFft.length / 2)
+                index -= outFft.length;
+
+            float relativeFrequency = (float)index / (float) outFft.length / 2.f;
+
+            //System.out.println("frequency = " + 3000.f * relativeFrequency);
+
+            phaseVco = 2.f * (float)Math.PI * -relativeFrequency;
+
+        }
+
+        accumVco += phaseVco;
+        accumVco %= 2.f * (float)Math.PI;
+
+        return result;
+    }
+
+    private float[] bpfCoefficients = {
+            -17.96633661712444050E-6f,
+            32.46782273589473530E-6f,
+            100.1355657630664950E-6f,
+            53.29510640897244400E-6f,
+            -113.2255938476920110E-6f,
+            -206.0143222136724150E-6f,
+            -52.70133065006471900E-6f,
+            230.9042106917715390E-6f,
+            305.3274777915445950E-6f,
+            7.048739387696470790E-6f,
+            -380.4819071996450930E-6f,
+            -384.0886685261700680E-6f,
+            90.54907242888177170E-6f,
+            553.2233871074464560E-6f,
+            427.4148718975955030E-6f,
+            -243.8877836602549680E-6f,
+            -736.7528045346923590E-6f,
+            -420.4594223022256760E-6f,
+            452.9318089416035490E-6f,
+            915.3698333623467530E-6f,
+            349.4538554270355350E-6f,
+            -713.2278096376010130E-6f,
+            -0.001070611169870332f,
+            -202.8059700901564500E-6f,
+            0.001015520010766139f,
+            0.001182045181675499f,
+            -27.80498204471946270E-6f,
+            -0.001345605731819324f,
+            -0.001228272789447314f,
+            346.3980820326301570E-6f,
+            0.001684457192830370f,
+            0.001188093991742695f,
+            -751.7867180947596350E-6f,
+            -0.002008620884443837f,
+            -0.001041787660635979f,
+            0.001236856916427388f,
+            0.002290889314644658f,
+            772.4432371398388570E-6f,
+            -0.001788074924333807f,
+            -0.002501222584870641f,
+            -367.2775366899847430E-6f,
+            0.002385257533624068f,
+            0.002607879850854013f,
+            -181.1312890146513720E-6f,
+            -0.003001621270965906f,
+            -0.002578704072127850f,
+            873.7569442404228540E-6f,
+            0.003604105428536847f,
+            0.002382488153323404f,
+            -0.001704240724780265f,
+            -0.004153938901099980f,
+            -0.001990336897522012f,
+            0.002658250489133729f,
+            0.004607391302330209f,
+            0.001376926819232365f,
+            -0.003713102328931580f,
+            -0.004916613029807749f,
+            -521.5535221005276300E-6f,
+            0.004837635169053608f,
+            0.005030422650719344f,
+            -591.1589494653901510E-6f,
+            -0.005992288181639275f,
+            -0.004894834328032874f,
+            0.001971036774768433f,
+            0.007129272791566537f,
+            0.004453014600802527f,
+            -0.003622818971330974f,
+            -0.008192640858041890f,
+            -0.003644177938684561f,
+            0.005547593215465602f,
+            0.009117896789478610f,
+            0.002400589554264672f,
+            -0.007745691221564811f,
+            -0.009830511618982636f,
+            -641.1472118351719020E-6f,
+            0.010221962397785053f,
+            0.010242096067591241f,
+            -0.001741519686475492f,
+            -0.012995344103421409f,
+            -0.010241617958741674f,
+            0.004907160411858899f,
+            0.016117135947611740f,
+            0.009675579615219991f,
+            -0.009123629534131853f,
+            -0.019709247518545352f,
+            -0.008301153091872824f,
+            0.014897708398431304f,
+            0.024055415912480185f,
+            0.005663071539164637f,
+            -0.023330375624796916f,
+            -0.029861916309501923f,
+            -706.4049557271273440E-6f,
+            0.037323784175190132f,
+            0.039234830188732597f,
+            -0.009882111655156874f,
+            -0.067612656241084909f,
+            -0.061672864768133044f,
+            0.045281313750387471f,
+            0.211156804598513215f,
+            0.335731002757630015f,
+            0.335731002757630015f,
+            0.211156804598513215f,
+            0.045281313750387471f,
+            -0.061672864768133044f,
+            -0.067612656241084909f,
+            -0.009882111655156874f,
+            0.039234830188732597f,
+            0.037323784175190132f,
+            -706.4049557271273440E-6f,
+            -0.029861916309501923f,
+            -0.023330375624796916f,
+            0.005663071539164637f,
+            0.024055415912480185f,
+            0.014897708398431304f,
+            -0.008301153091872824f,
+            -0.019709247518545352f,
+            -0.009123629534131853f,
+            0.009675579615219991f,
+            0.016117135947611740f,
+            0.004907160411858899f,
+            -0.010241617958741674f,
+            -0.012995344103421409f,
+            -0.001741519686475492f,
+            0.010242096067591241f,
+            0.010221962397785053f,
+            -641.1472118351719020E-6f,
+            -0.009830511618982636f,
+            -0.007745691221564811f,
+            0.002400589554264672f,
+            0.009117896789478610f,
+            0.005547593215465602f,
+            -0.003644177938684561f,
+            -0.008192640858041890f,
+            -0.003622818971330974f,
+            0.004453014600802527f,
+            0.007129272791566537f,
+            0.001971036774768433f,
+            -0.004894834328032874f,
+            -0.005992288181639275f,
+            -591.1589494653901510E-6f,
+            0.005030422650719344f,
+            0.004837635169053608f,
+            -521.5535221005276300E-6f,
+            -0.004916613029807749f,
+            -0.003713102328931580f,
+            0.001376926819232365f,
+            0.004607391302330209f,
+            0.002658250489133729f,
+            -0.001990336897522012f,
+            -0.004153938901099980f,
+            -0.001704240724780265f,
+            0.002382488153323404f,
+            0.003604105428536847f,
+            873.7569442404228540E-6f,
+            -0.002578704072127850f,
+            -0.003001621270965906f,
+            -181.1312890146513720E-6f,
+            0.002607879850854013f,
+            0.002385257533624068f,
+            -367.2775366899847430E-6f,
+            -0.002501222584870641f,
+            -0.001788074924333807f,
+            772.4432371398388570E-6f,
+            0.002290889314644658f,
+            0.001236856916427388f,
+            -0.001041787660635979f,
+            -0.002008620884443837f,
+            -751.7867180947596350E-6f,
+            0.001188093991742695f,
+            0.001684457192830370f,
+            346.3980820326301570E-6f,
+            -0.001228272789447314f,
+            -0.001345605731819324f,
+            -27.80498204471946270E-6f,
+            0.001182045181675499f,
+            0.001015520010766139f,
+            -202.8059700901564500E-6f,
+            -0.001070611169870332f,
+            -713.2278096376010130E-6f,
+            349.4538554270355350E-6f,
+            915.3698333623467530E-6f,
+            452.9318089416035490E-6f,
+            -420.4594223022256760E-6f,
+            -736.7528045346923590E-6f,
+            -243.8877836602549680E-6f,
+            427.4148718975955030E-6f,
+            553.2233871074464560E-6f,
+            90.54907242888177170E-6f,
+            -384.0886685261700680E-6f,
+            -380.4819071996450930E-6f,
+            7.048739387696470790E-6f,
+            305.3274777915445950E-6f,
+            230.9042106917715390E-6f,
+            -52.70133065006471900E-6f,
+            -206.0143222136724150E-6f,
+            -113.2255938476920110E-6f,
+            53.29510640897244400E-6f,
+            100.1355657630664950E-6f,
+            32.46782273589473530E-6f,
+            -17.96633661712444050E-6f
+    };
 
 }

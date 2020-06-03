@@ -3,11 +3,8 @@ package comUniversal;
 import comUniversal.BitLevel.GroupAdd;
 import comUniversal.lowLevel.BufferController.BufferController;
 import comUniversal.lowLevel.Debuger.Debuger;
-import comUniversal.lowLevel.Demodulator.DemodulatorPsk;
-import comUniversal.lowLevel.Demodulator.IqOutDebug;
 import comUniversal.lowLevel.Demodulator.OptimalNonCoherentDеmodulatorPsk;
 import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
-import comUniversal.lowLevel.DriverHorizon.DdcIQ;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
@@ -15,7 +12,6 @@ import comUniversal.lowLevel.Modulator.ModulatorPsk;
 import comUniversal.ui.InformationWindow;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransmitterUPSWindowUI;
-import comUniversal.util.Complex;
 
 import java.io.IOException;
 
@@ -64,7 +60,7 @@ public class Device {
             bufferController = new BufferController(3000);
 
             //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
-            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f / 48000.f);
+            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f / 3000.f);
 
             ethernetDriver.clearReceiverListener();
             ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
@@ -94,7 +90,7 @@ public class Device {
             modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
             groupAdd.addRadiogramPercentListener(percent -> informationWindow.updatePercentRadiogram(percent));
             driverHorizon.ducSetWidth(Width.kHz_3);
-            driverHorizon.ddcSetWidth(Width.kHz_48);
+            driverHorizon.ddcSetWidth(Width.kHz_3);
 
             driverHorizon.ducSetMode(Mode.ENABLE);
             driverHorizon.ddcSetMode(Mode.ENABLE);
@@ -166,7 +162,7 @@ public class Device {
             stateCon = ethernetDriver.doInit(ip, port);
             driverHorizon = new DriverHorizon();
             //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
-            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f / 48000.f);
+            optimalNonCoherentDеmodulatorPsk = new OptimalNonCoherentDеmodulatorPsk(100.f / 3000.f);
             kylymDecoder = new KylymDecoder();
             kylymDecoder.setRunning(true);
             ethernetDriver.clearReceiverListener();
@@ -187,7 +183,7 @@ public class Device {
             optimalNonCoherentDеmodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
             //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
             //groupAdd.addRadiogramPercentListener(percent -> informationWindow.updatePercentRadiogram(percent));
-            driverHorizon.ddcSetWidth(Width.kHz_48);
+            driverHorizon.ddcSetWidth(Width.kHz_3);
             driverHorizon.ddcSetMode(Mode.ENABLE);
         } else {
             closeDeviceRx();

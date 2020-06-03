@@ -1,6 +1,6 @@
 package comUniversal.lowLevel.DriverHorizon;
 
-import comUniversal.util.Complex;
+import comUniversal.util.MyComplex;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class DriverHorizon {
 
     // Common methods
     private void sendCommand(byte command){sendCommand(command, 0);}
-    private void sendCommand(byte command, Complex[] packet){
+    private void sendCommand(byte command, MyComplex[] packet){
 
         byte[] result = new byte[4 + 64*3];
         ByteBuffer re_im = ByteBuffer.allocate(4);
@@ -58,7 +58,7 @@ public class DriverHorizon {
         result[index++] = 0x56;
         result[index++] = 0x34;
         result[index++] = 0x12;
-        for (Complex sempl : packet) {
+        for (MyComplex sempl : packet) {
             re = (int)(2047*sempl.re);
             im = (int)(2047*sempl.im);
             re &= 0xFFF;
@@ -152,8 +152,8 @@ public class DriverHorizon {
 
     // DUC methods
     private int semplCounter = 0;
-    private Complex[] samplePacket = new Complex[64];
-    public void ducSetIq(Complex sempl){
+    private MyComplex[] samplePacket = new MyComplex[64];
+    public void ducSetIq(MyComplex sempl){
 
 //        if((sempl.re != 0.f) || (sempl.im != 0.f)) {
 //            System.out.println("Re = " + sempl.re + " Im = " + sempl.im);
@@ -165,8 +165,8 @@ public class DriverHorizon {
             sendCommand(duc_set_iq, samplePacket);
         }
     }
-    public void ducSetIq(Complex[] sempls){
-        for(Complex sempl: sempls)
+    public void ducSetIq(MyComplex[] sempls){
+        for(MyComplex sempl: sempls)
             ducSetIq(sempl);
     }
 
@@ -219,7 +219,7 @@ public class DriverHorizon {
     private List<DdcIQ> ddcIQ = new ArrayList<>();
     public void addDdcIQ(DdcIQ listener){ddcIQ.add(listener);}
     public void clearDdcIQ(){ddcIQ.clear();}
-    private void toListenersDdcIQ(Complex sempl){
+    private void toListenersDdcIQ(MyComplex sempl){
         if(!ddcIQ.isEmpty())
             for(DdcIQ listener: ddcIQ)
                 listener.sempl(sempl);
@@ -350,8 +350,8 @@ public class DriverHorizon {
     }
 
 
-    private Complex convertIntToComplex(int data){
-        Complex sempl = new Complex(0,0 );
+    private MyComplex convertIntToComplex(int data){
+        MyComplex sempl = new MyComplex(0,0 );
         int re = data & 0x0000FFFF;
         int im = data & 0xFFFF0000;
         re <<= 16;

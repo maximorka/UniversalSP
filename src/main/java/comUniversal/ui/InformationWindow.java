@@ -85,10 +85,10 @@ public int procent1 = 0;
                 speed200RadioButton.setSelected(false);
                 if(Core.getCore().countConectedDevice == 1) {
                     Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-                    Core.getCore().device[0].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(100.f / 48000.f);
+                    Core.getCore().device[0].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(100.f / 3000.f);
                 }else if(Core.getCore().countConectedDevice == 2) {
                     Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-                    Core.getCore().device[1].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(100.f / 48000.f);
+                    Core.getCore().device[1].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(100.f / 3000.f);
                 }
             }
         });
@@ -98,10 +98,10 @@ public int procent1 = 0;
                 speed100RadioButton.setSelected(false);
                 if(Core.getCore().countConectedDevice == 1) {
                     Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-                    Core.getCore().device[0].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(250.f / 48000.f);
+                    Core.getCore().device[0].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(250.f / 3000.f);
                 }else if(Core.getCore().countConectedDevice == 2) {
                     Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-                    Core.getCore().device[1].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(250.f / 48000.f);
+                    Core.getCore().device[1].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(250.f / 3000.f);
                 }
             }
         });

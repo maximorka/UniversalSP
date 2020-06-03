@@ -1,13 +1,12 @@
 package comUniversal.lowLevel.Debuger;
 
-import comUniversal.util.Complex;
+import comUniversal.util.MyComplex;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 
 public class Debuger {
@@ -34,7 +33,7 @@ public class Debuger {
         } catch (IOException e) {}
     }
 
-    public void show(Complex sempl){
+    public void show(MyComplex sempl){
 
         if(index == 0) {
             packet[index++] = 0x00;

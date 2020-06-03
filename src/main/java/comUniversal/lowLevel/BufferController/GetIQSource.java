@@ -1,7 +1,7 @@
 package comUniversal.lowLevel.BufferController;
 
-import comUniversal.util.Complex;
+import comUniversal.util.MyComplex;
 
 public interface GetIQSource {
-        Complex getIQ();
+        MyComplex getIQ();
 }

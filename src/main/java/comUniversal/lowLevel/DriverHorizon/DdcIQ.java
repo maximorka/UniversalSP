@@ -1,7 +1,7 @@
 package comUniversal.lowLevel.DriverHorizon;
 
-import comUniversal.util.Complex;
+import comUniversal.util.MyComplex;
 
 public interface DdcIQ {
-    void sempl(Complex sempl);
+    void sempl(MyComplex sempl);
 }

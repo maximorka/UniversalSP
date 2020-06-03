@@ -1,7 +1,7 @@
 package comUniversal.lowLevel.Demodulator;
 
-import comUniversal.util.Complex;
+import comUniversal.util.MyComplex;
 
 public interface IqOutDebug {
-    void sempl(Complex sempl);
+    void sempl(MyComplex sempl);
 }

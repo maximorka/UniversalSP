@@ -20,6 +20,7 @@ import javafx.stage.WindowEvent;
 import java.io.IOException;
 
 public class MainUI {
+    Stage stageProg = new Stage();
     Stage stageRx = new Stage();
     Stage stageTx = new Stage();
     public static Button connect;
@@ -61,7 +62,7 @@ public class MainUI {
         ObservableList <String> typeTx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
         typeTxChoicebox.setItems(typeTx);
 
-        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим");
+        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим","Молот");
         modeWorkChoicebox.setItems(typeMode);
 
         typeRxChoicebox.getSelectionModel().selectFirst();
@@ -71,6 +72,10 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if(modeWorkChoicebox.getValue() == "Килим" ){
+                    stageTx.close();
+                    txLabel.setDisable(true);
+                    typeTxChoicebox.setDisable(true);
+                    typeTxChoicebox.getSelectionModel().selectFirst();
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/Information.fxml"));
                     /*
@@ -84,14 +89,34 @@ public class MainUI {
                         e.printStackTrace();
                     }
                     Stage stage = new Stage();
-                    stage.setX(443);
-                    stage.setY(90);
-                    stage.setTitle("Килим");
-                    stage.setScene(scene);
-                    stage.show();
+                    stageProg.setX(443);
+                    stageProg.setY(90);
+                    stageProg.setTitle("Килим");
+                    stageProg.setScene(scene);
+                    stageProg.show();
+                    rxLabel.setDisable(false);
+                    typeRxChoicebox.setDisable(false);
+                }else if(modeWorkChoicebox.getValue() == "Молот"){
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    fxmlLoader.setLocation(getClass().getResource("/InformationMolot.fxml"));
+
+                    Scene scene = null;
+                    try {
+                        scene = new Scene(fxmlLoader.load());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Stage stage = new Stage();
+                    stageProg.setX(443);
+                    stageProg.setY(90);
+                    stageProg.setTitle("Молот");
+                    stageProg.setScene(scene);
+                    stageProg.show();
                     rxLabel.setDisable(false);
                     typeRxChoicebox.setDisable(false);
 
+                    txLabel.setDisable(false);
+                    typeTxChoicebox.setDisable(false);
                 }
             }
         });

@@ -2,10 +2,8 @@ package comUniversal.lowLevel.Demodulator;
 
 import comUniversal.util.Complex;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 public class DemodulatorPsk {
 
@@ -162,7 +160,7 @@ class Clocker{
             char s = (symbol == 0)? '0' : '1';
             bitData += s;
             if(bitData.length() == 36) {
-                System.out.println(bitData);
+                //System.out.println(bitData);
                 bitData = new String();
             }
 

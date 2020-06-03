@@ -1,6 +1,8 @@
 package comUniversal;
 
 
+import comUniversal.util.Params;
+
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Queue;
@@ -17,7 +19,9 @@ public class KylymDecoder {
     private int bufInput[] = new int[windowLength];
     WorkingThread workingThread = new WorkingThread();
     private boolean running = false;
-
+    private int startReceive = 0;
+    private int count = 0;
+    private int corectGr = 0;
 
 
 //    private final int[] N1 = {1,0,0,1,0,0};
@@ -49,7 +53,7 @@ public class KylymDecoder {
             -1, -1, -1, -1, -1, -1, // anything
             -1, -1, -1, -1, -1, -1, // anything
             -1, -1, -1, -1, -1, -1, // anything
-            1, 0, 0, 0, 0, 1, // P
+             1, 0, 0, 0, 0, 1, // P
     };
 
     private boolean compareToStandardSequence(int[] bitData) {
@@ -74,7 +78,6 @@ public class KylymDecoder {
 
         int[] numberRecovery = recovery(number);
 
-
         if(Arrays.equals(numberRecovery, N0)) {result = 0;}
         else if(Arrays.equals(numberRecovery, N1)) {result = 1;}
         else if(Arrays.equals(numberRecovery, N2)) {result = 2;}
@@ -86,19 +89,16 @@ public class KylymDecoder {
         else if(Arrays.equals(numberRecovery, N8)) {result = 8;}
         else if(Arrays.equals(numberRecovery, N9)) {result = 9;}
         return  result;
-
     }
 
     private int[] recovery(int[] data){
         int[] out = new int[data.length];
-
         out[0] = inversBit(data[0]);
 
         for(int i = 1; i < data.length; i++)
             out[i] = difCompare(out[i - 1], data[i]);
 
         out[out.length - 1] = 1;
-
         return out;
     }
 
@@ -148,7 +148,6 @@ public class KylymDecoder {
         @Override
         public void run() {
             while (running) {
-
                 if (data.size() != 0) {
                     symbolForBit();
                 }
@@ -164,7 +163,23 @@ public class KylymDecoder {
     public void symbolForBit() {
         System.arraycopy(bufInput, 1, bufInput, 0, bufInput.length - 1);
         bufInput[bufInput.length - 1] = data.poll();
+        count++;
+
         if (compareToStandardSequence(bufInput)) {
+            count = 0 ;
+            startReceive = (Integer.parseInt(Params.SETTINGS.getString("group_print", "40"))+2)*30;;
+
+            int[] groupArray = new int[30];
+            System.arraycopy(bufInput, 0, groupArray, 0, 30);
+            int[] group = toGroup(groupArray);
+            for (int number : group)
+                Core.getCore().informationWindow.setTextMessage(number,speed);
+        }
+        else if(startReceive>0 && count==36){
+            count = 0;
+            startReceive-=30;
+
+            System.out.println("Start receive: "+startReceive);
             int[] groupArray = new int[30];
             System.arraycopy(bufInput, 0, groupArray, 0, 30);
             int[] group = toGroup(groupArray);

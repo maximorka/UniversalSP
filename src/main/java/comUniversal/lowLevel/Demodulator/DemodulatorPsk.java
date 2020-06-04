@@ -105,7 +105,7 @@ class Clocker{
 
     public Clocker(float relativeBaudRate){
         this.relativeBaudRate = relativeBaudRate;
-        this.loopFilter = new LoopFilter(0.0001f, 0.00001f, 1.f/3000.f);
+        this.loopFilter = new LoopFilter(0.0001f, 0.00001f, 0.1f/3000.f);
         this.timer = 0.f;
         this.halfRight = 0.f;
         this.halfLeft = 0.f;

@@ -71,9 +71,7 @@ public class OptimalNonCoherentDеmodulatorPsk {
         if(clocker.update(mul))
             toListenersSymbol(clocker.getBit());
 
-
         toListenersIq(sempl);
-
     }
 
     private MyComplex mixer(MyComplex x, MyComplex y){

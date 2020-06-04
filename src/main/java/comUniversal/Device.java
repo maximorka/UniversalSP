@@ -81,7 +81,8 @@ public class Device {
             bufferController.setSources(() -> modulatorPsk.getSempl());
             //driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk.demodulate(sempl));
-            optimalNonCoherentDеmodulatorPsk.addListenerIq(sempl -> debuger.show(sempl));
+            driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+            //optimalNonCoherentDеmodulatorPsk.addListenerIq(sempl -> debuger.show(sempl));
 
 
             //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
@@ -177,7 +178,8 @@ public class Device {
 
             //driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk.demodulate(sempl));
-            optimalNonCoherentDеmodulatorPsk.addListenerIq(sempl -> debuger.show(sempl));
+            driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+            //optimalNonCoherentDеmodulatorPsk.addListenerIq(sempl -> debuger.show(sempl));
 
             //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
             optimalNonCoherentDеmodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));

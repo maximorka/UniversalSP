@@ -1,6 +1,7 @@
-package comUniversal;
+package comUniversal.BitLevel.decoder;
 
 
+import comUniversal.Core;
 import comUniversal.util.Params;
 
 import java.util.ArrayDeque;

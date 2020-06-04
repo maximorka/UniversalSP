@@ -8,10 +8,9 @@
 	-fx-border-color: grey;
 }
 
-.text-area{
+.textArea{
   -fx-font-family: Consolas;
-  -fx-font-size: 13;
-
+  -fx-font-size: 14;
 }
 .buttonSend{
 	-fx-text-fill: black;

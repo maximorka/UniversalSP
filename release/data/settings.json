@@ -5,6 +5,7 @@
     "ethernet_port": "81",
     "rx_UPS_frequency": "128000",
     "tx_UPS_frequency": "128000",
-    "border_procent": "6"
+    "border_procent": "6",
+    "group_print": "40"
   }
 }

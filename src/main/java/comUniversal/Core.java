@@ -1,9 +1,12 @@
 package comUniversal;
 
+import comUniversal.lowLevel.Debuger.Debuger;
 import comUniversal.ui.InformationWindow;
 import comUniversal.ui.MainUI;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransmitterUPSWindowUI;
+
+import java.io.IOException;
 
 public class Core {
     private static Core core = new Core();
@@ -37,7 +40,7 @@ public class Core {
         @Override
         public void run() {
 
-            while (!(Core.getCore().device[0].ethernetDriver.isConect())) {
+            while (!(Core.getCore().device[0].ethernetDriver.isConect()||Core.getCore().device[1].ethernetDriver.isConect())) {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
@@ -47,14 +50,11 @@ public class Core {
 
             while (true) {
                     if (running) {
-                        if (countConectedDevice == 1) {
-
-                            device[0].getParamsRxTx();
-                        } else {
-                            if (countConectedDevice == 2) {
-                                device[0].getParamsTx();
-                                device[1].getParamsRx();
-                            }
+                        if (Core.getCore().device[0].ethernetDriver.isConect()) {
+                            device[0].getParamsTx();
+                        }
+                        if (Core.getCore().device[1].ethernetDriver.isConect()) {
+                            device[1].getParamsRx();
                         }
                         try {
                             Thread.sleep(2000);
@@ -70,7 +70,7 @@ public class Core {
     }
     private Core(){
 
-        //try {debuger = new Debuger();} catch (IOException e) {}
+
         device[0] = new Device();
         device[1] = new Device();
 //        groupAdd = new GroupAdd();
@@ -108,15 +108,20 @@ public class Core {
         update.start();
 
     }
-    public boolean setDriverConnect(boolean ifConnect, String typeRx, String typeTx) {
+    public boolean setDriverConnect(boolean ifConnect, String typeRx, String typeTx, int typeProg) {
         boolean state = false;
-        System.out.println(typeRx+" "+typeTx);
-        if (receiverUPSWindowUI.getIP().equals(transmitterUPSWindowUI.getIP())){
-            state = device[0].initRxTx(typeRx,"Килим","PSK","100","PSK","100",transmitterUPSWindowUI,receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
+        System.out.println("RX: "+typeRx+" TX"+typeTx+" Prog"+typeProg);
+
+        if(typeProg==1){
+            state = device[1].initRx(typeRx,typeProg,"PSK","100",receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
+            countConectedDevice =state?1:0;
+        }
+        else if (receiverUPSWindowUI.getIP().equals(transmitterUPSWindowUI.getIP())){
+            state = device[0].initRxTx(typeRx,typeProg,"PSK","100","PSK","100",transmitterUPSWindowUI,receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
             countConectedDevice = state?1:0;
         }else {
-            state  = device[0].initTx(typeTx,"Килим","PSK","100",transmitterUPSWindowUI,informationWindow,transmitterUPSWindowUI.getIP(),ifConnect);
-            state &= device[1].initRx(typeRx,"Килим","PSK","100",receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
+            state  = device[0].initTx(typeTx,typeProg,"PSK","100",transmitterUPSWindowUI,informationWindow,transmitterUPSWindowUI.getIP(),ifConnect);
+            state &= device[1].initRx(typeRx,typeProg,"PSK","100",receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
             countConectedDevice =state?2:0;
         }
         return state;

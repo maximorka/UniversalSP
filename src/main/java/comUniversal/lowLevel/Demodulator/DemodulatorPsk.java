@@ -158,12 +158,12 @@ class Clocker{
 
             symbol = (sempl.getReal() >= 0.f)? 0 : 1;
 
-            char s = (symbol == 0)? '0' : '1';
-            bitData += s;
-            if(bitData.length() == 36) {
-                System.out.println(bitData);
-                bitData = new String();
-            }
+//            char s = (symbol == 0)? '0' : '1';
+//            bitData += s;
+//            if(bitData.length() == 36) {
+//                System.out.println(bitData);
+//                bitData = new String();
+//            }
 
         }
         return result;

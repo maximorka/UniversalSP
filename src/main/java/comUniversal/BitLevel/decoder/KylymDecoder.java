@@ -12,9 +12,8 @@ import java.util.Queue;
 public class KylymDecoder {
     //private BitError bitError = new BitError(0.05f);
     //private RandomGeneratorBit randomGeneratorBit = new RandomGeneratorBit();
-    private final int windowLength = 150;
-    private final float bitErrorRate = 0.1f;
-    private int speed = 100;
+    private final int windowLength = 294;
+    private final float bitErrorRate = 0.18f;
 
     private Queue<Integer> data = new ArrayDeque<>();
     private int bufInput[] = new int[windowLength];
@@ -141,8 +140,7 @@ public class KylymDecoder {
         //data.add(bitError.get(input));
     }
 
-    public KylymDecoder(int speed) {
-        this.speed = speed;
+    public KylymDecoder() {
         maxGroupValue = Integer.parseInt(Params.SETTINGS.getString("group_print", "40"));
         workingThread.start();
     }
@@ -168,7 +166,7 @@ public class KylymDecoder {
         System.arraycopy(bufInput, 0, groupArray, 0, 30);
         int[] group = toGroup(groupArray);
         for (int number : group)
-            Core.getCore().informationWindow.setTextMessage(number,speed);
+            Core.getCore().informationWindow.setTextMessage(number);
     }
 
     public void symbolForBit() {

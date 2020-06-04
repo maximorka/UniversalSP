@@ -62,7 +62,7 @@ public class MainUI {
         ObservableList <String> typeTx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
         typeTxChoicebox.setItems(typeTx);
 
-        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим","Молот");
+        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим");//,"Молот");
         modeWorkChoicebox.setItems(typeMode);
 
         typeRxChoicebox.getSelectionModel().selectFirst();

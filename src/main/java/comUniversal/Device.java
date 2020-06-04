@@ -57,7 +57,7 @@ public class Device {
             driverHorizon = new DriverHorizon();
 
             groupAdd = new GroupAdd();
-            kylymDecoder100 = new KylymDecoder(100);
+            kylymDecoder100 = new KylymDecoder();
             kylymDecoder100.setRunning(true);
 
             modulatorPsk = new ModulatorPsk();
@@ -176,10 +176,10 @@ public class Device {
             //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
 
             optimalNonCoherentDеmodulatorPsk100 = new OptimalNonCoherent(100.f/3000.f);
-            kylymDecoder100 = new KylymDecoder(100);
+            kylymDecoder100 = new KylymDecoder();
             kylymDecoder100.setRunning(true);
             optimalNonCoherentDеmodulatorPsk250 = new OptimalNonCoherent(250.f/3000.f);
-            kylymDecoder250 = new KylymDecoder(250);
+            kylymDecoder250 = new KylymDecoder();
             kylymDecoder250.setRunning(true);
 
             ethernetDriver.clearReceiverListener();

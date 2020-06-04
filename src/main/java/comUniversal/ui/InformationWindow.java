@@ -1,161 +1,94 @@
 package comUniversal.ui;
 
-import comUniversal.Core;
-import comUniversal.lowLevel.Demodulator.OptimalNonCoherentDеmodulatorPsk;
 import javafx.application.Platform;
-//import javafx.css.Style;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.text.TextFlow;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+
+//import javafx.css.Style;
 
 public class InformationWindow {
-    public static TextArea message;
-
-    public static Button sendB;
-    public static RadioButton RadioButton100;
-    public static RadioButton RadioButton200;
-    public static ProgressBar progressBar;
-    public static Label speedL;
+    public static TextArea message100;
+    public static TextArea message250;
 
     @FXML
-    private ProgressBar txProgressBar;
+    private TextArea messageReceived100;
     @FXML
-    private TextArea messageTransmitter;
+    private TextArea messageReceived250;
     @FXML
-    public Button sendButton;
+    private ScrollPane pane;
     @FXML
-    private TextArea messageReceived;
-
-    @FXML
-    private RadioButton speed100RadioButton;
-    @FXML
-    private RadioButton speed200RadioButton;
-    @FXML
-    private Label speedLabel;
-    @FXML
-    private TextFlow tx;
-
+    private TextArea qwerty;
     int countSymbol=0;
-
-//private Style styledDocument;
-public int procent1 = 0;
+    int countSymbol250=0;
+TextArea textArea;
+String text;
     @FXML
     public void initialize() {
 
         System.out.println("initialize() information window");
         //txProgressBar = new ProgressBar();
-        message = new TextArea();
-        message = messageReceived;
-        progressBar = new ProgressBar();
-        progressBar = txProgressBar;
+        message100 = new TextArea();
+        message100 = messageReceived100;
+        message250 = new TextArea();
+        message250 = messageReceived250;
 
-        RadioButton100 =new RadioButton();
-        RadioButton100 = speed100RadioButton;
-
-        RadioButton200 =new RadioButton();
-        RadioButton200 = speed200RadioButton;
-
-        sendB = new Button();
-        sendB = sendButton;
-
-        speedL = new Label();
-        speedL = speedLabel;
-
-
-
-        //styledDocument =messageReceived.getStyle();
-        sendButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String txt = messageTransmitter.getText();
-                System.out.println("Fine");
-                Core.getCore().device[0].groupAdd.add(txt);
-                sendButton.setDisable(true);
-                speed100RadioButton.setDisable(true);
-                speed200RadioButton.setDisable(true);
-                speedLabel.setDisable(true);
-
-            }
-        });
-        speed100RadioButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                speed200RadioButton.setSelected(false);
-                if(Core.getCore().countConectedDevice == 1) {
-                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-                    Core.getCore().device[0].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(100.f / 3000.f);
-                }else if(Core.getCore().countConectedDevice == 2) {
-                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-                    Core.getCore().device[1].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(100.f / 3000.f);
-                }
-            }
-        });
-        speed200RadioButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                speed100RadioButton.setSelected(false);
-                if(Core.getCore().countConectedDevice == 1) {
-                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-                    Core.getCore().device[0].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(250.f / 3000.f);
-                }else if(Core.getCore().countConectedDevice == 2) {
-                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-                    Core.getCore().device[1].optimalNonCoherentDеmodulatorPsk.setRelativeBaudRate(250.f / 3000.f);
-                }
-            }
-        });
-
+        messageReceived100.setEditable(true);
+        messageReceived250.setEditable(true);
     }
-    public void updatePercentRadiogram(int percent) {
-
-        float percentNow = (float) 1-((float)percent/(float)100);
-              Platform.runLater(() -> {
-                progressBar.setProgress(percentNow);
-        });
-              if(percent==0){
-                  Platform.runLater(() -> {
-                      sendB.setDisable(false);
-                      RadioButton100.setDisable(false);
-                      RadioButton200.setDisable(false);
-                      speedL.setDisable(false);
-                      progressBar.setProgress(0);
-                  });
-              }
-    }
-    public void setTextMessage(int data){
+    public void setTextMessage(int data, int speed) {
         String newLine = System.getProperty("line.separator");
         String tmp = Integer.toString(data);
+        if (speed == 100) {
+            if (tmp.equals("10")) {
+                Platform.runLater(() -> {
+                    message100.appendText("*");
+                });
+            } else {
+                Platform.runLater(() -> {
+                    message100.appendText(tmp);
+                });
+            }
 
+            countSymbol++;
+            if (countSymbol % 5 == 0) {
+                Platform.runLater(() -> {
+                    message100.appendText(" ");
+                });
 
-        if(tmp.equals("10")){
-            Platform.runLater(() -> {
-
-                message.appendText("*");
-            });
-        }else {
-            Platform.runLater(() -> {
-
-            message.appendText(tmp);
-        });
+            }
+            if (countSymbol % 50 == 0) {
+                //int countgroup = countSymbol/5;
+                Platform.runLater(() -> {
+                    message100.appendText("\n");
+                });
+            }
         }
+        if (speed == 250) {
+            if (tmp.equals("10")) {
+                Platform.runLater(() -> {
+                    message250.appendText("*");
+                });
+            } else {
+                Platform.runLater(() -> {
+                    message250.appendText(tmp);
+                });
+            }
 
-        countSymbol++;
-        if(countSymbol % 5== 0){
-            Platform.runLater(() -> {
-                message.appendText(" ");
-            });
+            countSymbol250++;
+            if (countSymbol250 % 5 == 0) {
+                Platform.runLater(() -> {
+                    message250.appendText(" ");
+                });
 
+            }
+            if (countSymbol250 % 50 == 0) {
+                //int countgroup = countSymbol/5;
+                Platform.runLater(() -> {
+                    message250.appendText("\n");
+                });
+            }
         }
-        if(countSymbol % 50== 0){
-            int countgroup = countSymbol/5;
-            Platform.runLater(() -> {
-                message.appendText(" "+countgroup);
-                message.appendText(newLine);
-            });
-        }
-
-
     }
 
 }

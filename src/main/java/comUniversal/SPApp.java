@@ -18,10 +18,10 @@ public class SPApp extends Application {
 
         Scene scene = new Scene(root);
 
-        stage.setTitle("Ð£Ð½Ñ–Ð²ÐµÑ€ÑÐ°Ð»ÑŒÐ½Ðµ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð½Ðµ Ð·Ð°Ð±ÐµÐ·Ð¿ÐµÑ‡ÐµÐ½Ð½Ñ");
+        stage.setTitle("Óí³âåðñàëüíå ïðîãðàìíå çàáåçïå÷åííÿ");
         stage.setScene(scene);
         stage.setX(212);
-        stage.setY(20);
+        stage.setY(15);
         stage.show();
         stage.setOnCloseRequest(event -> {
             System.out.println("platform exit");

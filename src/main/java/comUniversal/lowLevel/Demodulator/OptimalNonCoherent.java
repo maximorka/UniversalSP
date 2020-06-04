@@ -1,15 +1,15 @@
 package comUniversal.lowLevel.Demodulator;
 
 import comUniversal.util.MyComplex;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
 
-public class OptimalNonCoherentDеmodulatorPsk {
+import java.util.ArrayList;
+import java.util.List;
+
+public class OptimalNonCoherent {
 
     private AutomaticFrequencyTuning automaticFrequencyTuning;
     private MovingAverage channelFilter;
@@ -17,7 +17,7 @@ public class OptimalNonCoherentDеmodulatorPsk {
     private Clocker clocker;
 
 
-    public OptimalNonCoherentDеmodulatorPsk(float relativeBaudRate){
+    public OptimalNonCoherent(float relativeBaudRate){
 
         automaticFrequencyTuning = new AutomaticFrequencyTuning();
         lineDelay = new LineDelay((int)(1.f/relativeBaudRate));

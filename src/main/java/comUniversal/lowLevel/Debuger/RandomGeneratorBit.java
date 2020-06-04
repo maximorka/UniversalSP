@@ -8,4 +8,6 @@ public class RandomGeneratorBit {
     public int get(){
         return random.nextInt(2);
     }
+
 }
+

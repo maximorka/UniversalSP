@@ -20,13 +20,13 @@ public class SendData {
 
     private boolean[] maskNumberCorespondent = Kasami.Kasami_31[10];// Команда номера кореспондента
     private boolean[] maskFrequencyGroup = Kasami.Kasami_31[11];// Команда перевідної групи
-    private boolean[] maskComand = Kasami.Kasami_31[12];// Команда Команди
-    //private boolean[] maskServiceMessage = Kasami.Kasami_31[13];// Команда службового повідомлення
+    //private boolean[] maskComand = Kasami.Kasami_31[12];// Команда Команди
+    private boolean[] maskServiceMessage = Kasami.Kasami_31[13];// Команда службового повідомлення
     private boolean[] maskRagiogram = Kasami.Kasami_31[14];// Команда радіограми
     private boolean[] maskSinh = Kasami.Kasami_31[15];// Синхро
 
-    private byte maskServiceMessage = 13;
-    private byte maskrRadiogr = 14;
+   // private byte maskServiceMessage = 13;
+   // private byte maskrRadiogr = 14;
 
     private static int countCadr = 0;
     private String numberCorespondent;
@@ -84,49 +84,43 @@ public class SendData {
         Thread sending = new Thread(() -> {
             int numberCor = Integer.parseInt(numberCorespondent);
 
+//КОМАНДА ТА НОМЕР КОРЕСПОНДЕНТА
+            sendCommandANDnumberCorespon(numberCor,command);
 //ПЕРЕВІДНА ЧАСТОТА
             if (frequencyTx != null) {
                 int freqTx = Integer.parseInt(frequencyTx);
-                for (int i = 0; i < repeat; i++) {
-                    createCadr(numberCor, freqTx);
-                }
-            }
-//КОМАНДА
-            if (command > 0 && serviceMessage == null && urlRadiogram == null) {
-                for (int i = 0; i < repeat; i++) {
-                    createCadr(numberCor,command,true);
-                }
+                sendMoveFrequency(freqTx);
             }
 //СЛУЖБОВЕ ПОВІДОМЛЕННЯ
             if (serviceMessage != null) {
-                String messageText = serviceMessage.replaceAll(" ", "");
-                int len = messageText.length();
-                byte[] message = new byte[len+1];
-                message[0]=maskServiceMessage;
-
-                for (int i = 0; i < len; i++) {
-                    int a = Integer.parseInt(String.valueOf(messageText.charAt(i)));
-                    message[i+1] = (byte) a;
-                }
-
-                createCadr(numberCor, message);
-                createCadr(numberCor, 111);// не потрібно
+//                String messageText = serviceMessage.replaceAll(" ", "");
+//                int len = messageText.length();
+//                byte[] message = new byte[len+1];
+//                //message[0]=maskServiceMessage;
+//
+//                for (int i = 0; i < len; i++) {
+//                    int a = Integer.parseInt(String.valueOf(messageText.charAt(i)));
+//                    message[i+1] = (byte) a;
+//                }
+//
+//                createCadr(numberCor, message);
+//                createCadr(numberCor, 111);// не потрібно
             }
 
 //РАДІОГРАМА
             if (urlRadiogram != null) {
-                String messageText = serviceMessage.replaceAll(" ", "");
-                int len = messageText.length();
-                byte[] message = new byte[len+1];
-                message[0]=maskrRadiogr;
-
-                for (int i = 0; i < len; i++) {
-                    int a = Integer.parseInt(String.valueOf(messageText.charAt(i)));
-                    message[i+1] = (byte) a;
-                }
-
-                createCadr(numberCor, message);
-                createCadr(numberCor, 111);// не потрібно
+//                String messageText = serviceMessage.replaceAll(" ", "");
+//                int len = messageText.length();
+//                byte[] message = new byte[len+1];
+//                //message[0]=maskrRadiogr;
+//
+//                for (int i = 0; i < len; i++) {
+//                    int a = Integer.parseInt(String.valueOf(messageText.charAt(i)));
+//                    message[i+1] = (byte) a;
+//                }
+//
+//                createCadr(numberCor, message);
+//                createCadr(numberCor, 111);// не потрібно
             }
         }
         );
@@ -172,6 +166,14 @@ public class SendData {
         createFrame(maskNumberCorespondent, numberCor);
         createFrame(message);
     }
+
+    public void sendCommandANDnumberCorespon(int numberCor, int Command){
+        createFrame(maskNumberCorespondent,numberCor, Command );
+    }
+    public void sendMoveFrequency(int frequency){
+        createFrame(maskFrequencyGroup,frequency );
+    }
+
     public void createFrame (boolean[] comand, int data){//move frequency
         boolean[] dataTx;
         byte DecThFr = (byte) (data / 10000);
@@ -207,20 +209,34 @@ public class SendData {
             byteSendQ.add(dataTx[i]);
         }
     }
-    public void createFrame (boolean[] maskNumberCor, int numberCor, int Command){
+
+    public void createFrame (boolean[] maskNumberCor, int numberCor, int Command){//command, number corespond
         boolean[] dataTx;
-        byte Sot = (byte) (numberCor / 100);
-        byte Dec = (byte) ((numberCor - Sot * 100) / 10);
-        byte Od = (byte) ((numberCor - Sot * 100 - Dec * 10));
 
         for (int i = 0; i < maskSinh.length; i++) {
             byteSendQ.add(maskSinh[i]);
         }
-
-
         for (int i = 0; i < maskNumberCor.length; i++) {
             byteSendQ.add(maskNumberCor[i]);
         }
+
+        //command
+        byte Dec = (byte) ((Command) / 10);
+        byte Od = (byte) ((Command - Dec * 10));
+        dataTx = Kasami.Kasami_31[Dec];
+        for (int i = 0; i < dataTx.length; i++) {
+            byteSendQ.add(dataTx[i]);
+        }
+        dataTx = Kasami.Kasami_31[Od];
+        for (int i = 0; i < dataTx.length; i++) {
+            byteSendQ.add(dataTx[i]);
+        }
+
+        //number corespondent
+        byte Sot = (byte) (numberCor / 100);
+        Dec = (byte) ((numberCor - Sot * 100) / 10);
+        Od = (byte) ((numberCor - Sot * 100 - Dec * 10));
+
         dataTx = Kasami.Kasami_31[Sot];
         for (int i = 0; i < dataTx.length; i++) {
             byteSendQ.add(dataTx[i]);
@@ -233,18 +249,8 @@ public class SendData {
         for (int i = 0; i < dataTx.length; i++) {
             byteSendQ.add(dataTx[i]);
         }
-        Dec = (byte) ((Command - Sot * 100) / 10);
-        Od = (byte) ((Command - Sot * 100 - Dec * 10));
-        dataTx = Kasami.Kasami_31[Dec];
-        for (int i = 0; i < dataTx.length; i++) {
-            byteSendQ.add(dataTx[i]);
-        }
-        dataTx = Kasami.Kasami_31[Od];
-        for (int i = 0; i < dataTx.length; i++) {
-            byteSendQ.add(dataTx[i]);
-        }
     }
-    public void createFrame (byte[] data){
+    public void createFrame (byte[] data){//every symbol data
         boolean[] dataTx;
         int count = 0;
 
@@ -295,7 +301,11 @@ public class SendData {
         }
     }
 
-    public static int getCountCadr(){
-        return countCadr;
+    public int getBit(){
+        if(byteSendQ.size()==0 || byteSendQ ==null ){
+            return -1;
+        }else {
+            return byteSendQ.poll()?1:0;
+        }
     }
 }

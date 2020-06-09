@@ -2,93 +2,111 @@ package comUniversal.ui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-
+import javafx.scene.layout.Pane;
+import javafx.scene.text.TextFlow;
+import org.fxmisc.richtext.InlineCssTextArea;
 //import javafx.css.Style;
 
 public class InformationWindow {
-    public static TextArea message100;
-    public static TextArea message250;
+    public static InlineCssTextArea message;
+    public static InlineCssTextArea numberGroup;
 
     @FXML
     private TextArea messageReceived100;
     @FXML
-    private TextArea messageReceived250;
+    private TextFlow m;
     @FXML
-    private ScrollPane pane;
+    private Button q;
+    @FXML
+    private Pane oldPane;
+    @FXML
+    private Pane newPane;
     @FXML
     private TextArea qwerty;
     int countSymbol=0;
-    int countSymbol250=0;
-TextArea textArea;
-String text;
+
+    public InlineCssTextArea special;
+    public InlineCssTextArea number;
+
+    private static final String ERROR_STYLE = "-fx-fill: red; -fx-font-family: Consolas; -fx-font-size: 14;";
+    private static final String WARN_STYLE = "-fx-fill: black; -fx-font-family: Consolas; -fx-font-size: 14;";
+    private static final String NUMB_STYLE = "-fx-fill: blue; -fx-font-family: Consolas; -fx-font-size: 14;";
+
     @FXML
     public void initialize() {
 
+
         System.out.println("initialize() information window");
         //txProgressBar = new ProgressBar();
-        message100 = new TextArea();
-        message100 = messageReceived100;
-        message250 = new TextArea();
-        message250 = messageReceived250;
+        message = new InlineCssTextArea();
+        message = special;
+        numberGroup = new InlineCssTextArea();
+        numberGroup = number;
 
-        messageReceived100.setEditable(true);
-        messageReceived250.setEditable(true);
+
+
+//        messageReceived100.setEditable(true);
+
     }
-    public void setTextMessage(int data, int speed) {
-        String newLine = System.getProperty("line.separator");
-        String tmp = Integer.toString(data);
-        if (speed == 100) {
-            if (tmp.equals("10")) {
-                Platform.runLater(() -> {
-                    message100.appendText("*");
-                });
-            } else {
-                Platform.runLater(() -> {
-                    message100.appendText(tmp);
-                });
-            }
 
-            countSymbol++;
-            if (countSymbol % 5 == 0) {
-                Platform.runLater(() -> {
-                    message100.appendText(" ");
-                });
+    public void setTextMessage(int data) {
 
-            }
-            if (countSymbol % 50 == 0) {
-                //int countgroup = countSymbol/5;
-                Platform.runLater(() -> {
-                    message100.appendText("\n");
-                });
-            }
+        String tmp = String.valueOf(data);
+
+        if (tmp.equals("10")) {
+            Platform.runLater(() -> {
+
+                // получаем границы нового сообещения
+                int from = message.getLength();
+                //System.out.println("from:"+from);
+                int to = from + 1;
+                //System.out.println("to:"+to);
+                // добавили сообещние
+                message.appendText("*");
+                // указали для него стиль
+                message.setStyle(from, to, ERROR_STYLE);
+            });
+        } else {
+            Platform.runLater(() -> {
+                // получаем границы нового сообещения
+                int from = message.getLength();
+                int to = from + 1;
+                // добавили сообещние
+                message.appendText(tmp);
+                // указали для него стиль
+                message.setStyle(from, to, WARN_STYLE);
+            });
         }
-        if (speed == 250) {
-            if (tmp.equals("10")) {
-                Platform.runLater(() -> {
-                    message250.appendText("*");
-                });
-            } else {
-                Platform.runLater(() -> {
-                    message250.appendText(tmp);
-                });
-            }
 
-            countSymbol250++;
-            if (countSymbol250 % 5 == 0) {
-                Platform.runLater(() -> {
-                    message250.appendText(" ");
-                });
+        countSymbol++;
+        if (countSymbol % 5 == 0) {
+            Platform.runLater(() -> {
+                // получаем границы нового сообещения
+                int from = message.getLength();
+                int to = from + 1;
+                // добавили сообещние
+                message.appendText(" ");
+                // указали для него стиль
+                message.setStyle(from, to, WARN_STYLE);
+            });
 
-            }
-            if (countSymbol250 % 50 == 0) {
-                //int countgroup = countSymbol/5;
-                Platform.runLater(() -> {
-                    message250.appendText("\n");
-                });
-            }
         }
+        Platform.runLater(() -> {
+
+           if( message.getCurrentLineEndInParargraph()%60==0){
+               String num = String.valueOf(message.getCurrentLineEndInParargraph()/6);
+               if(num.equals(10)){
+                   numberGroup.deleteText(0,message.getCurrentLineEndInParargraph());
+               }
+               int from = numberGroup.getLength();
+               int to = from + 2;
+               numberGroup.appendText(num);
+               numberGroup.setStyle(from, to, NUMB_STYLE);
+           }
+        });
+
     }
 
 }

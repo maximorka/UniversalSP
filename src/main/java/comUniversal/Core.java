@@ -1,12 +1,10 @@
 package comUniversal;
 
-import comUniversal.lowLevel.Debuger.Debuger;
+import comUniversal.deviceLevel.Dev;
 import comUniversal.ui.InformationWindow;
 import comUniversal.ui.MainUI;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransmitterUPSWindowUI;
-
-import java.io.IOException;
 
 public class Core {
     private static Core core = new Core();
@@ -27,6 +25,7 @@ public class Core {
     public int countConectedDevice = 0;
     public Device device[]=new Device[2];
     private long index;
+    public Dev dev;
     /**
      * Повертає унікальний екземпляр "ядра"
      *
@@ -40,29 +39,31 @@ public class Core {
         @Override
         public void run() {
 
-            while (!(Core.getCore().device[0].ethernetDriver.isConect()||Core.getCore().device[1].ethernetDriver.isConect())) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            while (true) {
-                    if (running) {
-                        if (Core.getCore().device[0].ethernetDriver.isConect()) {
-                            device[0].getParamsTx();
-                        }
-                        if (Core.getCore().device[1].ethernetDriver.isConect()) {
-                            device[1].getParamsRx();
-                        }
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+
+//            while (!(Core.getCore().device[0].ethernetDriver.isConect()||Core.getCore().device[1].ethernetDriver.isConect())) {
+//                try {
+//                    Thread.sleep(100);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            while (true) {
+//                    if (running) {
+//                        if (Core.getCore().device[0].ethernetDriver.isConect()) {
+//                            device[0].getParamsTx();
+//                        }
+//                        if (Core.getCore().device[1].ethernetDriver.isConect()) {
+//                            device[1].getParamsRx();
+//                        }
+//                        try {
+//                            Thread.sleep(2000);
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
             }
         }
     public void setRunning(boolean running) {
@@ -104,8 +105,8 @@ public class Core {
 //        modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
 //        groupAdd.addRadiogramPercentListener(percent -> informationWindow.updatePercentRadiogram(percent));
 
-        update = new Update();
-        update.start();
+        //update = new Update();
+        //update.start();
 
     }
     public boolean setDriverConnect(boolean ifConnect, String typeRx, String typeTx, int typeProg) {
@@ -126,6 +127,7 @@ public class Core {
         }
         return state;
     }
-
-
+    public void createClassKylym(){
+        dev = new Dev();
+    }
 }

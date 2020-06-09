@@ -14,7 +14,6 @@ public class KylymDecoder {
     //private RandomGeneratorBit randomGeneratorBit = new RandomGeneratorBit();
     private final int windowLength = 150;
     private final float bitErrorRate = 0.1f;
-    private int speed = 100;
 
     private Queue<Integer> data = new ArrayDeque<>();
     private int bufInput[] = new int[windowLength];
@@ -90,8 +89,11 @@ public class KylymDecoder {
         else if(Arrays.equals(numberRecovery, N7)) {result = 7;}
         else if(Arrays.equals(numberRecovery, N8)) {result = 8;}
         else if(Arrays.equals(numberRecovery, N9)) {result = 9;}
+
+
         return  result;
     }
+
 
     private int[] recovery(int[] data){
         int[] out = new int[data.length];
@@ -141,8 +143,7 @@ public class KylymDecoder {
         //data.add(bitError.get(input));
     }
 
-    public KylymDecoder(int speed) {
-        this.speed = speed;
+    public KylymDecoder() {
         maxGroupValue = Integer.parseInt(Params.SETTINGS.getString("group_print", "40"));
         workingThread.start();
     }
@@ -168,7 +169,7 @@ public class KylymDecoder {
         System.arraycopy(bufInput, 0, groupArray, 0, 30);
         int[] group = toGroup(groupArray);
         for (int number : group)
-            Core.getCore().informationWindow.setTextMessage(number,speed);
+            Core.getCore().informationWindow.setTextMessage(number);
     }
 
     public void symbolForBit() {

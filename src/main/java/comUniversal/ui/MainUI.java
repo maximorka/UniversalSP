@@ -24,7 +24,7 @@ public class MainUI {
     Stage stageRx = new Stage();
     Stage stageTx = new Stage();
     public static Button connect;
-
+    public static ChoiceBox modeWork;
 
     @FXML
     private Label rxLabel;
@@ -49,6 +49,10 @@ public class MainUI {
         connect = new Button();
         connect =  connectButton;
         connectButton.setDisable(true);
+
+        modeWork =new ChoiceBox();
+        modeWork = modeWorkChoicebox;
+
 
         rxLabel.setDisable(true);
         typeRxChoicebox.setDisable(true);
@@ -98,7 +102,7 @@ public class MainUI {
                     typeRxChoicebox.setDisable(false);
                 }else if(modeWorkChoicebox.getValue() == "Молот"){
                     FXMLLoader fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(getClass().getResource("/InformationMolot.fxml"));
+                    fxmlLoader.setLocation(getClass().getResource("/Information.fxml"));
 
                     Scene scene = null;
                     try {
@@ -146,6 +150,7 @@ public class MainUI {
                     stageRx.setTitle("Приймач");
                     stageRx.setScene(scene);
                     stageRx.show();
+                    Core.getCore().createClassKylym();
                     connectButton.setDisable(false);
 
                 }else if(typeRxChoicebox.getValue() == "Відсутній"){
@@ -201,9 +206,11 @@ public class MainUI {
                 String con = "-fx-background-color: #00cd00";
 
                int typeProgram = modeWorkChoicebox.getValue()=="Килим"?1:0;
-                if (connectButton.getStyle() != con) {
 
-                    if(Core.getCore().setDriverConnect(true, typeRxChoicebox.getValue().toString(),typeTxChoicebox.getValue().toString(),typeProgram)) {
+
+                if (connectButton.getStyle() != con) {
+//
+                   if( Core.getCore().dev.conect("kylym")) {
                         Platform.runLater(() -> {
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
@@ -216,10 +223,12 @@ public class MainUI {
                             Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
                             Core.getCore().receiverUPSWindowUI.updateVisibility(false);
                         });
-                    }
-                } else {
+                 }
+               } else {
+//
+//                    Core.getCore().setDriverConnect(false, "","",typeProgram);
 
-                    Core.getCore().setDriverConnect(false, "","",typeProgram);
+                    Core.getCore().dev.disConect("kylym");
                     Platform.runLater(()-> {
                         connectButton.setText("Підключитись");
                         connectButton.setStyle("-fx-background-color: #c0ae9d");
@@ -232,11 +241,9 @@ public class MainUI {
                         Core.getCore().transmitterUPSWindowUI.updateVisibility(true);
                         Core.getCore().receiverUPSWindowUI.updateVisibility(true);
                     });
-                }
+               }
             }
         });
-
-        Core.getCore().setRunning(true);
 
     }
 

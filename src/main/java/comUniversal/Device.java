@@ -13,6 +13,7 @@ import comUniversal.lowLevel.Modulator.ModulatorPsk;
 import comUniversal.ui.InformationWindow;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransmitterUPSWindowUI;
+import org.apache.commons.math3.complex.Complex;
 
 import java.io.IOException;
 
@@ -57,7 +58,7 @@ public class Device {
             driverHorizon = new DriverHorizon();
 
             groupAdd = new GroupAdd();
-            kylymDecoder100 = new KylymDecoder();
+            kylymDecoder100 = new KylymDecoder(100);
             kylymDecoder100.setRunning(true);
 
             modulatorPsk = new ModulatorPsk();
@@ -88,7 +89,7 @@ public class Device {
             //driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
 
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk100.demodulate(sempl));
-            optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
+            //optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
 
 
@@ -176,10 +177,10 @@ public class Device {
             //demodulatorPsk = new DemodulatorPsk(100.f, 3000.f);
 
             optimalNonCoherentDеmodulatorPsk100 = new OptimalNonCoherent(100.f/3000.f);
-            kylymDecoder100 = new KylymDecoder();
+            kylymDecoder100 = new KylymDecoder(100);
             kylymDecoder100.setRunning(true);
             optimalNonCoherentDеmodulatorPsk250 = new OptimalNonCoherent(250.f/3000.f);
-            kylymDecoder250 = new KylymDecoder();
+            kylymDecoder250 = new KylymDecoder(250);
             kylymDecoder250.setRunning(true);
 
             ethernetDriver.clearReceiverListener();
@@ -196,7 +197,8 @@ public class Device {
 
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk100.demodulate(sempl));
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk250.demodulate(sempl));
-            driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+            driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
+            //optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
 
             //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
@@ -226,9 +228,15 @@ public class Device {
         driverHorizon.ddcGetMode();
     }
     public void getParamsRx() {
-        driverHorizon.ddcGetFrequency();
-        driverHorizon.ddcGetWidth();
-        driverHorizon.ddcGetMode();
+        if(driverHorizon!= null){
+
+            driverHorizon.ddcGetFrequency();
+            driverHorizon.ddcGetWidth();
+            driverHorizon.ddcGetMode();
+        }else {
+            System.out.println("driverHor null");
+        }
+
     }
     public void getParamsTx() {
         driverHorizon.ducGetFrequency();

@@ -24,6 +24,7 @@ public class InformationWindow {
         messageReceived100.setEditable(true);
     }
     public void setTextMessage(int data) {
+
         String tmp = Integer.toString(data);
             if (tmp.equals("10")) {
                 Platform.runLater(() -> {

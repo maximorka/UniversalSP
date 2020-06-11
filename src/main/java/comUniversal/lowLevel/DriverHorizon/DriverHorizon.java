@@ -204,6 +204,12 @@ public class DriverHorizon {
 
     // Inertface
     public void ethernetSet(int ip, int mask, int port, int gateWay){
+
+        System.out.println("ip = " + ip);
+        System.out.println("mask = " + mask);
+        System.out.println("port = " + port);
+        System.out.println("gateWay = " + gateWay);
+
          sendCommand(ethernet_set, ip, mask, port, gateWay);
     }
     public void ethernetGet(){sendCommand(ethernet_get);}

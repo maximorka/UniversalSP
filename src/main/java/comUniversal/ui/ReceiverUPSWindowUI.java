@@ -116,46 +116,46 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
                 int ip = ByteBuffer.wrap(ipBytes).getInt();
                 int maskInt = ByteBuffer.wrap(maskBytes).getInt();
                 int get = ByteBuffer.wrap(gatewayBytes).getInt();
-                if(Core.getCore().device[0].driverHorizon != null){
-                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].kylymDecoder100.setRunning(false);
-                    Core.getCore().countConectedDevice = 0;
-                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
-                    changeSettingsIPbutton.setDisable(true);
-
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    changeSettingsIPbutton.setDisable(false);
-                    Core.getCore().device[0].bufferController.setWorkingThread(false);
-                    Core.getCore().device[0].ethernetDriver.closeSocket();
-                    Core.getCore().mainUI.setConnectButton();
-                }else{
-                    Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
-                    Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[1].kylymDecoder100.setRunning(false);
-
-                    //Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-
-                    Core.getCore().countConectedDevice = 0;
-                    Core.getCore().device[1].driverHorizon.ethernetSet(ip,maskInt,port,get);
-                    changeSettingsIPbutton.setDisable(true);
-
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    changeSettingsIPbutton.setDisable(false);
-                    //Core.getCore().device[0].bufferController.setWorkingThread(false);
-
-                    //Core.getCore().device[0].ethernetDriver.closeSocket();
-                    Core.getCore().device[1].ethernetDriver.closeSocket();
-                    Core.getCore().mainUI.setConnectButton();
-                }
+//                if(Core.getCore().device[0].driverHorizon != null){
+//                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
+//                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
+//                    Core.getCore().device[0].kylymDecoder100.setRunning(false);
+//                    Core.getCore().countConectedDevice = 0;
+//                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
+//                    changeSettingsIPbutton.setDisable(true);
+//
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                    changeSettingsIPbutton.setDisable(false);
+//                    Core.getCore().device[0].bufferController.setWorkingThread(false);
+//                    Core.getCore().device[0].ethernetDriver.closeSocket();
+//                    Core.getCore().mainUI.setConnectButton();
+//                }else{
+//                    Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
+//                    Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
+//                    Core.getCore().device[1].kylymDecoder100.setRunning(false);
+//
+//                    //Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
+//
+//                    Core.getCore().countConectedDevice = 0;
+//                    Core.getCore().device[1].driverHorizon.ethernetSet(ip,maskInt,port,get);
+//                    changeSettingsIPbutton.setDisable(true);
+//
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                    changeSettingsIPbutton.setDisable(false);
+//                    //Core.getCore().device[0].bufferController.setWorkingThread(false);
+//
+//                    //Core.getCore().device[0].ethernetDriver.closeSocket();
+//                    Core.getCore().device[1].ethernetDriver.closeSocket();
+//                    Core.getCore().mainUI.setConnectButton();
+//                }
 
 
             }

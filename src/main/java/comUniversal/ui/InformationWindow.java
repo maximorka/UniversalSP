@@ -17,6 +17,7 @@ public class InformationWindow {
     public static Label freqReceive;
     public static Label spLabel;
     public static Label frLabel;
+    public static Label status;
     @FXML
     private RadioButton receiveRadioButton;
     @FXML
@@ -27,6 +28,8 @@ public class InformationWindow {
     private Label speedL;
     @FXML
     private Label freqL;
+    @FXML
+    private Label statusLabel;
     @FXML
     private Pane oldPane;
     @FXML
@@ -61,16 +64,19 @@ public class InformationWindow {
         frLabel = new Label();
         frLabel = freqL;
 
+        status = new Label();
+        status = statusLabel;
+
     }
 
 
-    public void setTextMessage(int data,String speed) {
+    public void setTextMessage(int data) {
         String tmp = String.valueOf(data);
 
         if (tmp.equals("10")) {
             Platform.runLater(() -> {
+                //speedReceive.setText(speed);
 
-                speedReceive.setText(speed);
                 //numberM.appendText("*");
                 // получаем границы нового сообещения
                 int from = message.getLength();
@@ -85,7 +91,7 @@ public class InformationWindow {
         } else {
             Platform.runLater(() -> {
 
-                speedReceive.setText(speed);
+                //speedReceive.setText(speed);
                 // получаем границы нового сообещения
                 int from = message.getLength();
                 int to = from + 1;
@@ -129,11 +135,20 @@ public class InformationWindow {
 
     }
 
-    public void setFl(boolean flag){
+    public void setAlgoritm(int algoritm, int speed){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                receiveFlag.setSelected(flag);
+                status.setText("");
+                speedReceive.setText("");
+                if(algoritm == 1){
+                    status.setText("Прийом");
+                    speedReceive.setText(Integer.toString(speed));
+                } else if(algoritm == 2){
+                    status.setText("Очікування");
+                    speedReceive.setText(Integer.toString(speed));
+                }
+
             }
         });
     }
@@ -141,13 +156,14 @@ public class InformationWindow {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                if(receiveFlag.isSelected()){
                     int fr =  (int) freq;
                     freqReceive.setText(Integer.toString(fr));
-                }
+
             }
         });
     }
+
+
 
 }
 

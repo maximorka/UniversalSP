@@ -1,6 +1,5 @@
 package comUniversal.lowLevel.Demodulator;
 
-import comUniversal.Core;
 import comUniversal.util.MyComplex;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
@@ -14,28 +13,38 @@ public class OptimalNonCoherent {
 
     private AutomaticFrequencyTuning automaticFrequencyTuning;
     private MovingAverage channelFilter;
-    private LineDelay lineDelay;
     private Clocker clocker;
     private Pll pll;
-    private Complex lastSempl;
-    private Agc agc;
+
+    // Listeners DdcFrequency
+    private List<FrequencyListener> frequencyListeners= new ArrayList<>();
+
+    public void addFrequencyListener(FrequencyListener listener){frequencyListeners.add(listener);}
+
+    public void clearFrequencyListener(){frequencyListeners.clear();}
+
+    private void toListenersFrequency(float frequency){
+        if(!frequencyListeners.isEmpty())
+            for(FrequencyListener listener: frequencyListeners)
+                listener.frequency(frequency);
+    }
 
 
     public OptimalNonCoherent(float relativeBaudRate){
         automaticFrequencyTuning = new AutomaticFrequencyTuning();
-        lineDelay = new LineDelay((int) (1.f / relativeBaudRate));
         channelFilter = new MovingAverage((int) (1.f / relativeBaudRate));
         clocker = new Clocker(relativeBaudRate);
         pll = new Pll();
-        agc = new Agc(1.f, 0.01f, 40, -10);
+        automaticFrequencyTuning.addFrequencyListener(new FrequencyListener() {
+            @Override
+            public void frequency(float f) {
+                toListenersFrequency(f);
+            }
+        });
     }
 
-    public float getFrequencyShift(){
-        return automaticFrequencyTuning.getFrequencyShift();
-    }
 
     public void setRelativeBaudRate(float relativeBaudRate) {
-        lineDelay = new LineDelay((int) (1.f / relativeBaudRate));
         channelFilter = new MovingAverage((int) (1.f / relativeBaudRate));
         clocker.setRelativeBaudRate(relativeBaudRate);
     }
@@ -77,17 +86,13 @@ public class OptimalNonCoherent {
         Complex inSempl = new Complex(sempl.re, sempl.im);
         Complex outAft = automaticFrequencyTuning.tuning(inSempl);
 
-//        float gainAgc = agc.get();
-//        Complex outAgc = outAft.multiply(gainAgc);
         Complex outVco = pll.get();
         Complex outPll = outAft.multiply(outVco);
         Complex outCf = channelFilter.average(outPll);
 
         if(clocker.update(outCf)) {
-//            agc.update(outCf);
             pll.udate(outCf);
             toListenersSymbol(clocker.getBit());
-//            toListenersIq(outCf);
         }
 
 
@@ -172,8 +177,16 @@ class AutomaticFrequencyTuning {
     private float accumVco, phaseVco;
     private int timeTuning, semplCounter;
     private Complex[] inFft, outFft, collect;
+    private  float frequencyOld = 0;
 
+    private FrequencyListener frequencyListener;
+    public void addFrequencyListener(FrequencyListener listener){
+        this.frequencyListener = listener;
+    }
 
+    public float getFrequency(){
+        return this.frequency;
+    }
     public AutomaticFrequencyTuning(){
         int lengthFft = 16384;
         timeTuning = 3000 / 10;
@@ -233,8 +246,14 @@ class AutomaticFrequencyTuning {
 
             float relativeFrequency = (float) index / (float) outFft.length / 2.f;
 
+
             this.frequency = 3000.f * relativeFrequency;
 
+            if(frequency!=frequencyOld) {
+                frequencyOld = frequency;
+                if(frequencyListener!=null)
+                    frequencyListener.frequency(frequencyOld);
+            }
             phaseVco = 2.f * (float) Math.PI * -relativeFrequency;
 
         }

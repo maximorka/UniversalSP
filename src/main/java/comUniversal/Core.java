@@ -23,7 +23,7 @@ public class Core {
     private Update update;
     private boolean running = false;
     public int countConectedDevice = 0;
-    public Device device[]=new Device[2];
+    //public Device device[]=new Device[2];
     private long index;
     public Dev dev;
     //public Program program;
@@ -75,8 +75,8 @@ public class Core {
     private Core(){
 
 
-        device[0] = new Device();
-        device[1] = new Device();
+        //device[0] = new Device();
+       // device[1] = new Device();
 //        groupAdd = new GroupAdd();
 //        this.ethernetDriver = new EthernetDriver();
 //        driverHorizon = new DriverHorizon();
@@ -112,24 +112,24 @@ public class Core {
         //update.start();
 
     }
-    public boolean setDriverConnect(boolean ifConnect, String typeRx, String typeTx, int typeProg) {
-        boolean state = false;
-        System.out.println("RX: "+typeRx+" TX"+typeTx+" Prog"+typeProg);
-
-        if(typeProg==1){
-            state = device[1].initRx(typeRx,typeProg,"PSK","100",receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
-            countConectedDevice =state?1:0;
-        }
-        else if (receiverUPSWindowUI.getIP().equals(transmitterUPSWindowUI.getIP())){
-            state = device[0].initRxTx(typeRx,typeProg,"PSK","100","PSK","100",transmitterUPSWindowUI,receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
-            countConectedDevice = state?1:0;
-        }else {
-            state  = device[0].initTx(typeTx,typeProg,"PSK","100",transmitterUPSWindowUI,informationWindow,transmitterUPSWindowUI.getIP(),ifConnect);
-            state &= device[1].initRx(typeRx,typeProg,"PSK","100",receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
-            countConectedDevice =state?2:0;
-        }
-        return state;
-    }
+//    public boolean setDriverConnect(boolean ifConnect, String typeRx, String typeTx, int typeProg) {
+//        boolean state = false;
+//        System.out.println("RX: "+typeRx+" TX"+typeTx+" Prog"+typeProg);
+//
+//        if(typeProg==1){
+//            state = device[1].initRx(typeRx,typeProg,"PSK","100",receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
+//            countConectedDevice =state?1:0;
+//        }
+//        else if (receiverUPSWindowUI.getIP().equals(transmitterUPSWindowUI.getIP())){
+//            state = device[0].initRxTx(typeRx,typeProg,"PSK","100","PSK","100",transmitterUPSWindowUI,receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
+//            countConectedDevice = state?1:0;
+//        }else {
+//            state  = device[0].initTx(typeTx,typeProg,"PSK","100",transmitterUPSWindowUI,informationWindow,transmitterUPSWindowUI.getIP(),ifConnect);
+//            state &= device[1].initRx(typeRx,typeProg,"PSK","100",receiverUPSWindowUI,informationWindow,receiverUPSWindowUI.getIP(),ifConnect);
+//            countConectedDevice =state?2:0;
+//        }
+//        return state;
+//    }
     public void createClassKylym(){
         dev = new Dev();
     }

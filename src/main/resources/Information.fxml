@@ -38,7 +38,7 @@
                      <children>
                         <AnchorPane prefHeight="22.0" prefWidth="50.0">
                            <children>
-                              <RadioButton fx:id="receiveRadioButton" layoutX="23.0" layoutY="3.0" mnemonicParsing="false" stylesheets="@css/Main.css" />
+                              <Label fx:id="statusLabel" text="Label" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="22.0" prefWidth="48.0">

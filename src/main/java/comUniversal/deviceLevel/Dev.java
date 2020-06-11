@@ -34,21 +34,27 @@ public class Dev extends Program {
         driverHorizon = new DriverHorizon();
         optimalNonCoherentDåmodulatorPsk100 = new OptimalNonCoherent(100.f/3000.f);
         kylymDecoder100 = new KylymDecoder(100);
-        kylymDecoder100.setRunning(true);
+
         optimalNonCoherentDåmodulatorPsk250 = new OptimalNonCoherent(250.f/3000.f);
         kylymDecoder250 = new KylymDecoder(250);
-        kylymDecoder250.setRunning(true);
+
 
         driverHorizon.addDdcMode(data -> Core.getCore().receiverUPSWindowUI.getModeRx(data));
         driverHorizon.addDdcWidth(data -> Core.getCore().receiverUPSWindowUI.getWidthRx(data));
         driverHorizon.addDdcFrequency(data -> Core.getCore().receiverUPSWindowUI.getFrequencyRx(data));
 
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
-        driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
+       // driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
 
         optimalNonCoherentDåmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
         optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
+
+        //optimalNonCoherentDåmodulatorPsk100.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
+
+        //kylymDecoder100.addMessageListener(symbol -> Core.getCore().informationWindow.setTextMessage(symbol));
+        //kylymDecoder250.addMessageListener(symbol -> Core.getCore().informationWindow.setTextMessage(symbol));
+        //kylymDecoder100.addAlgoritmListener((algoritm, speed) -> Core.getCore().informationWindow.setAlgoritm(algoritm, speed));
 
         update = new Update();
         update.start();

@@ -1,12 +1,11 @@
 
 package comUniversal.ui;
 
-        import comUniversal.Core;
         import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
 import comUniversal.ui.setting.ParamsSettings;
-        import comUniversal.util.EthernetUtils;
-        import comUniversal.util.Params;
+import comUniversal.util.EthernetUtils;
+import comUniversal.util.Params;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,8 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.InetAddress;
-        import java.nio.ByteBuffer;
-        import java.util.ArrayList;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransmitterUPSWindowUI implements ParamsSettings {
@@ -89,7 +88,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
             public void handle(ActionEvent actionEvent) {
                 int frequency = Integer.parseInt(txFrequencyTextField.getText());
 
-                    Core.getCore().device[0].driverHorizon.ducSetFrequency(frequency);
+                    //Core.getCore().device[0].driverHorizon.ducSetFrequency(frequency);
 
 
             }
@@ -109,49 +108,49 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
                 int ip = ByteBuffer.wrap(ipBytes).getInt();
                 int maskInt = ByteBuffer.wrap(maskBytes).getInt();
                 int get = ByteBuffer.wrap(gatewayBytes).getInt();
-                if(Core.getCore().countConectedDevice == 1){
-
-                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].kylymDecoder100.setRunning(false);
-                    Core.getCore().countConectedDevice = 0;
-                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
-                    changeSettingsIPbutton.setDisable(true);
-
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    changeSettingsIPbutton.setDisable(false);
-                    Core.getCore().device[0].bufferController.setWorkingThread(false);
-                    Core.getCore().device[0].ethernetDriver.closeSocket();
-                    Core.getCore().mainUI.setConnectButton();
-                }else{
-
-                    Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
-                    Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[1].kylymDecoder100.setRunning(false);
-
-                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
-
-                    Core.getCore().countConectedDevice = 0;
-                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
-                    changeSettingsIPbutton.setDisable(true);
-
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    changeSettingsIPbutton.setDisable(false);
-                    Core.getCore().device[0].bufferController.setWorkingThread(false);
-
-                    Core.getCore().device[0].ethernetDriver.closeSocket();
-                    Core.getCore().device[1].ethernetDriver.closeSocket();
-                    Core.getCore().mainUI.setConnectButton();
-                }
+//                if(Core.getCore().countConectedDevice == 1){
+//
+//                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
+//                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
+//                    Core.getCore().device[0].kylymDecoder100.setRunning(false);
+//                    Core.getCore().countConectedDevice = 0;
+//                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
+//                    changeSettingsIPbutton.setDisable(true);
+//
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                    changeSettingsIPbutton.setDisable(false);
+//                    Core.getCore().device[0].bufferController.setWorkingThread(false);
+//                    Core.getCore().device[0].ethernetDriver.closeSocket();
+//                    Core.getCore().mainUI.setConnectButton();
+//                }else{
+//
+//                    Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
+//                    Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
+//                    Core.getCore().device[1].kylymDecoder100.setRunning(false);
+//
+//                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
+//                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
+//
+//                    Core.getCore().countConectedDevice = 0;
+//                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
+//                    changeSettingsIPbutton.setDisable(true);
+//
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                    changeSettingsIPbutton.setDisable(false);
+//                    Core.getCore().device[0].bufferController.setWorkingThread(false);
+//
+//                    Core.getCore().device[0].ethernetDriver.closeSocket();
+//                    Core.getCore().device[1].ethernetDriver.closeSocket();
+//                    Core.getCore().mainUI.setConnectButton();
+//                }
             }
         });
         //testIP();

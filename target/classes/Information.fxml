@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import org.fxmisc.richtext.*?>
 
@@ -33,6 +34,35 @@
                               <Insets top="3.0" />
                            </padding>
                         </InlineCssTextArea>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="44.0" prefWidth="542.0">
+                     <children>
+                        <AnchorPane prefHeight="22.0" prefWidth="50.0">
+                           <children>
+                              <RadioButton fx:id="receiveRadioButton" layoutX="23.0" layoutY="3.0" mnemonicParsing="false" stylesheets="@css/Main.css" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="22.0" prefWidth="48.0">
+                           <children>
+                              <Label fx:id="speedL" text="Швидкість" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="22.0" prefWidth="49.0">
+                           <children>
+                              <Label fx:id="speedReceiveLabel" layoutX="9.0" prefHeight="17.0" prefWidth="34.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="22.0" prefWidth="43.0">
+                           <children>
+                              <Label fx:id="freqL" text="Частота" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="22.0" prefWidth="63.0">
+                           <children>
+                              <Label fx:id="freqReceiveLabel" layoutX="8.0" prefHeight="17.0" prefWidth="55.0" />
+                           </children>
+                        </AnchorPane>
                      </children>
                   </HBox>
                </children>

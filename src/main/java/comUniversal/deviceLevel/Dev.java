@@ -8,8 +8,11 @@ import comUniversal.lowLevel.DriverEthernet.EthernetDriver;
 import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
+import org.apache.commons.math3.complex.Complex;
 
-public class Dev {
+import java.io.IOException;
+
+public class Dev extends Program {
     private Update update;
     public EthernetDriver ethernetDriver;
     private Debuger debuger;
@@ -23,14 +26,17 @@ public class Dev {
     public Dev(){
         this.ethernetDriver = new EthernetDriver();
 
-
+        try {debuger = new Debuger();} catch (
+                IOException e) {
+            System.out.println(e);
+        }
 
         driverHorizon = new DriverHorizon();
         optimalNonCoherentDåmodulatorPsk100 = new OptimalNonCoherent(100.f/3000.f);
-        kylymDecoder100 = new KylymDecoder();
+        kylymDecoder100 = new KylymDecoder(100);
         kylymDecoder100.setRunning(true);
         optimalNonCoherentDåmodulatorPsk250 = new OptimalNonCoherent(250.f/3000.f);
-        kylymDecoder250 = new KylymDecoder();
+        kylymDecoder250 = new KylymDecoder(250);
         kylymDecoder250.setRunning(true);
 
         driverHorizon.addDdcMode(data -> Core.getCore().receiverUPSWindowUI.getModeRx(data));
@@ -39,7 +45,7 @@ public class Dev {
 
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
-//      driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+        driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
 
         optimalNonCoherentDåmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
         optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
@@ -74,6 +80,35 @@ public class Dev {
             driverHorizon.ddcGetWidth();
             driverHorizon.ddcGetMode();
         }
+    }
+
+    @Override
+    public void fromReceiver(Complex sample) {
+
+    }
+
+    @Override
+    public void toTransiver(Complex sample) {
+
+    }
+
+    @Override
+    public boolean connect(String typeDevice) {
+        int port = typeDevice.equals("Ãîðèçîíò")?80:81;
+        boolean stateCon = ethernetDriver.doInit(Core.getCore().receiverUPSWindowUI.getIP(), port);
+        if(stateCon){
+            ethernetDriver.clearReceiverListener();
+            ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
+            driverHorizon.addTransferListener(data -> ethernetDriver.writeBytes(data));
+            driverHorizon.ddcSetWidth(Width.kHz_3);
+            driverHorizon.ddcSetMode(Mode.ENABLE);
+        }
+        return stateCon;
+    }
+
+    @Override
+    public int getData(int[] data) {
+        return 0;
     }
 
     class Update extends Thread {

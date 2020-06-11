@@ -26,6 +26,9 @@ public class Core {
     public Device device[]=new Device[2];
     private long index;
     public Dev dev;
+    //public Program program;
+    //public EthernetDriver ethernetDriver;
+    //public DriverHorizon driverHorizon= new DriverHorizon();
     /**
      * Повертає унікальний екземпляр "ядра"
      *

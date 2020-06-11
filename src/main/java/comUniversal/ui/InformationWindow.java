@@ -2,29 +2,35 @@ package comUniversal.ui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.TextFlow;
 import org.fxmisc.richtext.InlineCssTextArea;
 //import javafx.css.Style;
 
 public class InformationWindow {
     public static InlineCssTextArea message;
     public static InlineCssTextArea numberGroup;
-
+    public static RadioButton receiveFlag;
+    public static Label speedReceive;
+    public static Label freqReceive;
+    public static Label spLabel;
+    public static Label frLabel;
     @FXML
-    private TextArea messageReceived100;
+    private RadioButton receiveRadioButton;
     @FXML
-    private TextFlow m;
+    private Label speedReceiveLabel;
     @FXML
-    private Button q;
+    private Label freqReceiveLabel;
+    @FXML
+    private Label speedL;
+    @FXML
+    private Label freqL;
     @FXML
     private Pane oldPane;
     @FXML
     private Pane newPane;
-    @FXML
-    private TextArea qwerty;
+
     int countSymbol=0;
 
     public InlineCssTextArea special;
@@ -37,27 +43,32 @@ public class InformationWindow {
     @FXML
     public void initialize() {
 
-
         System.out.println("initialize() information window");
-        //txProgressBar = new ProgressBar();
         message = new InlineCssTextArea();
         message = special;
         numberGroup = new InlineCssTextArea();
         numberGroup = number;
-
-
-
-//        messageReceived100.setEditable(true);
+        receiveFlag = new RadioButton();
+        receiveFlag = receiveRadioButton;
+        speedReceive = new Label();
+        speedReceive = speedReceiveLabel;
+        freqReceive = new Label();
+        freqReceive = freqReceiveLabel;
+        spLabel = new Label();
+        spLabel = speedL;
+        frLabel = new Label();
+        frLabel = freqL;
 
     }
 
-    public void setTextMessage(int data) {
-
+    public void setTextMessage(int data,String speed) {
         String tmp = String.valueOf(data);
 
         if (tmp.equals("10")) {
             Platform.runLater(() -> {
 
+                speedReceive.setText(speed);
+                //numberM.appendText("*");
                 // получаем границы нового сообещения
                 int from = message.getLength();
                 //System.out.println("from:"+from);
@@ -70,6 +81,8 @@ public class InformationWindow {
             });
         } else {
             Platform.runLater(() -> {
+
+                speedReceive.setText(speed);
                 // получаем границы нового сообещения
                 int from = message.getLength();
                 int to = from + 1;
@@ -77,6 +90,7 @@ public class InformationWindow {
                 message.appendText(tmp);
                 // указали для него стиль
                 message.setStyle(from, to, WARN_STYLE);
+                //numberM.appendText(tmp);
             });
         }
 
@@ -90,24 +104,47 @@ public class InformationWindow {
                 message.appendText(" ");
                 // указали для него стиль
                 message.setStyle(from, to, WARN_STYLE);
+                //numberM.appendText(" ");
+
             });
 
         }
         Platform.runLater(() -> {
 
-           if( message.getCurrentLineEndInParargraph()%60==0){
-               String num = String.valueOf(message.getCurrentLineEndInParargraph()/6);
-               if(num.equals(10)){
-                   numberGroup.deleteText(0,message.getCurrentLineEndInParargraph());
-               }
-               int from = numberGroup.getLength();
-               int to = from + 2;
-               numberGroup.appendText(num);
-               numberGroup.setStyle(from, to, NUMB_STYLE);
-           }
+            if (message.getCurrentLineEndInParargraph() % 60 == 0) {
+                String num = String.valueOf(message.getCurrentLineEndInParargraph() / 6);
+                if (num.equals(10)) {
+                    numberGroup.deleteText(0, message.getCurrentLineEndInParargraph());
+                }
+                int from = numberGroup.getLength();
+                int to = from + 2;
+                numberGroup.appendText(num);
+                numberGroup.setStyle(from, to, NUMB_STYLE);
+            }
         });
 
     }
+
+    public void setFl(boolean flag){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                receiveFlag.setSelected(flag);
+            }
+        });
+    }
+    public void setFreq(float freq){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if(receiveFlag.isSelected()){
+                    int fr =  (int) freq;
+                    freqReceive.setText(Integer.toString(fr));
+                }
+            }
+        });
+    }
+
 
 }
 

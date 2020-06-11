@@ -76,6 +76,7 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
                 if(modeWorkChoicebox.getValue() == "Килим" ){
+
                     stageTx.close();
                     txLabel.setDisable(true);
                     typeTxChoicebox.setDisable(true);
@@ -209,7 +210,7 @@ public class MainUI {
 
 
                 if (connectButton.getStyle() != con) {
-//
+
                    if( Core.getCore().dev.conect("kylym")) {
                         Platform.runLater(() -> {
                             connectButton.setText("Відключитись");

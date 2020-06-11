@@ -246,4 +246,7 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
         ipTextField.setText(Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1"));
         //rxFrequencyTextField.setText(Params.SETTINGS.getString("rx_UPS_frequency", "128000"));
     }
+    public int getFr(){
+        return Integer.parseInt(freqRxText.getText());
+    }
 }

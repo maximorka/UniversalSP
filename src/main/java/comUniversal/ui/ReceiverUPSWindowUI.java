@@ -84,7 +84,7 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
             @Override
             public void handle(ActionEvent actionEvent) {
                 int frequency = Integer.parseInt(rxFrequencyTextField.getText());
-                if(Core.getCore().countConectedDevice == 1){
+                if(Core.getCore().device[0].driverHorizon != null){
                     Core.getCore().device[0].driverHorizon.ddcSetFrequency(frequency);
                 }else{
                     Core.getCore().device[1].driverHorizon.ddcSetFrequency(frequency);
@@ -109,7 +109,7 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
                 int ip = ByteBuffer.wrap(ipBytes).getInt();
                 int maskInt = ByteBuffer.wrap(maskBytes).getInt();
                 int get = ByteBuffer.wrap(gatewayBytes).getInt();
-                if(Core.getCore().countConectedDevice == 1){
+                if(Core.getCore().device[0].driverHorizon != null){
                     Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
                     Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
                     Core.getCore().device[0].kylymDecoder100.setRunning(false);
@@ -131,8 +131,8 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
                     Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
                     Core.getCore().device[1].kylymDecoder100.setRunning(false);
 
-                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
+                    //Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
+                   // Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
 
                     Core.getCore().countConectedDevice = 0;
                     Core.getCore().device[1].driverHorizon.ethernetSet(ip,maskInt,port,get);
@@ -144,9 +144,9 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
                         e1.printStackTrace();
                     }
                     changeSettingsIPbutton.setDisable(false);
-                    Core.getCore().device[0].bufferController.setWorkingThread(false);
+                    //Core.getCore().device[0].bufferController.setWorkingThread(false);
 
-                    Core.getCore().device[0].ethernetDriver.closeSocket();
+                    //Core.getCore().device[0].ethernetDriver.closeSocket();
                     Core.getCore().device[1].ethernetDriver.closeSocket();
                     Core.getCore().mainUI.setConnectButton();
                 }

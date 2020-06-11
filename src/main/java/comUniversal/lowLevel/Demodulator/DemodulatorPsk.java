@@ -89,7 +89,6 @@ class MovingAverage{
     public Complex average(Complex sempl){
         integrator = integrator.add(sempl);
         Complex last = lineDelay.delay(sempl);
-
         integrator = integrator.subtract(last);
         return new Complex(integrator.getReal() / window, integrator.getImaginary() / window);
     }
@@ -100,16 +99,17 @@ class Clocker{
     private String bitData;
     private LoopFilter loopFilter;
     private float relativeBaudRate, timer, timeError, halfRight, halfLeft;
-    private MyComplex lastSempl;
+    private Complex lastSempl;
     private int symbol;
+    private int lastBit = 0;
 
     public Clocker(float relativeBaudRate){
         this.relativeBaudRate = relativeBaudRate;
-        this.loopFilter = new LoopFilter(0.0001f, 0.00001f, 1.f/3000.f);
+        this.loopFilter = new LoopFilter(0.0001f, 0.00001f, 0.1f/3000.f);
         this.timer = 0.f;
         this.halfRight = 0.f;
         this.halfLeft = 0.f;
-        this.lastSempl = new MyComplex(0.f, 0.f);
+        this.lastSempl = new Complex(0.f, 0.f);
         this.timeError = 0.f;
         this.bitData = new String();
         this.symbol = 0;
@@ -120,7 +120,7 @@ class Clocker{
         this.timer = 0.f;
         this.halfRight = 0.f;
         this.halfLeft = 0.f;
-        this.lastSempl = new MyComplex(0.f, 0.f);
+        this.lastSempl = new Complex(0.f, 0.f);
         this.timeError = 0.f;
         this.bitData = new String();
         this.symbol = 0;
@@ -129,6 +129,8 @@ class Clocker{
     public int getBit(){
         return this.symbol;
     }
+
+    public float energy = 0;
 
     public boolean update(Complex sempl){
         boolean result = false;
@@ -142,6 +144,7 @@ class Clocker{
         timer += relativeBaudRate;
         timer += timeError;
 
+
         if (timer >= 1.f) {
             timer -= 1.f;
             result = true;
@@ -151,16 +154,26 @@ class Clocker{
             halfRight = 0.f;
             halfLeft = 0.f;
 
+
+            int currentBit = (sempl.getReal() >= 0.f)? 0 : 1;
+
+            symbol = (currentBit == lastBit)? 0 : 1;
+
+            lastBit = currentBit;
+//            Complex dif = sempl.multiply(lastSempl);
+//            lastSempl = new Complex(sempl.getReal(), sempl.getImaginary());
+
+
 //            MyComplex out = new MyComplex(0.f, 0.f);
 //            out.re = sempl.re * lastSempl.re + sempl.im * lastSempl.im;
 //            out.im = sempl.im * lastSempl.re - sempl.re * lastSempl.im;
 //            lastSempl = new MyComplex(sempl.re, sempl.im);
 
-            symbol = (sempl.getReal() >= 0.f)? 0 : 1;
-
+//            symbol = (dif.getReal() >= 0.f)? 0 : 1;
+//
 //            char s = (symbol == 0)? '0' : '1';
 //            bitData += s;
-//            if(bitData.length() == 36) {
+//            if(bitData.length() == 12*6) {
 //                System.out.println(bitData);
 //                bitData = new String();
 //            }

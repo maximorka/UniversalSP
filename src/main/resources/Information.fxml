@@ -12,8 +12,6 @@
 
 
 
-
-
             <VBox layoutY="1.0" prefHeight="219.0" prefWidth="542.0">
                <children>
                   <HBox prefHeight="219.0" prefWidth="542.0">
@@ -61,6 +59,7 @@
                         <AnchorPane prefHeight="22.0" prefWidth="63.0">
                            <children>
                               <Label fx:id="freqReceiveLabel" layoutX="8.0" prefHeight="17.0" prefWidth="55.0" />
+                              
                            </children>
                         </AnchorPane>
                      </children>

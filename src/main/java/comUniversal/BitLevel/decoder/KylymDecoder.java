@@ -13,7 +13,8 @@ public class KylymDecoder {
     //private BitError bitError = new BitError(0.05f);
     //private RandomGeneratorBit randomGeneratorBit = new RandomGeneratorBit();
     private final int windowLength = 294;
-    private final float bitErrorRate = 0.1f;
+
+    private final float bitErrorRate = 0.1f; // ! don't modify
 
     private Queue<Integer> data = new ArrayDeque<>();
     private int bufInput[] = new int[windowLength];
@@ -22,19 +23,8 @@ public class KylymDecoder {
     private int maxGroupValue;
     private int bitCounter;
     private boolean startReceive = false;
-    private int speed = 0;
-private boolean receive = false;
 
-//    private final int[] N1 = {1,0,0,1,0,0};
-//    private final int[] N2 = {1,0,1,1,1,0};
-//    private final int[] N3 = {1,0,1,0,1,1};
-//    private final int[] N4 = {1,1,1,0,1,0};
-//    private final int[] N5 = {1,1,1,1,1,1};
-//    private final int[] N6 = {1,1,0,1,0,1};
-//    private final int[] N7 = {0,0,1,0,0,1};
-//    private final int[] N8 = {0,1,0,0,1,0};
-//    private final int[] N9 = {0,1,0,1,1,1};
-//    private final int[] N0 = {0,1,1,1,0,1};
+    private int speed;
 
 
 
@@ -48,7 +38,7 @@ private boolean receive = false;
     private final int[] N8_rx = {0,1,0,0,1,0};
     private final int[] N9_rx = {0,1,0,1,1,0};
     private final int[] N0_rx = {0,1,1,1,0,0};
-//
+
 //    private final int[] N1 = {0,0,0,1,1,1};
 //    private final int[] N2 = {0,0,1,0,1,1};
 //    private final int[] N3 = {0,0,1,1,0,1};
@@ -70,7 +60,6 @@ private boolean receive = false;
              1, 0, 0, 0, 0, 1, // P
     };
 
-    private int bitCount = 0;
 
     private boolean compareToStandardSequence(int[] bitData) {
 
@@ -94,7 +83,9 @@ private boolean receive = false;
         int result = 10; // '*'
 
         //int[] numberRecovery = recovery(number);
+
         number[5]=0;
+
         if(Arrays.equals(number, N0_rx)) {result = 0;}
         else if(Arrays.equals(number, N1_rx)) {result = 1;}
         else if(Arrays.equals(number, N2_rx)) {result = 2;}
@@ -106,9 +97,72 @@ private boolean receive = false;
         else if(Arrays.equals(number, N8_rx)) {result = 8;}
         else if(Arrays.equals(number, N9_rx)) {result = 9;}
 
-
-        return  result;
+        return result;
     }
+
+//    private int correlation(int[] data) {
+//
+//        int[] errorCounter = {0,0,0,0,0,0,0,0,0,0};
+//
+//        for (int i = 0; i < 6; i++) {
+//            if (N0_rx[i] != data[i]) errorCounter[0]++;
+//            if (N1_rx[i] != data[i]) errorCounter[1]++;
+//            if (N2_rx[i] != data[i]) errorCounter[2]++;
+//            if (N3_rx[i] != data[i]) errorCounter[3]++;
+//            if (N4_rx[i] != data[i]) errorCounter[4]++;
+//            if (N5_rx[i] != data[i]) errorCounter[5]++;
+//            if (N6_rx[i] != data[i]) errorCounter[6]++;
+//            if (N7_rx[i] != data[i]) errorCounter[7]++;
+//            if (N8_rx[i] != data[i]) errorCounter[8]++;
+//            if (N9_rx[i] != data[i]) errorCounter[9]++;
+//        }
+//
+//        int minError = 6;
+//        int index = 0;
+//        for (int i = 0; i < 10; i++) {
+//            if(errorCounter[i] < minError){
+//                minError = errorCounter[i];
+//                index = i;
+//            }
+//        }
+//
+//        int numberClone = 0;
+//
+//        for (int i = 0; i < 10; i++)
+//            if (errorCounter[i] == minError)
+//                numberClone++;
+//
+//        if(numberClone == 1) {
+//            System.out.println("* найбільш схоше, що це цифра " + index);
+//        } else {
+//
+//            int[] numberRecovery = recovery(data);
+//
+//            numberRecovery[4] = inversBit(numberRecovery[4]);
+//
+//            int result = 10; // *
+//
+//            if(Arrays.equals(numberRecovery, N0)) {result = 0;}
+//            else if(Arrays.equals(numberRecovery, N1)) {result = 1;}
+//            else if(Arrays.equals(numberRecovery, N2)) {result = 2;}
+//            else if(Arrays.equals(numberRecovery, N3)) {result = 3;}
+//            else if(Arrays.equals(numberRecovery, N4)) {result = 4;}
+//            else if(Arrays.equals(numberRecovery, N5)) {result = 5;}
+//            else if(Arrays.equals(numberRecovery, N6)) {result = 6;}
+//            else if(Arrays.equals(numberRecovery, N7)) {result = 7;}
+//            else if(Arrays.equals(numberRecovery, N8)) {result = 8;}
+//            else if(Arrays.equals(numberRecovery, N9)) {result = 9;}
+//
+//            if(result == 10) {
+//                System.out.println("*");
+//            } else {
+//                System.out.println(result + " Символ відновлений!");
+//            }
+//
+//        }
+//
+//        return index;
+//    }
 
 
     private int[] recovery(int[] data){
@@ -186,7 +240,10 @@ private boolean receive = false;
         System.arraycopy(bufInput, 0, groupArray, 0, 30);
         int[] group = toGroup(groupArray);
         for (int number : group)
-            Core.getCore().informationWindow.setTextMessage(number,Integer.toString(speed));
+
+            Core.getCore().informationWindow.setTextMessage(number, Integer.toString(speed));
+
+
     }
 
     public void symbolForBit() {

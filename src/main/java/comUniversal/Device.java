@@ -13,6 +13,7 @@ import comUniversal.lowLevel.Modulator.ModulatorPsk;
 import comUniversal.ui.InformationWindow;
 import comUniversal.ui.ReceiverUPSWindowUI;
 import comUniversal.ui.TransmitterUPSWindowUI;
+import org.apache.commons.math3.complex.Complex;
 
 import java.io.IOException;
 
@@ -86,8 +87,10 @@ public class Device {
             driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
             bufferController.setSources(() -> modulatorPsk.getSempl());
             //driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk100.demodulate(sempl));
             //optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
+
 
 
             //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
@@ -191,11 +194,12 @@ public class Device {
 //      driverHorizon.addEthernetSettings((ip, mask, port, gateWay) -> transiverUPSWindow.updateEthernet(ip, mask, port, gateWay));
 
             //driverHorizon.addDdcIQ(sempl -> demodulatorPsk.demodulate(sempl));
+
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk100.demodulate(sempl));
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk250.demodulate(sempl));
-            driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+            driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
+            //optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
-//            optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
             //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
             optimalNonCoherentDеmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
@@ -228,6 +232,8 @@ public class Device {
             driverHorizon.ddcGetFrequency();
             driverHorizon.ddcGetWidth();
             driverHorizon.ddcGetMode();
+        }else {
+            System.out.println("driverHor null");
         }
 
     }

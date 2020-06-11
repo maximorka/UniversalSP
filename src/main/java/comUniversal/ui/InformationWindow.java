@@ -9,6 +9,7 @@ import org.fxmisc.richtext.InlineCssTextArea;
 //import javafx.css.Style;
 
 public class InformationWindow {
+
     public static InlineCssTextArea message;
     public static InlineCssTextArea numberGroup;
     public static RadioButton receiveFlag;
@@ -44,6 +45,7 @@ public class InformationWindow {
     public void initialize() {
 
         System.out.println("initialize() information window");
+
         message = new InlineCssTextArea();
         message = special;
         numberGroup = new InlineCssTextArea();
@@ -60,6 +62,7 @@ public class InformationWindow {
         frLabel = freqL;
 
     }
+
 
     public void setTextMessage(int data,String speed) {
         String tmp = String.valueOf(data);
@@ -108,6 +111,7 @@ public class InformationWindow {
 
             });
 
+
         }
         Platform.runLater(() -> {
 
@@ -144,7 +148,6 @@ public class InformationWindow {
             }
         });
     }
-
 
 }
 

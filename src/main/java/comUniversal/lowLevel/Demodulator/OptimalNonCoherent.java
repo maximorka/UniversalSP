@@ -16,14 +16,22 @@ public class OptimalNonCoherent {
     private MovingAverage channelFilter;
     private LineDelay lineDelay;
     private Clocker clocker;
+    private Pll pll;
+    private Complex lastSempl;
+    private Agc agc;
 
 
-    public OptimalNonCoherent(float relativeBaudRate) {
-
+    public OptimalNonCoherent(float relativeBaudRate){
         automaticFrequencyTuning = new AutomaticFrequencyTuning();
         lineDelay = new LineDelay((int) (1.f / relativeBaudRate));
         channelFilter = new MovingAverage((int) (1.f / relativeBaudRate));
         clocker = new Clocker(relativeBaudRate);
+        pll = new Pll();
+        agc = new Agc(1.f, 0.01f, 40, -10);
+    }
+
+    public float getFrequencyShift(){
+        return automaticFrequencyTuning.getFrequencyShift();
     }
 
     public void setRelativeBaudRate(float relativeBaudRate) {
@@ -58,32 +66,31 @@ public class OptimalNonCoherent {
         listeners.clear();
     }
 
-    private void toListenersIq(MyComplex sempl) {
-        if (!listeners.isEmpty())
-            for (IqOutDebug listener : listeners)
+    private void toListenersIq(Complex sempl){
+        if(!listeners.isEmpty())
+            for(IqOutDebug listener: listeners)
                 listener.sempl(sempl);
     }
 
-
-    public void demodulate(MyComplex sempl) {
+    public void demodulate(MyComplex sempl){
 
         Complex inSempl = new Complex(sempl.re, sempl.im);
-
         Complex outAft = automaticFrequencyTuning.tuning(inSempl);
 
-        Complex outCf = channelFilter.average(outAft);
+//        float gainAgc = agc.get();
+//        Complex outAgc = outAft.multiply(gainAgc);
+        Complex outVco = pll.get();
+        Complex outPll = outAft.multiply(outVco);
+        Complex outCf = channelFilter.average(outPll);
 
-        Complex outLd = lineDelay.delay(outCf);
-
-        Complex outLd_ = outLd.conjugate();
-
-        Complex mul = outLd_.multiply(outCf);
-
-        if (clocker.update(mul))
+        if(clocker.update(outCf)) {
+//            agc.update(outCf);
+            pll.udate(outCf);
             toListenersSymbol(clocker.getBit());
+//            toListenersIq(outCf);
+        }
 
 
-        toListenersIq(sempl);
 
     }
 
@@ -96,56 +103,39 @@ public class OptimalNonCoherent {
 
 class Pll {
 
-    public Vco vco;
-    private LoopFilter loopFilter;
+    private Vco vco = new Vco();
+    private LoopFilter loopFilter = new LoopFilter(0.01f, 0.0001f, 2.f*(float)Math.PI*0.5f/3000.f);
 
-    private MyComplex mixer(MyComplex x, MyComplex y) {
-        return new MyComplex(x.re * y.re - x.im * y.im, x.im * y.re + x.re * y.im);
+
+    public Complex get(){return vco.get();}
+
+    public void udate(Complex sempl){
+        float error = crossProductPhaseDetector(sempl);
+        float errorLf = loopFilter.update(error);
+        vco.update(-errorLf);
     }
 
-    public Pll() {
-        vco = new Vco();
-        loopFilter = new LoopFilter(0.01f, 0.000001f, 2.f * (float) Math.PI * 500.f / 48000.f);
+    private float crossProductPhaseDetector(Complex sempl){
+        Complex ref = new Complex(Math.signum(sempl.getReal()), 0.f);
+        Complex refConj = ref.conjugate();
+        Complex difference = sempl.multiply(refConj);
+        return (float)Math.atan2(difference.getImaginary(), difference.getReal());
     }
 
-    private float phaseDetect(MyComplex sempl) {
-        if (sempl.re == 0.f) {
-            return 0.f;
-        } else {
-            return (float) Math.atan(sempl.im / sempl.re);
-        }
-    }
-
-    public MyComplex add(MyComplex sempl) {
-        MyComplex gen = vco.generate();
-        gen.im *= -1.f;
-        MyComplex out = mixer(sempl, gen);
-        float error = phaseDetect(out);
-        float errorLoopFilter = loopFilter.update(error);
-        vco.update(errorLoopFilter);
-        return out;
-    }
 
 }
 
-class Vco {
+class Vco{
+    private float accum = 0.f, shift = 0.f;
+    public Complex get(){
+        accum += shift;
 
-    private float phaseAccum = 0.f;
-    private MyComplex out = new MyComplex(1.f, 0.f);
+        if(Math.abs(accum) > (float)Math.PI)
+            accum -= Math.signum(accum) * 2.f * (float)Math.PI;
 
-    public MyComplex getOut() {
-        return out;
+        return new Complex(Math.cos(accum), Math.sin(accum));
     }
-
-    public MyComplex generate() {
-        out = new MyComplex((float) Math.cos(phaseAccum), (float) Math.sin(phaseAccum));
-        return out;
-    }
-
-    public void update(float phase) {
-        phaseAccum += phase;
-        phaseAccum %= 2 * Math.PI;
-    }
+    public void update(float shift){this.shift = shift;}
 }
 
 class Bpf {
@@ -175,6 +165,7 @@ class Bpf {
 
 class AutomaticFrequencyTuning {
 
+    private float frequency = 0.f;
     private Bpf bpf;
     private FastFourierTransformer fft;
     private LineDelay delayForFft, delayForBpf;
@@ -182,9 +173,10 @@ class AutomaticFrequencyTuning {
     private int timeTuning, semplCounter;
     private Complex[] inFft, outFft, collect;
 
-    public AutomaticFrequencyTuning() {
+
+    public AutomaticFrequencyTuning(){
         int lengthFft = 16384;
-        timeTuning = 3000 / 100;
+        timeTuning = 3000 / 10;
         semplCounter = 0;
         accumVco = 0.f;
         phaseVco = 0.f;
@@ -241,8 +233,7 @@ class AutomaticFrequencyTuning {
 
             float relativeFrequency = (float) index / (float) outFft.length / 2.f;
 
-            //System.out.println("frequency = " + 3000.f * relativeFrequency);
-            Core.getCore().informationWindow.setFreq(3000.f * relativeFrequency);
+            this.frequency = 3000.f * relativeFrequency;
 
             phaseVco = 2.f * (float) Math.PI * -relativeFrequency;
 
@@ -253,6 +244,8 @@ class AutomaticFrequencyTuning {
 
         return result;
     }
+
+    public float getFrequencyShift(){return this.frequency;}
 
     private float[] bpfCoefficients = {
             -17.96633661712444050E-6f,

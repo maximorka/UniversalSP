@@ -84,8 +84,10 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
             @Override
             public void handle(ActionEvent actionEvent) {
                 int frequency = Integer.parseInt(rxFrequencyTextField.getText());
+
                 if(Core.getCore().dev.driverHorizon != null){
                     Core.getCore().dev.driverHorizon.ddcSetFrequency(frequency);
+
                 }else{
                     Core.getCore().dev.driverHorizon.ddcSetFrequency(frequency);
                 }
@@ -137,7 +139,6 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
                     Core.getCore().device[1].kylymDecoder100.setRunning(false);
 
                     //Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-                    //Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
 
                     Core.getCore().countConectedDevice = 0;
                     Core.getCore().device[1].driverHorizon.ethernetSet(ip,maskInt,port,get);

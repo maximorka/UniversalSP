@@ -45,7 +45,7 @@ public class Dev extends Program {
 
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
-        driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+        driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
 
         optimalNonCoherentDåmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
         optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));

@@ -1,6 +1,7 @@
 package comUniversal.lowLevel.Debuger;
 
 import comUniversal.util.MyComplex;
+import org.apache.commons.math3.complex.Complex;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -33,7 +34,7 @@ public class Debuger {
         } catch (IOException e) {}
     }
 
-    public void show(MyComplex sempl){
+    public void show(Complex sempl){
 
         if(index == 0) {
             packet[index++] = 0x00;
@@ -44,8 +45,8 @@ public class Debuger {
 
         re.clear();
         im.clear();
-        re.putFloat(sempl.re);
-        im.putFloat(sempl.im);
+        re.putFloat((float)sempl.getReal());
+        im.putFloat((float)sempl.getImaginary());
 
         packet[index++] = re.array()[3];
         packet[index++] = re.array()[2];

@@ -55,7 +55,14 @@
                   </HBox>
                   <HBox prefHeight="226.0" prefWidth="505.0">
                      <children>
-                        <TableView fx:id="table" editable="true" prefHeight="226.0" prefWidth="279.0" />
+                        <TableView fx:id="table" editable="true" prefHeight="226.0" prefWidth="225.0" />
+                        <AnchorPane prefHeight="226.0" prefWidth="95.0" />
+                        <TableView prefHeight="226.0" prefWidth="257.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
                      </children></HBox>
                   <HBox prefHeight="27.0" prefWidth="200.0">
                      <children>

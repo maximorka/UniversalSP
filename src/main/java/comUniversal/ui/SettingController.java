@@ -62,24 +62,65 @@ public class SettingController{
         System.out.println("initialize() setting");
         // столбец для вывода имени
 
-        TableColumn<RM, Integer> nameColumn = new TableColumn<RM, Integer>("RM");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+//          ObservableList<Person> data =
+//                FXCollections.observableArrayList(
+//                        new Person("Jacob", "Smith", "jacob.smith@example.com"),
+//                        new Person("Isabella", "Johnson", "isabella.johnson@example.com"),
+//                        new Person("Ethan", "Williams", "ethan.williams@example.com"),
+//                        new Person("Emma", "Jones", "emma.jones@example.com"),
+//                        new Person("Michael", "Brown", "michael.brown@example.com")
+//                );
 
-        // столбец для вывода возраста
-        TableColumn<RM, Integer> ipColumn = new TableColumn<RM, Integer>("IP");
-        ipColumn.setCellValueFactory(new PropertyValueFactory<>("ip"));
+        TableColumn NameCol = new TableColumn("Name");
+        NameCol.setMinWidth(100);
+        NameCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("Name"));
 
+        TableColumn ipCol = new TableColumn("IP");
+        ipCol.setMinWidth(100);
+        ipCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("ip"));
 
+        TableColumn ipCol1 = new TableColumn("IP1");
+        ipCol1.setMinWidth(100);
+        ipCol1.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("ip1"));
 
-        ObservableList<RM> langs = getUserList();
-        //langs = Params.RXRM.getKey();
+        ObservableList<String> data = Params.RXRM.getKey();
+        ObservableList<String> dataIp = FXCollections.observableArrayList();
 
-        Platform.runLater(()->{
-            table.setItems(langs);
+        for (int i = 0; i <data.size() ; i++) {
+            String p = new String(Params.RXRM.getString(data.get(i)));
+            dataIp.add(p);
+        }
 
-            table.getColumns().addAll(nameColumn, ipColumn);
+        ObservableList<Person> data1 = FXCollections.observableArrayList();
+        for (int i = 0; i <data.size() ; i++) {
+            Person p = new Person(data.get(i), dataIp.get(i));
+            data1.add(p);
+        }
 
-        });
+        table.setItems(data1);
+
+        table.getColumns().addAll(NameCol, ipCol);
+//        TableColumn<RM, SimpleStringProperty> nameColumn = new TableColumn<RM, SimpleStringProperty >("RM");
+//        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+//
+//        // столбец для вывода возраста
+//        TableColumn<RM, SimpleStringProperty > ipColumn = new TableColumn<RM, SimpleStringProperty >("IP");
+//        ipColumn.setCellValueFactory(new PropertyValueFactory<>("ip"));
+//
+//
+//
+//        ObservableList<RM> langs = getUserList();
+//        //langs = Params.RXRM.getKey();
+//
+//        Platform.runLater(()->{
+//            table.setItems(langs);
+//
+//            table.getColumns().addAll(nameColumn, ipColumn);
+//
+//        });
 
         addRxRm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -87,7 +128,10 @@ public class SettingController{
                 String rxRm = rxRmTextField.getText();
                 String rxRmIP = ipRxTextField.getText();
                 Params.RXRM.putString(rxRm, rxRmIP);
-                Core.getCore().receiverUPSWindowUI.updateRm();
+                if(Core.getCore().receiverUPSWindowUI!=null){
+                    Core.getCore().receiverUPSWindowUI.updateRm();
+                }
+
             }
         });
 
@@ -200,14 +244,14 @@ ipTextField.setOnAction(new EventHandler<ActionEvent>() {
         });
     }
 
-    private ObservableList<RM> getUserList() {
-
-        RM user1 = new RM(1, 234234);
-        RM user2 = new RM( 2, 23423423);
-        RM user3 = new RM( 3, 23423);
-        ObservableList<RM> list = FXCollections.observableArrayList(user1, user2,user3);
-        return list;
-    }
+//    private ObservableList<RM> getUserList() {
+//
+//        RM user1 = new RM("aweq", "234234");
+//        RM user2 = new RM( "auytuweq", "23423423");
+//        RM user3 = new RM( "awtyuteq", "23423");
+//        ObservableList<RM> list = FXCollections.observableArrayList(user1, user2,user3);
+//        return list;
+//    }
     public void testIP() {
         try {
             String ipAddress = ipTextField.getText();

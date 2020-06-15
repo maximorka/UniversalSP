@@ -86,6 +86,7 @@ public class InformationMolotWindow {
     @FXML
     private TextArea messageReceived;
 
+
     @FXML
     public void initialize() {
 

@@ -20,8 +20,8 @@ public class ProgramKylym {
         dataInput.add(data);
     }
     public ProgramKylym(){
-        kylymDecoder100.setRunning(true);
-        kylymDecoder250.setRunning(true);
+        //kylymDecoder100.setRunning(true);
+       // kylymDecoder250.setRunning(true);
 
         //digital = digital -> add(digital);
         optimalNonCoherent100.addListenerSymbol(data -> kylymDecoder100.addData(data));

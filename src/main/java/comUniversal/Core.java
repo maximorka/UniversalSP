@@ -17,9 +17,9 @@ public class Core {
 //    public DemodulatorPsk demodulatorPsk;
 //    public KylymDecoder kylymDecoder;
     public MainUI mainUI = new MainUI();
-    public ReceiverUPSWindowUI receiverUPSWindowUI = new ReceiverUPSWindowUI();
-    public TransmitterUPSWindowUI transmitterUPSWindowUI = new TransmitterUPSWindowUI();
-    public InformationWindow informationWindow = new InformationWindow();
+    public ReceiverUPSWindowUI receiverUPSWindowUI;
+    public TransmitterUPSWindowUI transmitterUPSWindowUI;
+    public InformationWindow informationWindow;
     private Update update;
     private boolean running = false;
     public int countConectedDevice = 0;

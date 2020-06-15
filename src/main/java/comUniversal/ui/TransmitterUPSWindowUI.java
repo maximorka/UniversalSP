@@ -23,15 +23,15 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
 
     private List<ParamsSettings> settings = new ArrayList<>();
 
-    public static TextField ipTextTx;
-
-    public static Label modeTxText;
-    public static Label widthTxText;
-    public static Label procentTxText;
-    public static TextField freqTxText;
-    public static Button changeIPTxButton;
-    public static Label freqTxLabel;
-    public static Label freqHzTxLabel;
+//    public static TextField ipTextTx;
+//
+//    public static Label modeTxText;
+//    public static Label widthTxText;
+//    public static Label procentTxText;
+//    public static TextField freqTxText;
+//    public static Button changeIPTxButton;
+//    public static Label freqTxLabel;
+//    public static Label freqHzTxLabel;
 
     @FXML
     private TextField txFrequencyTextField;
@@ -54,28 +54,28 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
     @FXML
     public void initialize() {
         System.out.println("initialize() setting transmitter");
-        ipTextTx = new TextField();
-        ipTextTx = ipTextField;
-
-        modeTxText = new Label();
-        modeTxText = modeDeviceLabel;
-
-        widthTxText = new Label();
-        widthTxText = widthDeviceLabel;
-
-        procentTxText = new Label();
-        procentTxText = procentDeviceLabel;
-
-        freqTxText = new TextField();
-        freqTxText = txFrequencyTextField;
-        changeIPTxButton = new Button();
-        changeIPTxButton = changeSettingsIPbutton;
-
-        freqTxLabel = new Label();
-        freqTxLabel = txFrequencyLabel;
-
-        freqHzTxLabel = new Label();
-        freqHzTxLabel = txFrequencyHzLabel;
+//        ipTextTx = new TextField();
+//        ipTextTx = ipTextField;
+//
+//        modeTxText = new Label();
+//        modeTxText = modeDeviceLabel;
+//
+//        widthTxText = new Label();
+//        widthTxText = widthDeviceLabel;
+//
+//        procentTxText = new Label();
+//        procentTxText = procentDeviceLabel;
+//
+//        freqTxText = new TextField();
+//        freqTxText = txFrequencyTextField;
+//        changeIPTxButton = new Button();
+//        changeIPTxButton = changeSettingsIPbutton;
+//
+//        freqTxLabel = new Label();
+//        freqTxLabel = txFrequencyLabel;
+//
+//        freqHzTxLabel = new Label();
+//        freqHzTxLabel = txFrequencyHzLabel;
 
         restoreAll(Params.SETTINGS);
 
@@ -180,7 +180,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         }
     }
     public String getIP(){
-        return ipTextTx.getText();
+        return ipTextField.getText();
     }
 
     @Override
@@ -192,22 +192,22 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         String procent = Integer.toString(percent);
 
         Platform.runLater(() -> {
-            procentTxText.setText(procent);
+            procentDeviceLabel.setText(procent);
         });
     }
 
     public void getFrequencyTx(int data) {
         String tmp = Integer.toString(data);
         Platform.runLater(() -> {
-            if(!freqTxText.isFocused()){
-                freqTxText.setText(tmp);
+            if(!txFrequencyTextField.isFocused()){
+                txFrequencyTextField.setText(tmp);
             }
         });
     }
     public void getModeTx(Mode data) {
         String tmp = String.valueOf(data);
         Platform.runLater(() -> {
-            modeTxText.setText(tmp);
+            modeDeviceLabel.setText(tmp);
         });
     }
     public void getWidthTx(Width data) {
@@ -232,17 +232,17 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         }
         String qwe = tmp.toString();
         Platform.runLater(() -> {
-            widthTxText.setText(qwe);
+            widthDeviceLabel.setText(qwe);
         });
     }
 
     public void updateVisibility(boolean state) {
         Platform.runLater(() -> {
-            if(freqHzTxLabel != null ){
-                freqHzTxLabel.setDisable(state);
-                freqTxLabel.setDisable(state);
-                freqTxText.setDisable(state);
-                changeIPTxButton.setDisable(state);
+            if(txFrequencyHzLabel != null ){
+                txFrequencyHzLabel.setDisable(state);
+                txFrequencyLabel.setDisable(state);
+                txFrequencyTextField.setDisable(state);
+                changeSettingsIPbutton.setDisable(state);
             }
 
         });

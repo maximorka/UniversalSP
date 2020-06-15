@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="505.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.SettingController">
+  <tabs>
+    <Tab text="Налаштування RM">
+         <content>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox prefHeight="27.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane prefHeight="28.0" prefWidth="27.0">
+                           <children>
+                              <Label text="RX" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                 <font>
+                                    <Font name="System Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="28.0" prefWidth="107.0">
+                           <children>
+                              <TextField fx:id="rxRmTextField" prefHeight="28.0" prefWidth="100.0" text="RM1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="27.0" prefWidth="30.0">
+                           <children>
+                              <Label layoutX="13.0" prefHeight="31.0" prefWidth="26.0" text="IP:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                 <font>
+                                    <Font name="System Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="28.0" prefWidth="29.0">
+                           <children>
+                              <TextField fx:id="ipRxTextField" prefHeight="31.0" prefWidth="100.0" text="192.168.0.1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="28.0" prefWidth="67.0">
+                           <children>
+                              <Button fx:id="addRxRm" mnemonicParsing="false" text="Добавити" />
+                           </children></AnchorPane>
+                        <AnchorPane prefHeight="27.0" prefWidth="86.0" />
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="deleteItemRx" mnemonicParsing="false" text="Видалити" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="226.0" prefWidth="505.0">
+                     <children>
+                        <TableView fx:id="table" editable="true" prefHeight="226.0" prefWidth="279.0" />
+                     </children></HBox>
+                  <HBox prefHeight="27.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane prefHeight="28.0" prefWidth="27.0">
+                           <children>
+                              <Label text="TX" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                 <font>
+                                    <Font name="System Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="28.0" prefWidth="107.0">
+                           <children>
+                              <TextField fx:id="txRmTextField" prefHeight="28.0" prefWidth="100.0" text="RM1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="27.0" prefWidth="30.0">
+                           <children>
+                              <Label layoutX="13.0" prefHeight="31.0" prefWidth="26.0" text="IP:" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                 <font>
+                                    <Font name="System Italic" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="28.0" prefWidth="29.0">
+                           <children>
+                              <TextField fx:id="ipTxTextField" prefHeight="31.0" prefWidth="100.0" text="192.168.0.1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="28.0" prefWidth="67.0">
+                           <children>
+                              <Button fx:id="addTxRm" mnemonicParsing="false" text="Добавити" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="27.0" prefWidth="20.0" />
+                        <AnchorPane prefHeight="27.0" prefWidth="98.0">
+                           <children>
+                              <Button fx:id="deleteItemTx" layoutX="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="68.0" text="Видалити" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </content></Tab>
+      <Tab text="Мережеві налаштування ">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <HBox prefHeight="308.0" prefWidth="499.0" />
+                  <HBox prefHeight="30.0" prefWidth="414.0">
+                     <children>
+                        <AnchorPane prefHeight="40.0" prefWidth="19.0">
+                           <children>
+                              <Label layoutX="5.0" prefHeight="25.0" prefWidth="40.0" text="Адрес" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="2.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="30.0" prefWidth="97.0">
+                           <children>
+                              <TextField fx:id="ipTextField" layoutX="1.0" layoutY="2.0" prefHeight="25.0" prefWidth="104.0" text="192.168.0.3" AnchorPane.leftAnchor="7.0" AnchorPane.topAnchor="2.0" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="connectButton" layoutX="9.0" mnemonicParsing="false" text="Підключитися" />
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="30.0" prefWidth="105.0">
+                           <children>
+                              <Button fx:id="changeSettingsIPbutton" layoutX="2.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="82.0" text="Змінити IP" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>

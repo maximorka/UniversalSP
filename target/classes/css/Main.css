@@ -35,7 +35,7 @@
 .buttonSetting{ 
 	-fx-background-color: none;    
  	-fx-background-image: url('/images/setting.png');
-	-fx-background-size: 40;
+	-fx-background-size: 30;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: 50%;
 }

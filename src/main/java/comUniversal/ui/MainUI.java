@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -25,7 +26,9 @@ public class MainUI {
     Stage stageTx = new Stage();
     public static Button connect;
     public static ChoiceBox modeWork;
-
+    InformationWindow informationWindow;
+    ReceiverUPSWindowUI receiverUPSWindowUI;
+    TransmitterUPSWindowUI transmitterUPSWindowUI;
     @FXML
     private Label rxLabel;
     @FXML
@@ -101,6 +104,7 @@ public class MainUI {
                     stageProg.show();
                     rxLabel.setDisable(false);
                     typeRxChoicebox.setDisable(false);
+                   informationWindow = fxmlLoader.getController();
                 }else if(modeWorkChoicebox.getValue() == "Молот"){
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/Information.fxml"));
@@ -148,12 +152,14 @@ public class MainUI {
                     });
                     stageRx.setX(212);
                     stageRx.setY(90);
-                    stageRx.setTitle("Приймач");
+                    stageRx.setTitle("RX");
                     stageRx.setScene(scene);
                     stageRx.show();
                     Core.getCore().createClassKylym();
                     connectButton.setDisable(false);
-
+                    receiverUPSWindowUI = fxmlLoader.getController();
+                    Core.getCore().informationWindow = informationWindow;
+                    Core.getCore().receiverUPSWindowUI = receiverUPSWindowUI;
                 }else if(typeRxChoicebox.getValue() == "Відсутній"){
                     stageRx.close();
                     if(typeRxChoicebox.getValue() == "Відсутній" && typeTxChoicebox.getValue() == "Відсутній"){
@@ -185,7 +191,7 @@ public class MainUI {
                     });
                     stageTx.setX(212);
                     stageTx.setY(367);
-                    stageTx.setTitle("Передавач");
+                    stageTx.setTitle("TX");
                     stageTx.setScene(scene);
                     stageTx.show();
                     connectButton.setDisable(false);
@@ -221,7 +227,7 @@ public class MainUI {
                             modeWorkChoicebox.setDisable(true);
                             typeRxChoicebox.setDisable(true);
                             typeTxChoicebox.setDisable(true);
-                            Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
+//                            Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
                             Core.getCore().receiverUPSWindowUI.updateVisibility(false);
                         });
                  }
@@ -255,6 +261,49 @@ public void setConnectButton(){
     });
 }
 
+    public void settings(ActionEvent actionEvent) throws IOException {
+
+       // FXMLLoader fxmlLoader = new FXMLLoader();
+        //fxmlLoader.setLocation(getClass().getResource("/Setting.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Setting.fxml"));
+        Parent root = loader.load();
+        SettingController controller = loader.getController();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
+        stage.setResizable(false);
+        stage.setTitle("Налаштування");
+        stage.setScene(scene);
+        stage.setOnHidden(event -> controller.shutdown());
+        stage.showAndWait();
+
+//        Scene scene = null;
+//        try {
+//            scene = new Scene(loader.load());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        Stage stage = new Stage();
+//
+//
+//        stage.setX(212);
+//        stage.setY(367);
+//        stage.setTitle("TX");
+//        stage.setResizable(false);
+//        stage.setScene(scene);
+//                stage.setOnHidden(event -> controller.shutdown());
+//        stage.showAndWait();
+        //connectButton.setDisable(false);
+
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Setting.fxml"));
+//        Parent root = loader.load();
+//        SettingController controller = loader.getController();
+//        Stage stage = new Stage();
+//        Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
+//        stage.setResizable(false);
+//        stage.setScene(scene);
+//        stage.setOnHidden(event -> controller.shutdown());
+//        stage.showAndWait();
+    }
 
     class UpdateUIThread extends Thread {
         @Override

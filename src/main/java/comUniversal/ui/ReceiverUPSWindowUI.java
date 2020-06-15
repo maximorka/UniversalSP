@@ -4,19 +4,20 @@ import comUniversal.Core;
 import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
 import comUniversal.ui.setting.ParamsSettings;
-import comUniversal.util.EthernetUtils;
 import comUniversal.util.Params;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 
 import java.net.InetAddress;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,20 +28,20 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     Image Ok = new Image("/images/check.png");
     Image notOk = new Image("/images/close.png");
 
-    public static TextField ipTextRx;
-    public static TextField freqRxText;
-    public static Label freqRxLabel;
-    public static Label freqHzRxLabel;
-    public static Label widthRxText;
-    public static Label modeRxText;
-    public static Button changeIPRxButton;
+//    public static TextField ipTextRx;
+//    public static TextField freqRxText;
+//    public static Label freqRxLabel;
+//    public static Label freqHzRxLabel;
+//    public static Label widthRxText;
+//    public static Label modeRxText;
+//    public static Button changeIPRxButton;
 
     @FXML
     private TextField rxFrequencyTextField;
-
+    @FXML
+    private ComboBox rx;
     @FXML
     private TextField ipTextField;
-
     @FXML
     private Button changeSettingsIPbutton;
     @FXML
@@ -54,32 +55,19 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     @FXML
     public void initialize() {
         System.out.println("initialize() setting receiver");
-        ipTextRx = new TextField();
-        ipTextRx = ipTextField;
 
-        modeRxText = new Label();
-        modeRxText = modeDeviceLabel;
+        ObservableList<String> langs = FXCollections.observableArrayList();
+        langs = Params.RXRM.getKey();
+        rx.setItems(langs);
 
-        widthRxText = new Label();
-        widthRxText = widthDeviceLabel;
-
-        freqRxText = new TextField();
-        freqRxText = rxFrequencyTextField;
-
-        changeIPRxButton = new Button();
-        changeIPRxButton = changeSettingsIPbutton;
-
-        freqRxLabel = new Label();
-        freqRxLabel = rxFrequencyLabel;
-
-        freqHzRxLabel = new Label();
-        freqHzRxLabel = rxFrequencyHzLabel;
         restoreAll(Params.SETTINGS);
 
         rxFrequencyHzLabel.setDisable(true);
         rxFrequencyLabel.setDisable(true);
-        changeSettingsIPbutton.setDisable(true);
+        //changeSettingsIPbutton.setDisable(true);
         rxFrequencyTextField.setDisable(true);
+
+        ipTextField.setDisable(true);
         rxFrequencyTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -101,66 +89,17 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
             }
         });
 
-        changeSettingsIPbutton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
+rx.setOnAction(new EventHandler<ActionEvent>() {
+    @Override
+    public void handle(ActionEvent event) {
+        ipTextField.setDisable(false);
 
-                String ipAddress = ipTextField.getText();
-                String mask = "255.255.255.0";
-                String Getaway = "192.168.0.0";
-                int port = 80;
+        String rm = Core.getCore().receiverUPSWindowUI.getRM();
+        String ip = Params.RXRM.getString(rm, "192.168.0.1");
 
-                byte[] ipBytes = EthernetUtils.ipToByteArray(ipAddress);
-                byte[] maskBytes = EthernetUtils.ipToByteArray(mask);
-                byte[] gatewayBytes = EthernetUtils.ipToByteArray(Getaway);
-                int ip = ByteBuffer.wrap(ipBytes).getInt();
-                int maskInt = ByteBuffer.wrap(maskBytes).getInt();
-                int get = ByteBuffer.wrap(gatewayBytes).getInt();
-//                if(Core.getCore().device[0].driverHorizon != null){
-//                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-//                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
-//                    Core.getCore().device[0].kylymDecoder100.setRunning(false);
-//                    Core.getCore().countConectedDevice = 0;
-//                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
-//                    changeSettingsIPbutton.setDisable(true);
-//
-//                    try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e1) {
-//                        e1.printStackTrace();
-//                    }
-//                    changeSettingsIPbutton.setDisable(false);
-//                    Core.getCore().device[0].bufferController.setWorkingThread(false);
-//                    Core.getCore().device[0].ethernetDriver.closeSocket();
-//                    Core.getCore().mainUI.setConnectButton();
-//                }else{
-//                    Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
-//                    Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
-//                    Core.getCore().device[1].kylymDecoder100.setRunning(false);
-//
-//                    //Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-//
-//                    Core.getCore().countConectedDevice = 0;
-//                    Core.getCore().device[1].driverHorizon.ethernetSet(ip,maskInt,port,get);
-//                    changeSettingsIPbutton.setDisable(true);
-//
-//                    try {
-//                        Thread.sleep(2000);
-//                    } catch (InterruptedException e1) {
-//                        e1.printStackTrace();
-//                    }
-//                    changeSettingsIPbutton.setDisable(false);
-//                    //Core.getCore().device[0].bufferController.setWorkingThread(false);
-//
-//                    //Core.getCore().device[0].ethernetDriver.closeSocket();
-//                    Core.getCore().device[1].ethernetDriver.closeSocket();
-//                    Core.getCore().mainUI.setConnectButton();
-//                }
-
-
-            }
-        });
-
+        ipTextField.setText(ip);
+    }
+});
         //testIP();
         ipTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -171,9 +110,11 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     }
 
     public String getIP(){
-        return ipTextRx.getText();
+        return ipTextField.getText();
     }
-
+    public String getRM(){
+        return (String) rx.getValue();
+    }
     public void testIP() {
         try {
             String ipAddress = ipTextField.getText();
@@ -190,15 +131,15 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     public void getFrequencyRx(int data) {
         String tmp = Integer.toString(data);
         Platform.runLater(() -> {
-            if(!freqRxText.isFocused()){
-                freqRxText.setText(tmp);
+            if(!rxFrequencyTextField.isFocused()){
+                rxFrequencyTextField.setText(tmp);
             }
         });
     }
     public void getModeRx(Mode data) {
         String tmp = String.valueOf(data);
         Platform.runLater(() -> {
-            modeRxText.setText(tmp);
+            modeDeviceLabel.setText(tmp);
         });
     }
 
@@ -224,17 +165,30 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
         }
         String qwe = tmp.toString();
         Platform.runLater(() -> {
-            widthRxText.setText(qwe);
+            widthDeviceLabel.setText(qwe);
         });
     }
 
     public void updateVisibility(boolean state) {
         Platform.runLater(() -> {
-            freqHzRxLabel.setDisable(state);
-            freqRxLabel.setDisable(state);
-            freqRxText.setDisable(state);
-            changeIPRxButton.setDisable(state);
+            rxFrequencyHzLabel.setDisable(state);
+            rxFrequencyLabel.setDisable(state);
+            rxFrequencyTextField.setDisable(state);
+//            changeSettingsIPbutton.setDisable(state);
 
+        });
+    }
+    public void updateRm() {
+        Platform.runLater(() -> {
+            ObservableList<String> langs = FXCollections.observableArrayList();
+            langs = Params.RXRM.getKey();
+            rx.setItems(langs);
+        });
+    }
+    public void deleteItemRm(String key) {
+        Platform.runLater(() -> {
+
+            rx.getItems().remove(key);
         });
     }
     @Override
@@ -248,6 +202,6 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
         //rxFrequencyTextField.setText(Params.SETTINGS.getString("rx_UPS_frequency", "128000"));
     }
     public int getFr(){
-        return Integer.parseInt(freqRxText.getText());
+        return Integer.parseInt(rxFrequencyTextField.getText());
     }
 }

@@ -14,9 +14,9 @@
 
             <VBox layoutY="1.0" prefHeight="219.0" prefWidth="542.0">
                <children>
-                  <HBox prefHeight="219.0" prefWidth="542.0">
+                  <HBox prefHeight="156.0" prefWidth="542.0">
                      <children>
-                        <InlineCssTextArea fx:id="special" prefHeight="100.0" prefWidth="489.0" wrapText="true">
+                        <InlineCssTextArea fx:id="special" prefHeight="118.0" prefWidth="489.0" wrapText="true">
                            <padding>
                               <Insets bottom="3.0" left="3.0" top="3.0" />
                            </padding>
@@ -34,21 +34,23 @@
                         </InlineCssTextArea>
                      </children>
                   </HBox>
-                  <HBox prefHeight="44.0" prefWidth="542.0">
+                  <HBox minHeight="-Infinity" prefHeight="61.0" prefWidth="542.0">
                      <children>
-                        <AnchorPane prefHeight="22.0" prefWidth="50.0">
+                        <AnchorPane prefHeight="81.0" prefWidth="118.0">
                            <children>
-                              <Label fx:id="statusLabel" text="Label" />
+                              <Label fx:id="statusLabel" AnchorPane.leftAnchor="5.0" />
+                              <TextArea fx:id="mes" layoutY="22.0" prefHeight="22.0" prefWidth="110.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="22.0" prefWidth="48.0">
+                        <AnchorPane prefHeight="81.0" prefWidth="57.0">
                            <children>
-                              <Label fx:id="speedL" text="Швидкість" />
+                              <Label fx:id="speedL" layoutX="29.0" text="ШД" />
+                              <Button fx:id="send" layoutX="3.0" layoutY="26.0" mnemonicParsing="false" text="Button" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="22.0" prefWidth="49.0">
                            <children>
-                              <Label fx:id="speedReceiveLabel" layoutX="9.0" prefHeight="17.0" prefWidth="34.0" />
+                              <Label fx:id="speedReceiveLabel" layoutX="3.0" prefHeight="17.0" prefWidth="34.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="22.0" prefWidth="43.0">
@@ -60,6 +62,11 @@
                            <children>
                               <Label fx:id="freqReceiveLabel" layoutX="8.0" prefHeight="17.0" prefWidth="55.0" />
                               
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label text="Код Іркут" />
                            </children>
                         </AnchorPane>
                      </children>

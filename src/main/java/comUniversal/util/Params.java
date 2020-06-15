@@ -3,6 +3,8 @@ package comUniversal.util;
 //import com.first.util.speed.SpeedConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.HashMap;
@@ -14,6 +16,8 @@ public class Params {
 	private Map<String, String> items = new HashMap<>();
 	
 	public static final Params SETTINGS = getInner("settings");
+	public static final Params RXRM = getInner("receiverRm");
+	public static final Params TXRM = getInner("transmitterRm");
 
 	/**
 	 * Параметри Ethernet
@@ -95,7 +99,22 @@ public class Params {
 		
 		return null;
 	}
-	
+	public ObservableList<String>  getKey() {
+		ObservableList<String> langs = FXCollections.observableArrayList();
+		for(String key: items.keySet()) {
+			String tValue = key;
+			langs.add(tValue);
+		}
+		return langs;
+	}
+	public void  deleteKey(String key) {
+
+		items.put(key,null);
+
+
+	}
+
+
 	public boolean getBoolean(String name) {
 		String value = items.get(name);
 		if (value == null) {

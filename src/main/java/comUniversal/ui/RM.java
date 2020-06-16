@@ -2,11 +2,11 @@ package comUniversal.ui;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public  class Person {
+public  class RM {
     private final SimpleStringProperty name;
     private final SimpleStringProperty ip;
 
-    Person(String Name, String Ip ) {
+    RM(String Name, String Ip ) {
         this.name = new SimpleStringProperty(Name);
         this.ip = new SimpleStringProperty(Ip);
 

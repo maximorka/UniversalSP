@@ -180,6 +180,8 @@ rx.setOnAction(new EventHandler<ActionEvent>() {
     }
     public void updateRm() {
         Platform.runLater(() -> {
+            int size =  rx.getItems().size();
+            rx.getItems().remove(0,size);
             ObservableList<String> langs = FXCollections.observableArrayList();
             langs = Params.RXRM.getKey();
             rx.setItems(langs);
@@ -187,8 +189,11 @@ rx.setOnAction(new EventHandler<ActionEvent>() {
     }
     public void deleteItemRm(String key) {
         Platform.runLater(() -> {
+            int size =  rx.getItems().size();
+            for (int i = 0; i <size ; i++) {
+                rx.getItems().remove(0,size);
+            }
 
-            rx.getItems().remove(key);
         });
     }
     @Override

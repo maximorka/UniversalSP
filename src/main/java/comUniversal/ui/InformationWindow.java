@@ -14,8 +14,6 @@ import org.fxmisc.richtext.InlineCssTextArea;
 public class InformationWindow {
 
     @FXML
-    private RadioButton receiveRadioButton;
-    @FXML
     private Label speedReceiveLabel;
     @FXML
     private Label freqReceiveLabel;
@@ -33,8 +31,6 @@ public class InformationWindow {
     private TextArea mes;
     @FXML
     private Button send;
-
-
 
     int countSymbol=0;
 
@@ -124,7 +120,8 @@ public class InformationWindow {
             public void run() {
                 statusLabel.setText("");
                 speedReceiveLabel.setText("");
-                freqL.setText("");
+                freqReceiveLabel.setText("");
+
                 speedL.setVisible(false);
                 freqL.setVisible(false);
                 if(algoritm == 1){

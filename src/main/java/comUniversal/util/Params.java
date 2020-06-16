@@ -108,12 +108,11 @@ public class Params {
 		return langs;
 	}
 	public void  deleteKey(String key) {
-
 		items.put(key,null);
-
-
 	}
-
+	public void  deleteAll() {
+		items.clear();
+	}
 
 	public boolean getBoolean(String name) {
 		String value = items.get(name);

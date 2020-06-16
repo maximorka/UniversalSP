@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import javax.swing.*;
 import java.net.InetAddress;
@@ -26,7 +27,10 @@ import java.nio.ByteBuffer;
 public class SettingController{
 
    private Dev dev;
-
+    private TableColumn rxNameCol;
+    private TableColumn rxIpCol;
+    private TableColumn txNameCol;
+    private TableColumn txIpCol;
     @FXML
     private TextField rxRmTextField;
     @FXML
@@ -54,106 +58,130 @@ public class SettingController{
     private Button changeSettingsIPbutton;
 
     @FXML
-    private TableView table;
-
+    private TableView<RM> tableRx;
+    @FXML
+    private TableView<RM> tableTx;
+    ObservableList<RM> dataRx;
+    ObservableList<RM> dataTx;
 
     @FXML
     public void initialize() {
         System.out.println("initialize() setting");
-        // столбец для вывода имени
 
-//          ObservableList<Person> data =
-//                FXCollections.observableArrayList(
-//                        new Person("Jacob", "Smith", "jacob.smith@example.com"),
-//                        new Person("Isabella", "Johnson", "isabella.johnson@example.com"),
-//                        new Person("Ethan", "Williams", "ethan.williams@example.com"),
-//                        new Person("Emma", "Jones", "emma.jones@example.com"),
-//                        new Person("Michael", "Brown", "michael.brown@example.com")
-//                );
+        rxNameCol = new TableColumn("Name");
+        rxNameCol.setMinWidth(50);
+        rxNameCol.setCellValueFactory(new PropertyValueFactory<RM, String>("Name"));
+        rxNameCol.setCellFactory(TextFieldTableCell.<RM> forTableColumn());
 
-        TableColumn NameCol = new TableColumn("Name");
-        NameCol.setMinWidth(100);
-        NameCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("Name"));
+        rxIpCol = new TableColumn("IP");
+        rxIpCol.setMinWidth(100);
+        rxIpCol.setCellValueFactory(new PropertyValueFactory<RM, String>("ip"));
+        rxIpCol.setCellFactory(TextFieldTableCell.<RM> forTableColumn());
+        tableRx.setEditable(true);
 
-        TableColumn ipCol = new TableColumn("IP");
-        ipCol.setMinWidth(100);
-        ipCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("ip"));
+        rxNameCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RM,String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RM, String> event) {
+                ((RM) event.getTableView().getItems().get(
+                        event.getTablePosition().getRow())
+                ).setName(event.getNewValue());
+            }
+        });
+        rxIpCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RM,String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RM, String> event) {
+                ((RM) event.getTableView().getItems().get(
+                        event.getTablePosition().getRow())
+                ).setIP(event.getNewValue());
+            }
+        });
 
-        TableColumn ipCol1 = new TableColumn("IP1");
-        ipCol1.setMinWidth(100);
-        ipCol1.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("ip1"));
 
-        ObservableList<String> data = Params.RXRM.getKey();
-        ObservableList<String> dataIp = FXCollections.observableArrayList();
 
-        for (int i = 0; i <data.size() ; i++) {
-            String p = new String(Params.RXRM.getString(data.get(i)));
-            dataIp.add(p);
-        }
+        txNameCol = new TableColumn("Name");
+        txNameCol.setMinWidth(50);
+        txNameCol.setCellValueFactory(new PropertyValueFactory<RM, String>("Name"));
+        txNameCol.setCellFactory(TextFieldTableCell.<RM> forTableColumn());
 
-        ObservableList<Person> data1 = FXCollections.observableArrayList();
-        for (int i = 0; i <data.size() ; i++) {
-            Person p = new Person(data.get(i), dataIp.get(i));
-            data1.add(p);
-        }
+        txIpCol = new TableColumn("IP");
+        txIpCol.setMinWidth(100);
+        txIpCol.setCellValueFactory(new PropertyValueFactory<RM, String>("ip"));
+        txIpCol.setCellFactory(TextFieldTableCell.<RM> forTableColumn());
 
-        table.setItems(data1);
+        tableTx.setEditable(true);
 
-        table.getColumns().addAll(NameCol, ipCol);
-//        TableColumn<RM, SimpleStringProperty> nameColumn = new TableColumn<RM, SimpleStringProperty >("RM");
-//        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-//
-//        // столбец для вывода возраста
-//        TableColumn<RM, SimpleStringProperty > ipColumn = new TableColumn<RM, SimpleStringProperty >("IP");
-//        ipColumn.setCellValueFactory(new PropertyValueFactory<>("ip"));
-//
-//
-//
-//        ObservableList<RM> langs = getUserList();
-//        //langs = Params.RXRM.getKey();
-//
-//        Platform.runLater(()->{
-//            table.setItems(langs);
-//
-//            table.getColumns().addAll(nameColumn, ipColumn);
-//
-//        });
+        txNameCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RM,String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RM, String> event) {
+                ((RM) event.getTableView().getItems().get(
+                        event.getTablePosition().getRow())
+                ).setName(event.getNewValue());
+            }
+        });
+        txIpCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RM,String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RM, String> event) {
+                ((RM) event.getTableView().getItems().get(
+                        event.getTablePosition().getRow())
+                ).setIP(event.getNewValue());
+            }
+        });
+
 
         addRxRm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String rxRm = rxRmTextField.getText();
-                String rxRmIP = ipRxTextField.getText();
-                Params.RXRM.putString(rxRm, rxRmIP);
-                if(Core.getCore().receiverUPSWindowUI!=null){
-                    Core.getCore().receiverUPSWindowUI.updateRm();
-                }
+                dataRx.add(new RM(
+                        rxRmTextField.getText(),
+                        ipRxTextField.getText()
+                ));
+                rxRmTextField.clear();
+                ipRxTextField.clear();
+
+//                String rxRm = rxRmTextField.getText();
+//                String rxRmIP = ipRxTextField.getText();
+//                Params.RXRM.putString(rxRm, rxRmIP);
+//                if(Core.getCore().receiverUPSWindowUI!=null){
+//                    Core.getCore().receiverUPSWindowUI.updateRm();
+//                }
 
             }
         });
-
         deleteItemRx.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String rxRm = rxRmTextField.getText();
-                Params.RXRM.deleteKey(rxRm);
-                Core.getCore().receiverUPSWindowUI.deleteItemRm(rxRm);
+                int t = tableRx.getSelectionModel().getFocusedIndex();
+                dataRx.remove(t);
+//                String rxRm = rxRmTextField.getText();
+//                Params.RXRM.deleteKey(rxRm);
+//                Core.getCore().receiverUPSWindowUI.deleteItemRm(rxRm);
             }
         });
-
         addTxRm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String txRm = txRmTextField.getText();
-                String txRmIP = ipTxTextField.getText();
-                Params.TXRM.putString(txRm, txRmIP);
-
+//                String txRm = txRmTextField.getText();
+//                String txRmIP = ipTxTextField.getText();
+//                Params.TXRM.putString(txRm, txRmIP);
+                dataTx.add(new RM(
+                        txRmTextField.getText(),
+                        ipTxTextField.getText()
+                ));
+                txRmTextField.clear();
+                ipTxTextField.clear();
             }
         });
-ipTextField.setOnAction(new EventHandler<ActionEvent>() {
+        deleteItemTx.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int t = tableTx.getSelectionModel().getFocusedIndex();
+                dataTx.remove(t);
+//                String rxRm = rxRmTextField.getText();
+//                Params.RXRM.deleteKey(rxRm);
+//                Core.getCore().receiverUPSWindowUI.deleteItemRm(rxRm);
+            }
+        });
+        ipTextField.setOnAction(new EventHandler<ActionEvent>() {
     @Override
     public void handle(ActionEvent event) {
         testIP();
@@ -242,16 +270,65 @@ ipTextField.setOnAction(new EventHandler<ActionEvent>() {
 
             }
         });
+
+        updateSettingsRxRmTable();
+        updateSettingsTxRmTable();
     }
 
-//    private ObservableList<RM> getUserList() {
-//
-//        RM user1 = new RM("aweq", "234234");
-//        RM user2 = new RM( "auytuweq", "23423423");
-//        RM user3 = new RM( "awtyuteq", "23423");
-//        ObservableList<RM> list = FXCollections.observableArrayList(user1, user2,user3);
-//        return list;
-//    }
+    private void updateSettingsRxRmTable(){
+        ObservableList<String> data = Params.RXRM.getKey();
+        ObservableList<String> dataIp = FXCollections.observableArrayList();
+
+        for (int i = 0; i <data.size() ; i++) {
+            String p = new String(Params.RXRM.getString(data.get(i)));
+            dataIp.add(p);
+        }
+
+         dataRx = FXCollections.observableArrayList();
+        for (int i = 0; i <data.size() ; i++) {
+            RM p = new RM(data.get(i), dataIp.get(i));
+            dataRx.add(p);
+        }
+
+        tableRx.setItems(dataRx);
+        tableRx.getColumns().addAll(rxNameCol, rxIpCol);
+    }
+    private void updateSettingsTxRmTable(){
+        ObservableList<String> data = Params.TXRM.getKey();
+        ObservableList<String> dataIp = FXCollections.observableArrayList();
+
+        for (int i = 0; i <data.size() ; i++) {
+            String p = new String(Params.TXRM.getString(data.get(i)));
+            dataIp.add(p);
+        }
+
+        dataTx = FXCollections.observableArrayList();
+        for (int i = 0; i <data.size() ; i++) {
+            RM p = new RM(data.get(i), dataIp.get(i));
+            dataTx.add(p);
+        }
+
+        tableTx.setItems(dataTx);
+        tableTx.getColumns().addAll(txNameCol, txIpCol);
+    }
+    private void updateJsonRx(){
+        int size = tableRx.getItems().size();
+        ObservableList<RM> data = tableRx.getItems();
+        Params.RXRM.deleteAll();
+        for (int i = 0; i <size ; i++) {
+            Params.RXRM.putString(data.get(i).getName(), data.get(i).getIp());
+        }
+
+    }
+    private void updateJsonTx(){
+        int size = tableTx.getItems().size();
+        ObservableList<RM> data = tableTx.getItems();
+        Params.TXRM.deleteAll();
+        for (int i = 0; i <size ; i++) {
+            Params.TXRM.putString(data.get(i).getName(), data.get(i).getIp());
+        }
+
+    }
     public void testIP() {
         try {
             String ipAddress = ipTextField.getText();
@@ -311,8 +388,12 @@ ipTextField.setOnAction(new EventHandler<ActionEvent>() {
 //            horizonDevice.close();
 //        }
 //        saveAll(Params.SETTINGS);
+        updateJsonRx();
+        updateJsonTx();
+
         Params.RXRM.save();
         Params.TXRM.save();
+        Core.getCore().receiverUPSWindowUI.updateRm();
         System.out.println("Stop setting");
     }
     private void inf(String text) {

@@ -105,7 +105,7 @@ class Clocker{
 
     public Clocker(float relativeBaudRate){
         this.relativeBaudRate = relativeBaudRate;
-        this.loopFilter = new LoopFilter(0.0001f, 0.00001f, 0.1f/3000.f);
+        this.loopFilter = new LoopFilter(0.0001f, 0.000001f, 0.1f/3000.f);
         this.timer = 0.f;
         this.halfRight = 0.f;
         this.halfLeft = 0.f;
@@ -185,7 +185,7 @@ class Clocker{
 
 class LoopFilter{
 
-    private float integrator, kp, ki, theshhold;
+    public float integrator, kp, ki, theshhold;
 
     public LoopFilter(float kp, float ki, float theshhold){
         this.kp = kp;
@@ -199,8 +199,8 @@ class LoopFilter{
         integrator += data * ki;
         if(Math.abs(integrator) > theshhold)
             integrator = Math.signum(integrator) * theshhold;
-        if(Math.abs(result) > theshhold)
-            result = Math.signum(result) * theshhold;
+//        if(Math.abs(result) > theshhold)
+//            result = Math.signum(result) * theshhold;
         return  result;
     }
 }

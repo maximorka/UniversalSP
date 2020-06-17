@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="776.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.MainUI">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="43.0" prefWidth="776.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.MainUI">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="2.0" layoutY="1.0" prefHeight="40.0" prefWidth="771.0" styleClass="vBox" stylesheets="@css/Main.css">
          <children>
@@ -27,7 +26,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="36.0" prefWidth="77.0">
                            <children>
-                              <Label fx:id="rxLabel" prefHeight="21.0" prefWidth="57.0" text="Приймач" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="3.0">
+                              <Label fx:id="rxLabel" layoutX="1.0" layoutY="3.0" prefHeight="21.0" prefWidth="26.0" text="RX" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="3.0">
                                  <padding>
                                     <Insets top="2.0" />
                                  </padding>
@@ -44,9 +43,9 @@
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="36.0" prefWidth="28.0" />
-                        <AnchorPane prefHeight="36.0" prefWidth="174.0">
+                        <AnchorPane prefHeight="30.0" prefWidth="37.0">
                            <children>
-                              <Label fx:id="txLabel" layoutX="12.0" layoutY="5.0" prefHeight="21.0" prefWidth="67.0" text="Передавач" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="3.0" />
+                              <Label fx:id="txLabel" layoutX="23.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="20.0" text="TX" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="3.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="36.0" prefWidth="114.0">
@@ -54,13 +53,16 @@
                               <ChoiceBox fx:id="typeTxChoicebox" prefHeight="27.0" prefWidth="99.0" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="1.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="36.0" prefWidth="116.0" />
+                        <AnchorPane prefHeight="36.0" prefWidth="116.0">
+                           <children>
+                              <Button fx:id="set" layoutY="2.0" mnemonicParsing="false" onAction="#settings" prefHeight="25.0" prefWidth="36.0" styleClass="buttonSetting" stylesheets="@css/Main.css" />
+                           </children></AnchorPane>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
                               <Button fx:id="connectButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="131.0" text="Підключитись" AnchorPane.topAnchor="1.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="36.0" prefWidth="113.0" />
+                        <AnchorPane prefHeight="30.0" prefWidth="31.0" />
                      </children>
                   </HBox>
                </children>

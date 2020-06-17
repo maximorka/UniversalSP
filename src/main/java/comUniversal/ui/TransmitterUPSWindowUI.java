@@ -1,12 +1,11 @@
 
 package comUniversal.ui;
 
-        import comUniversal.Core;
         import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
 import comUniversal.ui.setting.ParamsSettings;
-        import comUniversal.util.EthernetUtils;
-        import comUniversal.util.Params;
+import comUniversal.util.EthernetUtils;
+import comUniversal.util.Params;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,23 +15,23 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.InetAddress;
-        import java.nio.ByteBuffer;
-        import java.util.ArrayList;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransmitterUPSWindowUI implements ParamsSettings {
 
     private List<ParamsSettings> settings = new ArrayList<>();
 
-    public static TextField ipTextTx;
-
-    public static Label modeTxText;
-    public static Label widthTxText;
-    public static Label procentTxText;
-    public static TextField freqTxText;
-    public static Button changeIPTxButton;
-    public static Label freqTxLabel;
-    public static Label freqHzTxLabel;
+//    public static TextField ipTextTx;
+//
+//    public static Label modeTxText;
+//    public static Label widthTxText;
+//    public static Label procentTxText;
+//    public static TextField freqTxText;
+//    public static Button changeIPTxButton;
+//    public static Label freqTxLabel;
+//    public static Label freqHzTxLabel;
 
     @FXML
     private TextField txFrequencyTextField;
@@ -55,28 +54,28 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
     @FXML
     public void initialize() {
         System.out.println("initialize() setting transmitter");
-        ipTextTx = new TextField();
-        ipTextTx = ipTextField;
-
-        modeTxText = new Label();
-        modeTxText = modeDeviceLabel;
-
-        widthTxText = new Label();
-        widthTxText = widthDeviceLabel;
-
-        procentTxText = new Label();
-        procentTxText = procentDeviceLabel;
-
-        freqTxText = new TextField();
-        freqTxText = txFrequencyTextField;
-        changeIPTxButton = new Button();
-        changeIPTxButton = changeSettingsIPbutton;
-
-        freqTxLabel = new Label();
-        freqTxLabel = txFrequencyLabel;
-
-        freqHzTxLabel = new Label();
-        freqHzTxLabel = txFrequencyHzLabel;
+//        ipTextTx = new TextField();
+//        ipTextTx = ipTextField;
+//
+//        modeTxText = new Label();
+//        modeTxText = modeDeviceLabel;
+//
+//        widthTxText = new Label();
+//        widthTxText = widthDeviceLabel;
+//
+//        procentTxText = new Label();
+//        procentTxText = procentDeviceLabel;
+//
+//        freqTxText = new TextField();
+//        freqTxText = txFrequencyTextField;
+//        changeIPTxButton = new Button();
+//        changeIPTxButton = changeSettingsIPbutton;
+//
+//        freqTxLabel = new Label();
+//        freqTxLabel = txFrequencyLabel;
+//
+//        freqHzTxLabel = new Label();
+//        freqHzTxLabel = txFrequencyHzLabel;
 
         restoreAll(Params.SETTINGS);
 
@@ -89,7 +88,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
             public void handle(ActionEvent actionEvent) {
                 int frequency = Integer.parseInt(txFrequencyTextField.getText());
 
-                    Core.getCore().device[0].driverHorizon.ducSetFrequency(frequency);
+                    //Core.getCore().device[0].driverHorizon.ducSetFrequency(frequency);
 
 
             }
@@ -109,49 +108,49 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
                 int ip = ByteBuffer.wrap(ipBytes).getInt();
                 int maskInt = ByteBuffer.wrap(maskBytes).getInt();
                 int get = ByteBuffer.wrap(gatewayBytes).getInt();
-                if(Core.getCore().countConectedDevice == 1){
-
-                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].kylymDecoder100.setRunning(false);
-                    Core.getCore().countConectedDevice = 0;
-                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
-                    changeSettingsIPbutton.setDisable(true);
-
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    changeSettingsIPbutton.setDisable(false);
-                    Core.getCore().device[0].bufferController.setWorkingThread(false);
-                    Core.getCore().device[0].ethernetDriver.closeSocket();
-                    Core.getCore().mainUI.setConnectButton();
-                }else{
-
-                    Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
-                    Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
-                    Core.getCore().device[1].kylymDecoder100.setRunning(false);
-
-                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
-                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
-
-                    Core.getCore().countConectedDevice = 0;
-                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
-                    changeSettingsIPbutton.setDisable(true);
-
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                    changeSettingsIPbutton.setDisable(false);
-                    Core.getCore().device[0].bufferController.setWorkingThread(false);
-
-                    Core.getCore().device[0].ethernetDriver.closeSocket();
-                    Core.getCore().device[1].ethernetDriver.closeSocket();
-                    Core.getCore().mainUI.setConnectButton();
-                }
+//                if(Core.getCore().countConectedDevice == 1){
+//
+//                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
+//                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
+//                    Core.getCore().device[0].kylymDecoder100.setRunning(false);
+//                    Core.getCore().countConectedDevice = 0;
+//                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
+//                    changeSettingsIPbutton.setDisable(true);
+//
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                    changeSettingsIPbutton.setDisable(false);
+//                    Core.getCore().device[0].bufferController.setWorkingThread(false);
+//                    Core.getCore().device[0].ethernetDriver.closeSocket();
+//                    Core.getCore().mainUI.setConnectButton();
+//                }else{
+//
+//                    Core.getCore().device[1].driverHorizon.ducSetMode(Mode.DISABLE);
+//                    Core.getCore().device[1].driverHorizon.ddcSetMode(Mode.DISABLE);
+//                    Core.getCore().device[1].kylymDecoder100.setRunning(false);
+//
+//                    Core.getCore().device[0].driverHorizon.ducSetMode(Mode.DISABLE);
+//                    Core.getCore().device[0].driverHorizon.ddcSetMode(Mode.DISABLE);
+//
+//                    Core.getCore().countConectedDevice = 0;
+//                    Core.getCore().device[0].driverHorizon.ethernetSet(ip,maskInt,port,get);
+//                    changeSettingsIPbutton.setDisable(true);
+//
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                    changeSettingsIPbutton.setDisable(false);
+//                    Core.getCore().device[0].bufferController.setWorkingThread(false);
+//
+//                    Core.getCore().device[0].ethernetDriver.closeSocket();
+//                    Core.getCore().device[1].ethernetDriver.closeSocket();
+//                    Core.getCore().mainUI.setConnectButton();
+//                }
             }
         });
         //testIP();
@@ -181,7 +180,7 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         }
     }
     public String getIP(){
-        return ipTextTx.getText();
+        return ipTextField.getText();
     }
 
     @Override
@@ -193,22 +192,22 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         String procent = Integer.toString(percent);
 
         Platform.runLater(() -> {
-            procentTxText.setText(procent);
+            procentDeviceLabel.setText(procent);
         });
     }
 
     public void getFrequencyTx(int data) {
         String tmp = Integer.toString(data);
         Platform.runLater(() -> {
-            if(!freqTxText.isFocused()){
-                freqTxText.setText(tmp);
+            if(!txFrequencyTextField.isFocused()){
+                txFrequencyTextField.setText(tmp);
             }
         });
     }
     public void getModeTx(Mode data) {
         String tmp = String.valueOf(data);
         Platform.runLater(() -> {
-            modeTxText.setText(tmp);
+            modeDeviceLabel.setText(tmp);
         });
     }
     public void getWidthTx(Width data) {
@@ -233,17 +232,17 @@ public class TransmitterUPSWindowUI implements ParamsSettings {
         }
         String qwe = tmp.toString();
         Platform.runLater(() -> {
-            widthTxText.setText(qwe);
+            widthDeviceLabel.setText(qwe);
         });
     }
 
     public void updateVisibility(boolean state) {
         Platform.runLater(() -> {
-            if(freqHzTxLabel != null ){
-                freqHzTxLabel.setDisable(state);
-                freqTxLabel.setDisable(state);
-                freqTxText.setDisable(state);
-                changeIPTxButton.setDisable(state);
+            if(txFrequencyHzLabel != null ){
+                txFrequencyHzLabel.setDisable(state);
+                txFrequencyLabel.setDisable(state);
+                txFrequencyTextField.setDisable(state);
+                changeSettingsIPbutton.setDisable(state);
             }
 
         });

@@ -19,15 +19,15 @@
                <children>
                   <AnchorPane prefHeight="25.0" prefWidth="51.0">
                      <children>
-                        <Label prefHeight="17.0" prefWidth="43.0" text="Місце" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="2.0" />
+                        <Label prefHeight="17.0" prefWidth="43.0" text="Тип RX" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="25.0" prefWidth="74.0">
                      <children>
-                        <ComboBox fx:id="rx" prefHeight="25.0" prefWidth="104.0" AnchorPane.leftAnchor="4.0" />
+                        <Label fx:id="rxType" layoutX="18.0" layoutY="2.0" text="Label" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <AnchorPane prefHeight="19.0" prefWidth="125.0" />
                </children>
             </HBox>
             <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="3.0" prefWidth="222.0" />

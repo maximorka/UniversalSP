@@ -8,6 +8,7 @@ package comUniversal.ui;
 
 import comUniversal.Core;
 import comUniversal.deviceLevel.Dev;
+import comUniversal.ui.setting.RM;
 import comUniversal.util.EthernetUtils;
 import comUniversal.util.Params;
 import javafx.application.Platform;
@@ -16,29 +17,27 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.Stage;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.ByteBuffer;
 
 public class SettingController{
-
+private SettingsRMWindowUI settingsRMWindowUI;
    private Dev dev;
     private TableColumn rxNameCol;
     private TableColumn rxIpCol;
+    private TableColumn rxFreq;
     private TableColumn txNameCol;
     private TableColumn txIpCol;
-    @FXML
-    private TextField rxRmTextField;
-    @FXML
-    private TextField ipRxTextField;
-    @FXML
-    private TextField txRmTextField;
-    @FXML
-    private TextField ipTxTextField;
+
     @FXML
     private Button addRxRm;
     @FXML
@@ -47,7 +46,8 @@ public class SettingController{
     private Button addTxRm;
     @FXML
     private Button deleteItemTx;
-
+    @FXML
+    private Button editRxRm;
 
     @FXML
     private TextField ipTextField;
@@ -61,7 +61,7 @@ public class SettingController{
     private TableView<RM> tableRx;
     @FXML
     private TableView<RM> tableTx;
-    ObservableList<RM> dataRx;
+    ObservableList dataRx;
     ObservableList<RM> dataTx;
 
     @FXML
@@ -69,106 +69,88 @@ public class SettingController{
         System.out.println("initialize() setting");
 
         rxNameCol = new TableColumn("Name");
-        rxNameCol.setMinWidth(50);
+        rxNameCol.setMinWidth(130);
         rxNameCol.setCellValueFactory(new PropertyValueFactory<RM, String>("Name"));
-        rxNameCol.setCellFactory(TextFieldTableCell.<RM> forTableColumn());
+        //rxNameCol.setCellFactory(TextFieldTableCell.<String> forTableColumn());
 
-        rxIpCol = new TableColumn("IP");
-        rxIpCol.setMinWidth(100);
-        rxIpCol.setCellValueFactory(new PropertyValueFactory<RM, String>("ip"));
-        rxIpCol.setCellFactory(TextFieldTableCell.<RM> forTableColumn());
-        tableRx.setEditable(true);
-
-        rxNameCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RM,String>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<RM, String> event) {
-                ((RM) event.getTableView().getItems().get(
-                        event.getTablePosition().getRow())
-                ).setName(event.getNewValue());
-            }
-        });
-        rxIpCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RM,String>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<RM, String> event) {
-                ((RM) event.getTableView().getItems().get(
-                        event.getTablePosition().getRow())
-                ).setIP(event.getNewValue());
-            }
-        });
-
-
+        //tableRx.setEditable(true);
 
         txNameCol = new TableColumn("Name");
-        txNameCol.setMinWidth(50);
+        txNameCol.setMinWidth(130);
         txNameCol.setCellValueFactory(new PropertyValueFactory<RM, String>("Name"));
         txNameCol.setCellFactory(TextFieldTableCell.<RM> forTableColumn());
 
-        txIpCol = new TableColumn("IP");
-        txIpCol.setMinWidth(100);
-        txIpCol.setCellValueFactory(new PropertyValueFactory<RM, String>("ip"));
-        txIpCol.setCellFactory(TextFieldTableCell.<RM> forTableColumn());
 
-        tableTx.setEditable(true);
-
-        txNameCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RM,String>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<RM, String> event) {
-                ((RM) event.getTableView().getItems().get(
-                        event.getTablePosition().getRow())
-                ).setName(event.getNewValue());
-            }
-        });
-        txIpCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RM,String>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<RM, String> event) {
-                ((RM) event.getTableView().getItems().get(
-                        event.getTablePosition().getRow())
-                ).setIP(event.getNewValue());
-            }
-        });
-
+        //tableTx.setEditable(true);
 
         addRxRm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                dataRx.add(new RM(
-                        rxRmTextField.getText(),
-                        ipRxTextField.getText()
-                ));
-                rxRmTextField.clear();
-                ipRxTextField.clear();
 
-//                String rxRm = rxRmTextField.getText();
-//                String rxRmIP = ipRxTextField.getText();
-//                Params.RXRM.putString(rxRm, rxRmIP);
-//                if(Core.getCore().receiverUPSWindowUI!=null){
-//                    Core.getCore().receiverUPSWindowUI.updateRm();
-//                }
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/SettingsRM.fxml"));
+                Scene scene = null;
+                try {
+                    scene = new Scene(fxmlLoader.load());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+                Stage stage = new Stage();
+                stage.setX(212);
+                stage.setY(367);
+                stage.setTitle("RM");
+                stage.setScene(scene);
+                stage.show();
             }
+
+
         });
         deleteItemRx.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 int t = tableRx.getSelectionModel().getFocusedIndex();
+                RM rm = tableRx.getSelectionModel().getSelectedItem();
+                Params.RXRM.deleteKeyName(rm.getName());
+                Params.RXRM.deleteKeyRMSetings(rm.getName());
+                Params.RXRM.save();
+                Core.getCore().mainUI.updateRmType();
                 dataRx.remove(t);
-//                String rxRm = rxRmTextField.getText();
-//                Params.RXRM.deleteKey(rxRm);
-//                Core.getCore().receiverUPSWindowUI.deleteItemRm(rxRm);
+            }
+        });
+        editRxRm.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int t = tableRx.getSelectionModel().getFocusedIndex();
+                RM rm = tableRx.getSelectionModel().getSelectedItem();
+
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/SettingsRM.fxml"));
+                Scene scene = null;
+                try {
+                    scene = new Scene(fxmlLoader.load());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                settingsRMWindowUI = fxmlLoader.getController();
+                Core.getCore().settingsRMWindowUI = settingsRMWindowUI;//Params.RXRM.deleteKeyName(rm.getName());
+
+                Core.getCore().settingsRMWindowUI.setEdit(rm.getName());
+                Stage stage = new Stage();
+                stage.setX(212);
+                stage.setY(90);
+                stage.setTitle("RX");
+                stage.setScene(scene);
+
+                stage.show();
+
+
             }
         });
         addTxRm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-//                String txRm = txRmTextField.getText();
-//                String txRmIP = ipTxTextField.getText();
-//                Params.TXRM.putString(txRm, txRmIP);
-                dataTx.add(new RM(
-                        txRmTextField.getText(),
-                        ipTxTextField.getText()
-                ));
-                txRmTextField.clear();
-                ipTxTextField.clear();
+
             }
         });
         deleteItemTx.setOnAction(new EventHandler<ActionEvent>() {
@@ -176,9 +158,6 @@ public class SettingController{
             public void handle(ActionEvent event) {
                 int t = tableTx.getSelectionModel().getFocusedIndex();
                 dataTx.remove(t);
-//                String rxRm = rxRmTextField.getText();
-//                Params.RXRM.deleteKey(rxRm);
-//                Core.getCore().receiverUPSWindowUI.deleteItemRm(rxRm);
             }
         });
         ipTextField.setOnAction(new EventHandler<ActionEvent>() {
@@ -276,22 +255,27 @@ public class SettingController{
     }
 
     private void updateSettingsRxRmTable(){
-        ObservableList<String> data = Params.RXRM.getKey();
-        ObservableList<String> dataIp = FXCollections.observableArrayList();
 
+        ObservableList<String> data = Params.RXRM.getKeyName();
+        dataRx = FXCollections.observableArrayList();
         for (int i = 0; i <data.size() ; i++) {
-            String p = new String(Params.RXRM.getString(data.get(i)));
-            dataIp.add(p);
-        }
-
-         dataRx = FXCollections.observableArrayList();
-        for (int i = 0; i <data.size() ; i++) {
-            RM p = new RM(data.get(i), dataIp.get(i));
-            dataRx.add(p);
+            String p = new String(Params.RXRM.getStringName(i));
+            dataRx.add(new RM(p));
         }
 
         tableRx.setItems(dataRx);
-        tableRx.getColumns().addAll(rxNameCol, rxIpCol);
+        tableRx.getColumns().addAll(rxNameCol);
+    }
+    public void updateSettingsRx(){
+
+        ObservableList<String> data = Params.RXRM.getKeyName();
+        dataRx = FXCollections.observableArrayList();
+        for (int i = 0; i <data.size() ; i++) {
+            String p = new String(Params.RXRM.getStringName(i));
+            dataRx.add(new RM(p));
+        }
+        tableRx.setItems(dataRx);
+
     }
     private void updateSettingsTxRmTable(){
         ObservableList<String> data = Params.TXRM.getKey();
@@ -304,20 +288,21 @@ public class SettingController{
 
         dataTx = FXCollections.observableArrayList();
         for (int i = 0; i <data.size() ; i++) {
-            RM p = new RM(data.get(i), dataIp.get(i));
+            RM p = new RM(data.get(i));
             dataTx.add(p);
         }
 
         tableTx.setItems(dataTx);
-        tableTx.getColumns().addAll(txNameCol, txIpCol);
+        tableTx.getColumns().addAll(txNameCol);
     }
     private void updateJsonRx(){
         int size = tableRx.getItems().size();
-        ObservableList<RM> data = tableRx.getItems();
-        Params.RXRM.deleteAll();
-        for (int i = 0; i <size ; i++) {
-            Params.RXRM.putString(data.get(i).getName(), data.get(i).getIp());
-        }
+//        ObservableList<RM> data = tableRx.getItems();
+//        Params.RXRM.deleteAll();
+//        for (int i = 0; i <size ; i++) {
+//            Params.RXRM.putStringRMName(data.get(i).getName());
+//            Params.RXRM.putStringRMSettings(data.get(i).getName(), data.get(i).getIp(),"128003");
+//        }
 
     }
     private void updateJsonTx(){
@@ -325,7 +310,7 @@ public class SettingController{
         ObservableList<RM> data = tableTx.getItems();
         Params.TXRM.deleteAll();
         for (int i = 0; i <size ; i++) {
-            Params.TXRM.putString(data.get(i).getName(), data.get(i).getIp());
+            //Params.TXRM.putString(data.get(i).getName());
         }
 
     }
@@ -388,12 +373,12 @@ public class SettingController{
 //            horizonDevice.close();
 //        }
 //        saveAll(Params.SETTINGS);
-        updateJsonRx();
-        updateJsonTx();
+        //updateJsonRx();
+       // updateJsonTx();
 ///commit commit
         Params.RXRM.save();
         Params.TXRM.save();
-        Core.getCore().receiverUPSWindowUI.updateRm();
+       // Core.getCore().receiverUPSWindowUI.updateRm();
         System.out.println("Stop setting");
     }
     private void inf(String text) {

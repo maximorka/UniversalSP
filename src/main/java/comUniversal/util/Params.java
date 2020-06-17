@@ -1,20 +1,23 @@
 package comUniversal.util;
 
 //import com.first.util.speed.SpeedConfig;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Params {
 	private String filename;
 	private Map<String, String> items = new HashMap<>();
-	
+	private ArrayList<String> item = new ArrayList<String>();
+
+	Map<String, Map<String, String>> RMSettings = new HashMap<>();
+	Map<String, Map<String, String>> TXSettings = new HashMap<>();
+
 	public static final Params SETTINGS = getInner("settings");
 	public static final Params RXRM = getInner("receiverRm");
 	public static final Params TXRM = getInner("transmitterRm");
@@ -24,8 +27,6 @@ public class Params {
 	 */
 	public static final Params ETHERNET = new Params();
 
-
-	
 	//public static final SpeedConfig SPEED = SpeedConfig.getInternal();
 	
 	public static Params getInner(String name) {
@@ -88,7 +89,9 @@ public class Params {
 	public String getString(String name) {
 		return items.get(name);
 	}
-	
+	public String getStringName(int index) {
+		return item.get(index);
+	}
 	public String getKeyByValue(String value) {
 		for(String key: items.keySet()) {
 			String tValue = items.get(key);
@@ -107,8 +110,28 @@ public class Params {
 		}
 		return langs;
 	}
+	public ObservableList<String>  getKeyName() {
+		ObservableList<String> langs = FXCollections.observableArrayList();
+		for(String key: item) {
+			String tValue = key;
+			langs.add(tValue);
+		}
+		return langs;
+	}
+	public int getBooleanName(String name) {
+
+		int value = item.indexOf(name);
+
+		return value;
+	}
 	public void  deleteKey(String key) {
 		items.put(key,null);
+	}
+	public void  deleteKeyName(String key) {
+		item.remove(key);
+	}
+	public void  deleteKeyRMSetings(String key) {
+		RMSettings.remove(key);
 	}
 	public void  deleteAll() {
 		items.clear();
@@ -129,7 +152,20 @@ public class Params {
 	public void putString(String name, String value) {
 		items.put(name, value);
 	}
-	
+	public void putStringRMSettings(String name, String value,String ip, String fr, String width, String mode) {
+
+		Map<String,String> rm = new HashMap<String, String>();
+		rm.put("typeRx",value);
+		rm.put("ip",ip);
+		rm.put("freq", fr);
+		rm.put("widht", width);
+		rm.put("mode", mode);
+		RMSettings.put(name,rm);
+	}
+	public void putStringRMName(String name) {
+
+		item.add(name) ;
+	}
 	public void putBoolean(String name, boolean value) {
 		items.put(name, value + "");
 	}
@@ -140,5 +176,17 @@ public class Params {
 		} else {
 			return defValue;
 		}
+	}
+	public Map getMap(String key, Map defValue) {
+		if (RMSettings.containsKey(key)) {
+			System.out.println("key");
+			return getMap(key);
+		} else {
+			return defValue;
+		}
+	}
+
+	public Map getMap(String name) {
+		return RMSettings.get(name);
 	}
 }

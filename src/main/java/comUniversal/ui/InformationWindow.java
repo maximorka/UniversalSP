@@ -31,7 +31,8 @@ public class InformationWindow {
     private TextArea mes;
     @FXML
     private Button send;
-
+    @FXML
+    private Label statusL;
     int countSymbol=0;
 
     public InlineCssTextArea special;
@@ -49,7 +50,10 @@ public class InformationWindow {
         System.out.println("initialize() information window");
         speedL.setVisible(false);
         freqL.setVisible(false);
+        statusL.setVisible(false);
         speedReceiveLabel.setTextFill(Color.web("#00cc00"));
+
+        special.autosize();
         send.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -124,9 +128,11 @@ public class InformationWindow {
 
                 speedL.setVisible(false);
                 freqL.setVisible(false);
+                statusL.setVisible(false);
                 if(algoritm == 1){
                     speedL.setVisible(true);
                     freqL.setVisible(true);
+                    statusL.setVisible(true);
                     statusLabel.setTextFill(Color.web("#00cc00"));
                     statusLabel.setText("Прийом");
                     speedReceiveLabel.setText(Integer.toString(speed));
@@ -134,7 +140,7 @@ public class InformationWindow {
                 } else if(algoritm == 2){
                     speedL.setVisible(true);
                     freqL.setVisible(true);
-                    statusLabel.setTextFill(Color.web("#e6e600"));
+                    statusL.setVisible(true);
                     statusLabel.setText("Очікування");
                     speedReceiveLabel.setText(Integer.toString(speed));
                     freqReceiveLabel.setText(Integer.toString(frequency));

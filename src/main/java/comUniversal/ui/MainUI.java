@@ -2,6 +2,7 @@ package comUniversal.ui;
 
 
 import comUniversal.Core;
+import comUniversal.util.Params;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -29,6 +29,7 @@ public class MainUI {
     InformationWindow informationWindow;
     ReceiverUPSWindowUI receiverUPSWindowUI;
     TransmitterUPSWindowUI transmitterUPSWindowUI;
+    SettingController settingController;
     @FXML
     private Label rxLabel;
     @FXML
@@ -63,11 +64,14 @@ public class MainUI {
         txLabel.setDisable(true);
         typeTxChoicebox.setDisable(true);
 
-        ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
-        typeRxChoicebox.setItems(typeRx);
+        ObservableList<String> langsRx = FXCollections.observableArrayList();
+        langsRx = Params.RXRM.getKeyName();
+        typeRxChoicebox.setItems(langsRx);
 
-        ObservableList <String> typeTx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
-        typeTxChoicebox.setItems(typeTx);
+
+        ObservableList<String> langsTx = FXCollections.observableArrayList();
+        langsTx = Params.TXRM.getKeyName();
+        typeTxChoicebox.setItems(langsTx);
 
         ObservableList <String> typeMode = FXCollections.observableArrayList("Килим");//,"Молот");
         modeWorkChoicebox.setItems(typeMode);
@@ -133,7 +137,7 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                if(typeRxChoicebox.getValue() == "Горизонт"|| typeRxChoicebox.getValue() == "Горизонт+") {
+                if(typeRxChoicebox.getValue() != null) {
 
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/ReceiverUPSWindow.fxml"));
@@ -214,7 +218,6 @@ public class MainUI {
 
                int typeProgram = modeWorkChoicebox.getValue()=="Килим"?1:0;
 
-
                 if (connectButton.getStyle() != con) {
 
                    if( Core.getCore().dev.conect("kylym")) {
@@ -262,47 +265,26 @@ public void setConnectButton(){
 }
 
     public void settings(ActionEvent actionEvent) throws IOException {
-
-       // FXMLLoader fxmlLoader = new FXMLLoader();
-        //fxmlLoader.setLocation(getClass().getResource("/Setting.fxml"));
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Setting.fxml"));
-        Parent root = loader.load();
-        SettingController controller = loader.getController();
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getResource("/Setting.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        settingController = fxmlLoader.getController();
         Stage stage = new Stage();
-        Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
-        stage.setResizable(false);
-        stage.setTitle("Налаштування");
+        stage.setX(212);
+        stage.setY(90);
+        stage.setTitle("RX");
         stage.setScene(scene);
-        stage.setOnHidden(event -> controller.shutdown());
-        stage.showAndWait();
+        stage.setOnHidden(event -> settingController.shutdown());
+        stage.show();
 
-//        Scene scene = null;
-//        try {
-//            scene = new Scene(loader.load());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Stage stage = new Stage();
-//
-//
-//        stage.setX(212);
-//        stage.setY(367);
-//        stage.setTitle("TX");
-//        stage.setResizable(false);
-//        stage.setScene(scene);
-//                stage.setOnHidden(event -> controller.shutdown());
-//        stage.showAndWait();
-        //connectButton.setDisable(false);
 
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Setting.fxml"));
-//        Parent root = loader.load();
-//        SettingController controller = loader.getController();
-//        Stage stage = new Stage();
-//        Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
-//        stage.setResizable(false);
-//        stage.setScene(scene);
-//        stage.setOnHidden(event -> controller.shutdown());
-//        stage.showAndWait();
+        Core.getCore().settingController = settingController;
+
     }
 
     class UpdateUIThread extends Thread {
@@ -322,7 +304,15 @@ public void setConnectButton(){
 
         }
     }
-
+    public void updateRmType() {
+        ObservableList<String> langsRx = FXCollections.observableArrayList();
+        langsRx = Params.RXRM.getKeyName();
+        System.out.println(langsRx);
+        typeRxChoicebox.setItems(langsRx);
+    }
+    public String getTypeRx() {
+        return typeRxChoicebox.getValue().toString();
+    }
 
     private void inf(String text) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

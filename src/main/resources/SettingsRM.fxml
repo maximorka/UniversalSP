@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.ReceiverUPSWindowUI">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.SettingsRMWindowUI">
    <children>
       <VBox layoutX="2.0" layoutY="2.0" prefHeight="214.0" prefWidth="224.0" styleClass="vBox" stylesheets="@css/Main.css" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
          <children>
@@ -19,18 +21,33 @@
                <children>
                   <AnchorPane prefHeight="25.0" prefWidth="51.0">
                      <children>
+                        <Label prefHeight="17.0" prefWidth="43.0" text="Місце" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="2.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="25.0" prefWidth="74.0">
+                     <children>
+                        <TextField fx:id="rxRmTextField" layoutX="5.0" prefHeight="27.0" prefWidth="50.0" text="RM1" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="3.0" prefWidth="222.0" />
+            <HBox prefHeight="23.0" prefWidth="222.0">
+               <children>
+                  <AnchorPane prefHeight="25.0" prefWidth="51.0">
+                     <children>
                         <Label prefHeight="17.0" prefWidth="43.0" text="Тип RX" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="25.0" prefWidth="74.0">
                      <children>
-                        <Label fx:id="rxType" layoutX="18.0" layoutY="2.0" text="Label" />
+                        <ComboBox fx:id="rxType" prefHeight="25.0" prefWidth="104.0" AnchorPane.leftAnchor="4.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="19.0" prefWidth="125.0" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                </children>
             </HBox>
-            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="3.0" prefWidth="222.0" />
             <HBox prefHeight="30.0" prefWidth="380.0">
                <children>
                   <AnchorPane prefHeight="40.0" prefWidth="19.0">
@@ -61,7 +78,7 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="27.0" prefWidth="127.0">
                      <children>
-                        <TextField fx:id="rxFrequencyTextField" prefHeight="25.0" prefWidth="104.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="2.0" />
+                        <TextField fx:id="rxFrequencyTextField" layoutX="2.0" layoutY="2.0" prefHeight="25.0" prefWidth="104.0" AnchorPane.leftAnchor="2.0" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="27.0" prefWidth="61.0">
@@ -78,30 +95,43 @@
                         <Insets />
                      </HBox.margin>
                      <children>
-                        <Label layoutX="16.0" layoutY="1.0" text="Смуга" textFill="#d6d1d1" AnchorPane.leftAnchor="3.0" />
+                        <Label layoutX="16.0" layoutY="1.0" text="Смуга" AnchorPane.leftAnchor="3.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="23.0" prefWidth="98.0">
+                  <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="16.0" />
+                  <AnchorPane prefHeight="25.0" prefWidth="107.0">
                      <children>
-                        <Label fx:id="widthDeviceLabel" layoutX="8.0" layoutY="3.0" prefHeight="17.0" prefWidth="57.0" textFill="#b5a9a9" AnchorPane.topAnchor="2.0" />
+                        <ComboBox fx:id="widthRx" prefHeight="25.0" prefWidth="104.0" AnchorPane.topAnchor="2.0" />
                      </children></AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="11.0" layoutY="4.0" text="кГц" />
+                     </children></AnchorPane>
                </children>
             </HBox>
             <HBox prefHeight="23.0" prefWidth="222.0">
                <children>
-                  <AnchorPane prefHeight="19.0" prefWidth="68.0">
+                  <AnchorPane prefHeight="25.0" prefWidth="45.0">
                      <children>
-                        <Label text="Режим" textFill="#d6d1d1" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="0.0" />
+                        <Label text="Режим" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="21.0" prefWidth="59.0">
+                  <AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="7.0" />
+                  <AnchorPane prefHeight="25.0" prefWidth="107.0">
                      <children>
-                        <Label fx:id="modeDeviceLabel" layoutY="6.0" prefHeight="17.0" prefWidth="50.0" textFill="#b5a9a9" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0" />
-                     </children>
-                  </AnchorPane>
+                        <ComboBox fx:id="modeRx" prefHeight="25.0" prefWidth="104.0" AnchorPane.topAnchor="2.0" />
+                     </children></AnchorPane>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="saveButton" layoutX="11.0" mnemonicParsing="false" text="Save" />
+                     </children>
+                  </AnchorPane>
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" />

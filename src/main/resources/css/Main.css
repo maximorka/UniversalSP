@@ -12,6 +12,15 @@
   -fx-font-family: Consolas;
   -fx-font-size: 14;
 }
+
+.radio-button:selected .radio .dot {
+    -fx-background-color: green;
+    -fx-background-insets: 0;
+}
+.yellow-radio-button .dot {
+  -fx-mark-highlight-color: red;
+  -fx-mark-color: red;
+}
 .buttonSend{
 	-fx-text-fill: black;
 	-fx-background-color: 
@@ -26,7 +35,7 @@
 .buttonSetting{ 
 	-fx-background-color: none;    
  	-fx-background-image: url('/images/setting.png');
-	-fx-background-size: 40;
+	-fx-background-size: 30;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: 50%;
 }

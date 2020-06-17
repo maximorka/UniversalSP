@@ -59,7 +59,7 @@ public class Device {
 
             groupAdd = new GroupAdd();
             kylymDecoder100 = new KylymDecoder(100);
-            kylymDecoder100.setRunning(true);
+           //kylymDecoder100.setRunning(true);
 
             modulatorPsk = new ModulatorPsk();
 
@@ -178,10 +178,10 @@ public class Device {
 
             optimalNonCoherentDеmodulatorPsk100 = new OptimalNonCoherent(100.f/3000.f);
             kylymDecoder100 = new KylymDecoder(100);
-            kylymDecoder100.setRunning(true);
+            //kylymDecoder100.setRunning(true);
             optimalNonCoherentDеmodulatorPsk250 = new OptimalNonCoherent(250.f/3000.f);
             kylymDecoder250 = new KylymDecoder(250);
-            kylymDecoder250.setRunning(true);
+            //kylymDecoder250.setRunning(true);
 
             ethernetDriver.clearReceiverListener();
             ethernetDriver.addReceiverListener(data -> driverHorizon.parse(data));
@@ -211,8 +211,8 @@ public class Device {
         } else {
             driverHorizon.ducSetMode(Mode.DISABLE);
             driverHorizon.ddcSetMode(Mode.DISABLE);
-            kylymDecoder100.setRunning(false);
-            kylymDecoder250.setRunning(false);
+           // kylymDecoder100.setRunning(false);
+            //kylymDecoder250.setRunning(false);
             stateCon=ethernetDriver.closeSocket();
         }
         return stateCon;
@@ -229,7 +229,6 @@ public class Device {
     }
     public void getParamsRx() {
         if(driverHorizon!= null){
-
             driverHorizon.ddcGetFrequency();
             driverHorizon.ddcGetWidth();
             driverHorizon.ddcGetMode();
@@ -246,13 +245,13 @@ public class Device {
     public void closeDeviceRxTx(){
         driverHorizon.ducSetMode(Mode.DISABLE);
         driverHorizon.ddcSetMode(Mode.DISABLE);
-        kylymDecoder100.setRunning(false);
+       // kylymDecoder100.setRunning(false);
         bufferController.setWorkingThread(false);
     }
     public void closeDeviceRx(){
         driverHorizon.ducSetMode(Mode.DISABLE);
         driverHorizon.ddcSetMode(Mode.DISABLE);
-        kylymDecoder100.setRunning(false);
+       // kylymDecoder100.setRunning(false);
     }
     public void closeDeviceTx(){
         driverHorizon.ducSetMode(Mode.DISABLE);

@@ -13,36 +13,52 @@ public class OptimalNonCoherent {
 
     private AutomaticFrequencyTuning automaticFrequencyTuning;
     private MovingAverage channelFilter;
-    private LineDelay lineDelay;
     private Clocker clocker;
     private Pll pll;
-    private Complex lastSempl;
-    private Agc agc;
 
+    // Listeners DdcFrequency
+    private List<FrequencyListener> frequencyListeners= new ArrayList<>();
+
+    public void addFrequencyListener(FrequencyListener listener){frequencyListeners.add(listener);}
+
+    public void clearFrequencyListener(){frequencyListeners.clear();}
+
+    private void toListenersFrequency(float frequency){
+        if(!frequencyListeners.isEmpty())
+            for(FrequencyListener listener: frequencyListeners)
+                listener.frequency(frequency);
+    }
 
 
     public OptimalNonCoherent(float relativeBaudRate){
         automaticFrequencyTuning = new AutomaticFrequencyTuning();
-        lineDelay = new LineDelay((int)(1.f/relativeBaudRate));
-        channelFilter = new MovingAverage((int)(1.f/relativeBaudRate));
+        channelFilter = new MovingAverage((int) (1.f / relativeBaudRate));
         clocker = new Clocker(relativeBaudRate);
         pll = new Pll();
-        agc = new Agc(1.f, 0.01f, 40, -10);
+        automaticFrequencyTuning.addFrequencyListener(new FrequencyListener() {
+            @Override
+            public void frequency(float f) {
+                toListenersFrequency(f);
+            }
+        });
     }
 
-    public float getFrequencyShift(){
-        return automaticFrequencyTuning.getFrequencyShift();
-    }
 
-    public void setRelativeBaudRate(float relativeBaudRate){
-        lineDelay = new LineDelay((int)(1.f/relativeBaudRate));
-        channelFilter = new MovingAverage((int)(1.f/relativeBaudRate));
+    public void setRelativeBaudRate(float relativeBaudRate) {
+        channelFilter = new MovingAverage((int) (1.f / relativeBaudRate));
         clocker.setRelativeBaudRate(relativeBaudRate);
     }
 
     private List<Symbol> symbol = new ArrayList<>();
-    public void addListenerSymbol(Symbol listener){symbol.add(listener);}
-    public void clearListenersSymbol(){symbol.clear();}
+
+    public void addListenerSymbol(Symbol listener) {
+        symbol.add(listener);
+    }
+
+    public void clearListenersSymbol() {
+        symbol.clear();
+    }
+
     private void toListenersSymbol(int data) {
         if (!symbol.isEmpty())
             for (Symbol listener : symbol)
@@ -50,12 +66,15 @@ public class OptimalNonCoherent {
     }
 
     private List<IqOutDebug> listeners = new ArrayList<>();
-    public void addListenerIq(IqOutDebug listener){
+
+    public void addListenerIq(IqOutDebug listener) {
         listeners.add(listener);
     }
-    public void clearListenerIq(){
+
+    public void clearListenerIq() {
         listeners.clear();
     }
+
     private void toListenersIq(Complex sempl){
         if(!listeners.isEmpty())
             for(IqOutDebug listener: listeners)
@@ -66,34 +85,32 @@ public class OptimalNonCoherent {
 
         Complex inSempl = new Complex(sempl.re, sempl.im);
         Complex outAft = automaticFrequencyTuning.tuning(inSempl);
-//        float gainAgc = agc.get();
-//        Complex outAgc = outAft.multiply(gainAgc);
+
         Complex outVco = pll.get();
         Complex outPll = outAft.multiply(outVco);
         Complex outCf = channelFilter.average(outPll);
 
         if(clocker.update(outCf)) {
-//            agc.update(outCf);
             pll.udate(outCf);
             toListenersSymbol(clocker.getBit());
-//            toListenersIq(outCf);
         }
 
 
 
     }
 
-    private MyComplex mixer(MyComplex x, MyComplex y){
+    private MyComplex mixer(MyComplex x, MyComplex y) {
         return new MyComplex(x.re * y.re - x.im * y.im, x.im * y.re + x.re * y.im);
     }
 
 
 }
 
-class Pll{
+class Pll {
 
     private Vco vco = new Vco();
     private LoopFilter loopFilter = new LoopFilter(0.01f, 0.0001f, 2.f*(float)Math.PI*0.5f/3000.f);
+
 
     public Complex get(){return vco.get();}
 
@@ -126,23 +143,23 @@ class Vco{
     public void update(float shift){this.shift = shift;}
 }
 
-class Bpf{
+class Bpf {
 
     private float[] coefficients;
     private Complex[] lineDelay;
 
-    public Bpf(float[] coefficients){
+    public Bpf(float[] coefficients) {
         this.coefficients = coefficients;
         lineDelay = new Complex[coefficients.length];
-        for(int i = 0; i < lineDelay.length; i++)
+        for (int i = 0; i < lineDelay.length; i++)
             lineDelay[i] = new Complex(0.f, 0.f);
     }
 
-    public Complex filter(Complex sempl){
+    public Complex filter(Complex sempl) {
         System.arraycopy(lineDelay, 1, lineDelay, 0, lineDelay.length - 1);
         lineDelay[lineDelay.length - 1] = sempl;
         float re = 0.f, im = 0.f;
-        for(int i = 0; i < lineDelay.length; i++){
+        for (int i = 0; i < lineDelay.length; i++) {
             re += lineDelay[i].getReal() * coefficients[i];
             im += lineDelay[i].getImaginary() * coefficients[i];
         }
@@ -151,7 +168,7 @@ class Bpf{
 
 }
 
-class AutomaticFrequencyTuning{
+class AutomaticFrequencyTuning {
 
     private float frequency = 0.f;
     private Bpf bpf;
@@ -160,7 +177,16 @@ class AutomaticFrequencyTuning{
     private float accumVco, phaseVco;
     private int timeTuning, semplCounter;
     private Complex[] inFft, outFft, collect;
+    private  float frequencyOld = 0;
 
+    private FrequencyListener frequencyListener;
+    public void addFrequencyListener(FrequencyListener listener){
+        this.frequencyListener = listener;
+    }
+
+    public float getFrequency(){
+        return this.frequency;
+    }
     public AutomaticFrequencyTuning(){
         int lengthFft = 16384;
         timeTuning = 3000 / 10;
@@ -168,20 +194,20 @@ class AutomaticFrequencyTuning{
         accumVco = 0.f;
         phaseVco = 0.f;
         bpf = new Bpf(bpfCoefficients);
-        delayForFft = new LineDelay(lengthFft/2);
-        delayForBpf = new LineDelay(bpfCoefficients.length/2);
+        delayForFft = new LineDelay(lengthFft / 2);
+        delayForBpf = new LineDelay(bpfCoefficients.length / 2);
         fft = new FastFourierTransformer(DftNormalization.STANDARD);
         inFft = new Complex[lengthFft];
         outFft = new Complex[lengthFft];
         collect = new Complex[timeTuning];
-        for(int i = 0; i < lengthFft; i++){
+        for (int i = 0; i < lengthFft; i++) {
             inFft[i] = new Complex(0.f, 0.f);
             outFft[i] = new Complex(0.f, 0.f);
         }
     }
 
 
-    public Complex tuning(Complex sempl){
+    public Complex tuning(Complex sempl) {
 
         Complex outBpf = bpf.filter(sempl);
 
@@ -189,48 +215,51 @@ class AutomaticFrequencyTuning{
 
         collect[semplCounter++] = outMix;
 
-        Complex vco = new Complex((float)Math.cos(accumVco), (float)Math.sin(accumVco));
+        Complex vco = new Complex((float) Math.cos(accumVco), (float) Math.sin(accumVco));
 
         Complex delayBpf = delayForBpf.delay(sempl);
         Complex delayFft = delayForFft.delay(delayBpf);
 
         Complex result = delayFft.multiply(vco);
 
-        if(semplCounter == timeTuning){
+        if (semplCounter == timeTuning) {
 
             semplCounter = 0;
 
             System.arraycopy(inFft, collect.length, inFft, 0, inFft.length - collect.length);
-            System.arraycopy(collect,0, inFft,inFft.length - collect.length, collect.length);
+            System.arraycopy(collect, 0, inFft, inFft.length - collect.length, collect.length);
 
             outFft = fft.transform(inFft, TransformType.FORWARD);
 
             int index = 0;
             float energy = 0;
 
-            for(int i = 0; i < outFft.length; i++){
-                if(outFft[i].abs() > energy) {
+            for (int i = 0; i < outFft.length; i++) {
+                if (outFft[i].abs() > energy) {
                     energy = (float) outFft[i].abs();
                     index = i;
                 }
             }
 
-            if(index > outFft.length / 2)
+            if (index > outFft.length / 2)
                 index -= outFft.length;
 
-            float relativeFrequency = (float)index / (float) outFft.length / 2.f;
+            float relativeFrequency = (float) index / (float) outFft.length / 2.f;
 
-//            System.out.println("Частота = " + 3000.f * relativeFrequency);
 
             this.frequency = 3000.f * relativeFrequency;
 
-
-            phaseVco = 2.f * (float)Math.PI * -relativeFrequency;
+            if(frequency!=frequencyOld) {
+                frequencyOld = frequency;
+                if(frequencyListener!=null)
+                    frequencyListener.frequency(frequencyOld);
+            }
+            phaseVco = 2.f * (float) Math.PI * -relativeFrequency;
 
         }
 
         accumVco += phaseVco;
-        accumVco %= 2.f * (float)Math.PI;
+        accumVco %= 2.f * (float) Math.PI;
 
         return result;
     }

@@ -29,6 +29,9 @@ public class SPApp extends Application {
             System.exit(0);
         });
     }
+    public void test(){
+
+    }
     public static void main(String[] args) {
 
         launch(args);

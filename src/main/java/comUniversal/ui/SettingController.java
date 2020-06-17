@@ -390,7 +390,7 @@ public class SettingController{
 //        saveAll(Params.SETTINGS);
         updateJsonRx();
         updateJsonTx();
-
+///commit commit
         Params.RXRM.save();
         Params.TXRM.save();
         Core.getCore().receiverUPSWindowUI.updateRm();

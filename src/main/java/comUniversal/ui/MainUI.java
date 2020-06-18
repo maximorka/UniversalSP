@@ -279,7 +279,7 @@ public void setConnectButton(){
         Stage stage = new Stage();
         stage.setX(212);
         stage.setY(90);
-        stage.setTitle("RX");
+        stage.setTitle("Налаштування");
         stage.setScene(scene);
         stage.setOnHidden(event -> settingController.shutdown());
         stage.show();

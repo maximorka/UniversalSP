@@ -68,14 +68,14 @@ private SettingsRMWindowUI settingsRMWindowUI;
     public void initialize() {
         System.out.println("initialize() setting");
 
-        rxNameCol = new TableColumn("Name");
+        rxNameCol = new TableColumn("Назва");
         rxNameCol.setMinWidth(130);
         rxNameCol.setCellValueFactory(new PropertyValueFactory<RM, String>("Name"));
         //rxNameCol.setCellFactory(TextFieldTableCell.<String> forTableColumn());
 
         //tableRx.setEditable(true);
 
-        txNameCol = new TableColumn("Name");
+        txNameCol = new TableColumn("Назва");
         txNameCol.setMinWidth(130);
         txNameCol.setCellValueFactory(new PropertyValueFactory<RM, String>("Name"));
         txNameCol.setCellFactory(TextFieldTableCell.<RM> forTableColumn());
@@ -99,7 +99,7 @@ private SettingsRMWindowUI settingsRMWindowUI;
                 Stage stage = new Stage();
                 stage.setX(212);
                 stage.setY(367);
-                stage.setTitle("RM");
+                stage.setTitle("РМ");
                 stage.setScene(scene);
                 stage.show();
             }
@@ -139,7 +139,7 @@ private SettingsRMWindowUI settingsRMWindowUI;
                 Stage stage = new Stage();
                 stage.setX(212);
                 stage.setY(90);
-                stage.setTitle("RX");
+                stage.setTitle("РМ");
                 stage.setScene(scene);
 
                 stage.show();

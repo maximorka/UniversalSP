@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.util.HashMap;
@@ -30,12 +31,22 @@ private boolean edit = false;
     private ComboBox modeRx;
     @FXML
     private Button saveButton;
+    @FXML
+    private Label modeLabel;
+    @FXML
+    private Label widthLabel;
 
     @FXML
     public void initialize() {
 
         System.out.println("initialize() setting RM");
-        ObservableList <String> typeRx = FXCollections.observableArrayList("Відсутній","Горизонт","Горизонт+");
+
+        widthRx.setVisible(false);
+        modeRx.setVisible(false);
+        modeLabel.setVisible(false);
+        widthLabel.setVisible(false);
+
+        ObservableList <String> typeRx = FXCollections.observableArrayList("Горизонт","Горизонт+");
         rxType.setItems(typeRx);
         ObservableList <String> widht = FXCollections.observableArrayList("3","6","12","24","48");
         widthRx.setItems(widht);
@@ -54,7 +65,7 @@ saveButton.setOnAction(new EventHandler<ActionEvent>() {
         }
         Params.RXRM.putStringRMName(rxRmTextField.getText());
 
-        Params.RXRM.putStringRMSettings(rxRmTextField.getText(), rxType.getValue().toString(), ipTextField.getText(), rxFrequencyTextField.getText(), widthRx.getValue().toString(), modeRx.getValue().toString());
+        Params.RXRM.putStringRMSettings(rxRmTextField.getText(), rxType.getValue().toString(), ipTextField.getText(), rxFrequencyTextField.getText(), "3", "1");
         Params.RXRM.save();
         Core.getCore().settingController.updateSettingsRx();
         Core.getCore().mainUI.updateRmType();

@@ -26,7 +26,7 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="36.0" prefWidth="77.0">
                            <children>
-                              <Label fx:id="rxLabel" layoutX="1.0" layoutY="3.0" prefHeight="21.0" prefWidth="26.0" text="RM" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="3.0">
+                              <Label fx:id="rxLabel" layoutX="1.0" layoutY="3.0" prefHeight="21.0" prefWidth="26.0" text="РМ" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="3.0">
                                  <padding>
                                     <Insets top="2.0" />
                                  </padding>
@@ -45,7 +45,7 @@
                         <AnchorPane prefHeight="36.0" prefWidth="28.0" />
                         <AnchorPane prefHeight="30.0" prefWidth="37.0">
                            <children>
-                              <Label fx:id="txLabel" layoutX="23.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="20.0" text="TX" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="3.0" />
+                              <Label fx:id="txLabel" layoutX="17.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="21.0" prefWidth="26.0" text="ПРД" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="3.0" />
                            </children>
                         </AnchorPane>
                         <AnchorPane prefHeight="36.0" prefWidth="114.0">

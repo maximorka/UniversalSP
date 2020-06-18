@@ -1,12 +1,14 @@
 package comUniversal.ui;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import org.fxmisc.richtext.InlineCssTextArea;
 //import javafx.css.Style;
 
@@ -21,15 +23,16 @@ public class InformationWindow {
     @FXML
     private Label freqL;
     @FXML
+    private Circle indicator;
+    @FXML
     private Label statusLabel;
     @FXML
     private Pane oldPane;
     @FXML
     private Pane newPane;
+
     @FXML
-    private TextArea num;
-    @FXML
-    private Button send;
+    private Button clearText;
     @FXML
     private Label statusL;
     int countSymbol=0;
@@ -40,7 +43,10 @@ public class InformationWindow {
 
     private int frequency = 0;
 
-    private static final String ERROR_STYLE = "-fx-fill: red; -fx-font-family: Consolas; -fx-font-size: 14;";
+    private static final String ERROR_STYLE = "-fx-fill: #9c9a94;";
+    private static final String WAIT_STYLE = "-fx-fill: #9c9a94;";
+    private static final String RECEIVE_STYLE = "-fx-fill: #26d137;";
+    private static final String ANY_STYLE = "-fx-fill: #d1c826;";
     private static final String WARN_STYLE = "-fx-fill: black; -fx-font-family: Consolas; -fx-font-size: 14;";
     private static final String NUMB_STYLE = "-fx-fill: blue; -fx-font-family: Consolas; -fx-font-size: 14;";
 
@@ -51,10 +57,12 @@ public class InformationWindow {
 
         speedL.setVisible(false);
         freqL.setVisible(false);
-        statusL.setVisible(false);
-        speedReceiveLabel.setTextFill(Color.web("#00cc00"));
+        //statusL.setVisible(false);
+        //speedReceiveLabel.setTextFill(Color.web("#00cc00"));
         text.setWrapText(true);
         text.autosize();
+        indicator.setStyle(WAIT_STYLE);
+        text.setEditable(false);
 
 //        special.setOnScroll(new EventHandler<ScrollEvent>() {
 //            @Override
@@ -71,6 +79,13 @@ public class InformationWindow {
 //                System.out.println("hel");
 //            }
 //        });
+
+        clearText.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                text.clear();
+            }
+        });
     }
     private String longText() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -128,12 +143,7 @@ public class InformationWindow {
             });
 
         }
-        if(countSymbol % 50 == 0){
-            int n = countSymbol % 50;
-            Platform.runLater(() -> {
-                num.appendText(n+"\n");
-            });
-            }
+
         }
 //        Platform.runLater(() -> {
 //            if (text.getCurrentLineEndInParargraph() % 60 == 0) {
@@ -153,28 +163,25 @@ public class InformationWindow {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                statusLabel.setText("");
                 speedReceiveLabel.setText("");
                 freqReceiveLabel.setText("");
 
                 speedL.setVisible(false);
                 freqL.setVisible(false);
-                statusL.setVisible(false);
+                indicator.setStyle(WAIT_STYLE);
                 if(algoritm == 1){
                     speedL.setVisible(true);
                     freqL.setVisible(true);
-                    statusL.setVisible(true);
-                    statusLabel.setTextFill(Color.web("#00cc00"));
-                    statusLabel.setText("Прийом");
+                    indicator.setStyle(RECEIVE_STYLE);
                     speedReceiveLabel.setText(Integer.toString(speed));
-                    freqReceiveLabel.setText(Integer.toString(frequency));
+                    freqReceiveLabel.setText(Integer.toString(frequency)+" Гц");
                 } else if(algoritm == 2){
-                    speedL.setVisible(true);
-                    freqL.setVisible(true);
-                    statusL.setVisible(true);
-                    statusLabel.setText("Очікування");
-                    speedReceiveLabel.setText(Integer.toString(speed));
-                    freqReceiveLabel.setText(Integer.toString(frequency));
+                    speedL.setVisible(false);
+                    freqL.setVisible(false);
+
+                    indicator.setStyle(ANY_STYLE);
+                    speedReceiveLabel.setText("");
+                    freqReceiveLabel.setText("");
                 }
 
             }

@@ -42,10 +42,10 @@ public class Dev extends Program {
         }
         groupAdd = new GroupAdd();
         driverHorizon = new DriverHorizon();
-        optimalNonCoherentDåmodulatorPsk100 = new OptimalNonCoherent(100.f/3000.f);
+        optimalNonCoherentDåmodulatorPsk100 = new OptimalNonCoherent(100);
         kylymDecoder100 = new KylymDecoder(100);
 
-        optimalNonCoherentDåmodulatorPsk250 = new OptimalNonCoherent(250.f/3000.f);
+        optimalNonCoherentDåmodulatorPsk250 = new OptimalNonCoherent(250);
         kylymDecoder250 = new KylymDecoder(250);
 
 
@@ -65,6 +65,7 @@ public class Dev extends Program {
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
+        //optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
         optimalNonCoherentDåmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
         modulatorPsk.setSymbolSource(() -> groupAdd.getBit());

@@ -14,7 +14,8 @@ public class OptimalNonCoherent {
     private AutomaticFrequencyTuning automaticFrequencyTuning;
     private MovingAverage channelFilter;
     private Clocker clocker;
-    private Pll pll;
+    private FineFrequencyTuning fineFrequencyTuning;
+    private TimeTuning timeTuning;
 
     // Listeners DdcFrequency
     private List<FrequencyListener> frequencyListeners= new ArrayList<>();
@@ -29,24 +30,18 @@ public class OptimalNonCoherent {
                 listener.frequency(frequency);
     }
 
-
-    public OptimalNonCoherent(float relativeBaudRate){
+    public OptimalNonCoherent(int baudRate){
         automaticFrequencyTuning = new AutomaticFrequencyTuning();
-        channelFilter = new MovingAverage((int) (1.f / relativeBaudRate));
-        clocker = new Clocker(relativeBaudRate);
-        pll = new Pll();
+        channelFilter = new MovingAverage(3000 / baudRate);
+        fineFrequencyTuning = new FineFrequencyTuning(3000 / baudRate);
+        timeTuning = new TimeTuning(baudRate);
+
         automaticFrequencyTuning.addFrequencyListener(new FrequencyListener() {
             @Override
             public void frequency(float f) {
                 toListenersFrequency(f);
             }
         });
-    }
-
-
-    public void setRelativeBaudRate(float relativeBaudRate) {
-        channelFilter = new MovingAverage((int) (1.f / relativeBaudRate));
-        clocker.setRelativeBaudRate(relativeBaudRate);
     }
 
     private List<Symbol> symbol = new ArrayList<>();
@@ -82,28 +77,15 @@ public class OptimalNonCoherent {
     }
 
     public void demodulate(MyComplex sempl){
-
         Complex inSempl = new Complex(sempl.re, sempl.im);
         Complex outAft = automaticFrequencyTuning.tuning(inSempl);
-
-        Complex outVco = pll.get();
-        Complex outPll = outAft.multiply(outVco);
-        Complex outCf = channelFilter.average(outPll);
-
-        if(clocker.update(outCf)) {
-            pll.udate(outCf);
-            toListenersSymbol(clocker.getBit());
+        Complex outFine = fineFrequencyTuning.tuning(outAft);
+        Complex outCf = channelFilter.average(outFine);
+        if(timeTuning.tuning(outCf)) {
+            toListenersSymbol(timeTuning.getBit());
         }
-
-
-
+//        toListenersIq(inSempl);
     }
-
-    private MyComplex mixer(MyComplex x, MyComplex y) {
-        return new MyComplex(x.re * y.re - x.im * y.im, x.im * y.re + x.re * y.im);
-    }
-
-
 }
 
 class Pll {
@@ -468,5 +450,8 @@ class AutomaticFrequencyTuning {
             32.46782273589473530E-6f,
             -17.96633661712444050E-6f
     };
+
+
+
 
 }

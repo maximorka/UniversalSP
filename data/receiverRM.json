@@ -1,5 +1,6 @@
 {
   "filename": "receiverRm",
+
   "items": {},
   "item": [
     "Відсутнє",
@@ -47,4 +48,6 @@
     }
   },
   "TXSettings": {}
+
+
 }

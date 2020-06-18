@@ -1,11 +1,10 @@
 package comUniversal.ui;
 
-import comUniversal.Core;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import org.fxmisc.richtext.InlineCssTextArea;
@@ -28,14 +27,15 @@ public class InformationWindow {
     @FXML
     private Pane newPane;
     @FXML
-    private TextArea mes;
+    private TextArea num;
     @FXML
     private Button send;
     @FXML
     private Label statusL;
     int countSymbol=0;
-
-    public InlineCssTextArea special;
+    @FXML
+    private TextArea text;
+   // public InlineCssTextArea special;
     public InlineCssTextArea number;
 
     private int frequency = 0;
@@ -48,75 +48,106 @@ public class InformationWindow {
     private void initialize() {
 
         System.out.println("initialize() information window");
+
         speedL.setVisible(false);
         freqL.setVisible(false);
         statusL.setVisible(false);
         speedReceiveLabel.setTextFill(Color.web("#00cc00"));
+        text.setWrapText(true);
+        text.autosize();
 
-        special.autosize();
-        send.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String txt = mes.getText();
-                Core.getCore().dev.groupAdd.add(txt);
-            }
-        });
+//        special.setOnScroll(new EventHandler<ScrollEvent>() {
+//            @Override
+//            public void handle(ScrollEvent event) {
+//                System.out.println("what");
+//            }
+//        });
+
+//        send.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                String txt = mes.getText();
+//                Core.getCore().dev.groupAdd.add(txt);
+//                System.out.println("hel");
+//            }
+//        });
     }
+    private String longText() {
+        StringBuilder stringBuilder = new StringBuilder();
 
+        for (int i = 0; i < 50; i++) {
+            for (int j = 0; j < 50; j++) {
+                stringBuilder.append("line-");
+            }
+            stringBuilder.append(System.lineSeparator());
+        }
+
+        return stringBuilder.toString();
+    }
     public void setTextMessage(int data) {
         String tmp = String.valueOf(data);
 
         if (tmp.equals("10")) {
             Platform.runLater(() -> {
-                // получаем границы нового сообещения
-                int from = special.getLength();
-                int to = from + 1;
-                // добавили сообещние
-                special.appendText("*");
-                // указали для него стиль
-                special.setStyle(from, to, ERROR_STYLE);
+//                // получаем границы нового сообещения
+//                int from = special.getLength();
+//                int to = from + 1;
+//                // добавили сообещние
+//                special.appendText("*");
+//                // указали для него стиль
+//                special.setStyle(from, to, ERROR_STYLE);
+                text.appendText("*");
             });
         } else {
             Platform.runLater(() -> {
-                // получаем границы нового сообещения
-                int from = special.getLength();
-                int to = from + 1;
-                // добавили сообещние
-                special.appendText(tmp);
-                // указали для него стиль
-                special.setStyle(from, to, WARN_STYLE);
+//                // получаем границы нового сообещения
+//                int from = special.getLength();
+//                int to = from + 1;
+//                // добавили сообещние
+//                special.appendText(tmp);
+//                // указали для него стиль
+//                special.setStyle(from, to, WARN_STYLE);
                 //numberM.appendText(tmp);
+                text.appendText(tmp);
             });
         }
 
         countSymbol++;
         if (countSymbol % 5 == 0) {
+
             Platform.runLater(() -> {
                 // получаем границы нового сообещения
-                int from = special.getLength();
-                int to = from + 1;
-                // добавили сообещние
-                special.appendText(" ");
-                // указали для него стиль
-                special.setStyle(from, to, WARN_STYLE);
+//                int from = special.getLength();
+//                int to = from + 1;
+//                // добавили сообещние
+//                special.appendText(" ");
+//                // указали для него стиль
+//                special.setStyle(from, to, WARN_STYLE);
                 //numberM.appendText(" ");
-
+                text.appendText(" ");
             });
 
         }
-        Platform.runLater(() -> {
-            if (special.getCurrentLineEndInParargraph() % 60 == 0) {
-                String num = String.valueOf(special.getCurrentLineEndInParargraph() / 6);
-                if (num.equals(10)) {
-                    number.deleteText(0, special.getCurrentLineEndInParargraph());
-                }
-                int from = number.getLength();
-                int to = from + 2;
-                number.appendText(num);
-                number.setStyle(from, to, NUMB_STYLE);
+        if(countSymbol % 50 == 0){
+            int n = countSymbol % 50;
+            Platform.runLater(() -> {
+                num.appendText(n+"\n");
+            });
             }
-        });
-    }
+        }
+//        Platform.runLater(() -> {
+//            if (text.getCurrentLineEndInParargraph() % 60 == 0) {
+//                String num = String.valueOf(special.getCurrentLineEndInParargraph() / 6);
+//                if (num.equals(10)) {
+//                    number.deleteText(0, special.getCurrentLineEndInParargraph());
+//                }
+//                int from = number.getLength();
+//                int to = from + 2;
+//                number.appendText(num);
+//                number.setStyle(from, to, NUMB_STYLE);
+//            }
+//        });
+    //}
 
     public void setAlgoritm(int algoritm, int speed){
         Platform.runLater(new Runnable() {
@@ -152,5 +183,7 @@ public class InformationWindow {
     public void setFreq(float freq){
         this.frequency = (int)freq;
     }
+
+
 }
 

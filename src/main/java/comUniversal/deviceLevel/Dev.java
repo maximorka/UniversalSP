@@ -51,7 +51,7 @@ public class Dev extends Program {
 
         modulatorPsk = new ModulatorPsk();
 
-        modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
+        modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
 
         bufferController = new BufferController(3000);
         bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));

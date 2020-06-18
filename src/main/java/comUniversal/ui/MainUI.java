@@ -45,7 +45,8 @@ public class MainUI {
 
     @FXML
     private Button connectButton;
-
+    @FXML
+    private Button set;
 
     @FXML
     public void initialize() {
@@ -103,7 +104,7 @@ public class MainUI {
                     Stage stage = new Stage();
                     stageProg.setX(443);
                     stageProg.setY(90);
-                    stageProg.setTitle("Килим");
+                    stageProg.setTitle("Килим - код Іркут");
                     stageProg.setScene(scene);
                     stageProg.show();
                     rxLabel.setDisable(false);
@@ -228,6 +229,7 @@ public class MainUI {
                             txLabel.setDisable(true);
                             typeProgramLabel.setDisable(true);
                             modeWorkChoicebox.setDisable(true);
+                            set.setDisable(true);
                             typeRxChoicebox.setDisable(true);
                             typeTxChoicebox.setDisable(true);
 //                            Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
@@ -247,7 +249,7 @@ public class MainUI {
                         typeProgramLabel.setDisable(false);
                         modeWorkChoicebox.setDisable(false);
                         typeRxChoicebox.setDisable(false);
-                        typeTxChoicebox.setDisable(false);
+                        set.setDisable(false);
                         Core.getCore().transmitterUPSWindowUI.updateVisibility(true);
                         Core.getCore().receiverUPSWindowUI.updateVisibility(true);
                     });

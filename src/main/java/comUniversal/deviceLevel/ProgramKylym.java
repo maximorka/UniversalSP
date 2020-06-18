@@ -9,8 +9,8 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 public class ProgramKylym {
-    public OptimalNonCoherent optimalNonCoherent100 = new OptimalNonCoherent(100.f/3000.f);;
-    public OptimalNonCoherent optimalNonCoherent250 = new OptimalNonCoherent(250.f/3000.f);;
+    public OptimalNonCoherent optimalNonCoherent100 = new OptimalNonCoherent(100);;
+    public OptimalNonCoherent optimalNonCoherent250 = new OptimalNonCoherent(250);;
     public KylymDecoder kylymDecoder100 = new KylymDecoder(100);
     public KylymDecoder kylymDecoder250 = new KylymDecoder(250);
    // public Digital digital;

@@ -9,10 +9,10 @@ public class FineFrequencyTuning {
     private LineDelay lineDelay;
 
 
-    public FineFrequencyTuning() {
-        before = new MovingAverage(30);
+    public FineFrequencyTuning(int semplPerSymbol) {
+        before = new MovingAverage(semplPerSymbol);
         after = new MovingAverage(3000);
-        lineDelay = new LineDelay((3000+30)/2);
+        lineDelay = new LineDelay((3000+semplPerSymbol)/2);
     }
 
     public Complex tuning(Complex sempl){

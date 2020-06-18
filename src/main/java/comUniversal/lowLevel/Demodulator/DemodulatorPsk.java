@@ -171,7 +171,7 @@ class Clocker{
 
 //            symbol = (dif.getReal() >= 0.f)? 0 : 1;
 //
-//            char s = (symbol == 0)? '0' : '1';
+//            char s = (currentBit == 0)? '0' : '1';
 //            bitData += s;
 //            if(bitData.length() == 12*6) {
 //                System.out.println(bitData);

@@ -1,10 +1,7 @@
 package comUniversal;
 
 import comUniversal.deviceLevel.Dev;
-import comUniversal.ui.InformationWindow;
-import comUniversal.ui.MainUI;
-import comUniversal.ui.ReceiverUPSWindowUI;
-import comUniversal.ui.TransmitterUPSWindowUI;
+import comUniversal.ui.*;
 
 public class Core {
     private static Core core = new Core();
@@ -16,10 +13,12 @@ public class Core {
 //    public ModulatorPsk modulatorPsk;
 //    public DemodulatorPsk demodulatorPsk;
 //    public KylymDecoder kylymDecoder;
-    public MainUI mainUI = new MainUI();
+    public MainUI mainUI;
     public ReceiverUPSWindowUI receiverUPSWindowUI;
     public TransmitterUPSWindowUI transmitterUPSWindowUI;
     public InformationWindow informationWindow;
+    public SettingController settingController;
+    public SettingsRMWindowUI settingsRMWindowUI;
     private Update update;
     private boolean running = false;
     public int countConectedDevice = 0;

@@ -1,79 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import org.fxmisc.richtext.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="219.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.InformationWindow">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="585.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.InformationWindow">
    <center>
-      <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="224.0" prefWidth="548.0" stylesheets="@/css/Main.css" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="558.0" stylesheets="@/css/Main.css" BorderPane.alignment="CENTER">
          <children>
 
 
 
-            <VBox layoutY="1.0" prefHeight="219.0" prefWidth="542.0">
+            <VBox layoutX="-4.0" layoutY="1.0" prefHeight="472.0" prefWidth="570.0">
                <children>
-                  <HBox prefHeight="156.0" prefWidth="542.0">
+                  <HBox fx:id="hBox" prefHeight="452.0" prefWidth="576.0">
                      <children>
-                        <InlineCssTextArea fx:id="special" prefHeight="118.0" prefWidth="489.0" wrapText="true">
-                           <padding>
-                              <Insets bottom="3.0" left="3.0" top="3.0" />
-                           </padding>
+                        <TextArea fx:id="text" minWidth="-Infinity" prefHeight="449.0" prefWidth="570.0" stylesheets="@css/Main.css">
                            <HBox.margin>
-                              <Insets bottom="3.0" left="3.0" top="3.0" />
+                              <Insets left="3.0" right="3.0" top="3.0" />
                            </HBox.margin>
-                        </InlineCssTextArea>
-                        <InlineCssTextArea fx:id="number" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="216.0" prefWidth="20.0" wrapText="true">
-                           <HBox.margin>
-                              <Insets top="3.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets top="3.0" />
-                           </padding>
-                        </InlineCssTextArea>
+                           <styleClass>
+                              <String fx:value="textArea" />
+                              <String fx:value="textarea" />
+                           </styleClass></TextArea>
                      </children>
                   </HBox>
-                  <HBox minHeight="-Infinity" prefHeight="61.0" prefWidth="542.0">
+                  <HBox minHeight="-Infinity" prefHeight="20.0" prefWidth="542.0">
                      <children>
-                        <AnchorPane prefHeight="81.0" prefWidth="118.0">
+                        <AnchorPane prefHeight="20.0" prefWidth="29.0">
                            <children>
-                              <Label fx:id="statusLabel" AnchorPane.leftAnchor="5.0" />
-                              <TextArea fx:id="mes" layoutY="22.0" prefHeight="22.0" prefWidth="110.0" />
+                              <Circle fx:id="indicator" fill="DODGERBLUE" layoutX="14.0" layoutY="9.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="81.0" prefWidth="57.0">
+                        <AnchorPane prefHeight="20.0" prefWidth="30.0">
                            <children>
-                              <Label fx:id="speedL" layoutX="29.0" text="ШД" />
-                              <Button fx:id="send" layoutX="3.0" layoutY="26.0" mnemonicParsing="false" text="Button" />
+                              <Label fx:id="speedL" layoutX="3.0" text="ШД" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="22.0" prefWidth="49.0">
+                        <AnchorPane prefHeight="20.0" prefWidth="42.0">
                            <children>
                               <Label fx:id="speedReceiveLabel" layoutX="3.0" prefHeight="17.0" prefWidth="34.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="22.0" prefWidth="43.0">
+                        <AnchorPane prefHeight="20.0" prefWidth="11.0">
                            <children>
-                              <Label fx:id="freqL" text="Частота" />
+                              <Label fx:id="freqL" text="ΔF" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane prefHeight="22.0" prefWidth="63.0">
+                        <AnchorPane prefHeight="20.0" prefWidth="28.0">
                            <children>
-                              <Label fx:id="freqReceiveLabel" layoutX="8.0" prefHeight="17.0" prefWidth="55.0" />
-                              
+                              <Label fx:id="freqReceiveLabel" layoutX="8.0" prefHeight="17.0" prefWidth="50.0" />
+
                            </children>
                         </AnchorPane>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <Label text="Код Іркут" />
-                           </children>
-                        </AnchorPane>
+                              <Button fx:id="clearText" layoutX="122.0" layoutY="1.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="70.0" text="Очистити">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                              </Button>
+                           </children></AnchorPane>
                      </children>
                   </HBox>
                </children>
             </VBox>
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </AnchorPane>
    </center>
 </BorderPane>

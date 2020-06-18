@@ -6,44 +6,24 @@ import comUniversal.lowLevel.DriverHorizon.Width;
 import comUniversal.ui.setting.ParamsSettings;
 import comUniversal.util.Params;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReceiverUPSWindowUI implements ParamsSettings {
-
-    private List<ParamsSettings> settings = new ArrayList<>();
-
-    Image Ok = new Image("/images/check.png");
-    Image notOk = new Image("/images/close.png");
-
-//    public static TextField ipTextRx;
-//    public static TextField freqRxText;
-//    public static Label freqRxLabel;
-//    public static Label freqHzRxLabel;
-//    public static Label widthRxText;
-//    public static Label modeRxText;
-//    public static Button changeIPRxButton;
-
+    public Map<String, String> item;
     @FXML
     private TextField rxFrequencyTextField;
     @FXML
-    private ComboBox rx;
+    private Label rxType;
     @FXML
     private TextField ipTextField;
-    @FXML
-    private Button changeSettingsIPbutton;
     @FXML
     private Label modeDeviceLabel;
     @FXML
@@ -56,15 +36,17 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     public void initialize() {
         System.out.println("initialize() setting receiver");
 
-        ObservableList<String> langs = FXCollections.observableArrayList();
-        langs = Params.RXRM.getKey();
-        rx.setItems(langs);
-
+        String rm = Core.getCore().mainUI.getTypeRx();
+        item = new HashMap<>();
+        item = (Params.RXRM.getMap(rm));
+        rxType.setText(item.get("typeRx"));
+        ipTextField.setText(item.get("ip"));
+        rxFrequencyTextField.setText(item.get("freq"));
+        widthDeviceLabel.setText(item.get("widht"));
+        modeDeviceLabel.setText(item.get("mode"));
         restoreAll(Params.SETTINGS);
 
-        rxFrequencyHzLabel.setDisable(true);
         rxFrequencyLabel.setDisable(true);
-        //changeSettingsIPbutton.setDisable(true);
         rxFrequencyTextField.setDisable(true);
 
         ipTextField.setDisable(true);
@@ -89,17 +71,17 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
             }
         });
 
-rx.setOnAction(new EventHandler<ActionEvent>() {
-    @Override
-    public void handle(ActionEvent event) {
-        ipTextField.setDisable(false);
-
-        String rm = Core.getCore().receiverUPSWindowUI.getRM();
-        String ip = Params.RXRM.getString(rm, "192.168.0.1");
-
-        ipTextField.setText(ip);
-    }
-});
+//rx.setOnAction(new EventHandler<ActionEvent>() {
+//    @Override
+//    public void handle(ActionEvent event) {
+//        ipTextField.setDisable(false);
+//
+//        String rm = Core.getCore().receiverUPSWindowUI.getRM();
+//        String ip = Params.RXRM.getString(rm, "192.168.0.1");
+//
+//        ipTextField.setText(ip);
+//    }
+//});
         //testIP();
         ipTextField.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -112,9 +94,9 @@ rx.setOnAction(new EventHandler<ActionEvent>() {
     public String getIP(){
         return ipTextField.getText();
     }
-    public String getRM(){
-        return (String) rx.getValue();
-    }
+//    public String getRM(){
+//        return (String) rx.getValue();
+//    }
     public void testIP() {
         try {
             String ipAddress = ipTextField.getText();
@@ -179,20 +161,20 @@ rx.setOnAction(new EventHandler<ActionEvent>() {
         });
     }
     public void updateRm() {
-        Platform.runLater(() -> {
-            int size =  rx.getItems().size();
-            rx.getItems().remove(0,size);
-            ObservableList<String> langs = FXCollections.observableArrayList();
-            langs = Params.RXRM.getKey();
-            rx.setItems(langs);
-        });
+//        Platform.runLater(() -> {
+//            int size =  rx.getItems().size();
+//            rx.getItems().remove(0,size);
+//            ObservableList<String> langs = FXCollections.observableArrayList();
+//            langs = Params.RXRM.getKey();
+//            rx.setItems(langs);
+//        });
     }
     public void deleteItemRm(String key) {
         Platform.runLater(() -> {
-            int size =  rx.getItems().size();
-            for (int i = 0; i <size ; i++) {
-                rx.getItems().remove(0,size);
-            }
+//            int size =  rx.getItems().size();
+//            for (int i = 0; i <size ; i++) {
+//                rx.getItems().remove(0,size);
+//            }
 
         });
     }
@@ -203,7 +185,7 @@ rx.setOnAction(new EventHandler<ActionEvent>() {
     @Override
     public void restoreAll(Params params) {
         //Restore Ethernet params 1
-        ipTextField.setText(Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1"));
+        //ipTextField.setText(Params.SETTINGS.getString("ethernet-ip-address", "192.168.0.1"));
         //rxFrequencyTextField.setText(Params.SETTINGS.getString("rx_UPS_frequency", "128000"));
     }
     public int getFr(){

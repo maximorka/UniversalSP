@@ -11,7 +11,6 @@ import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
 import comUniversal.lowLevel.Modulator.ModulatorPsk;
-import comUniversal.util.Params;
 import org.apache.commons.math3.complex.Complex;
 
 import java.io.IOException;
@@ -52,7 +51,7 @@ public class Dev extends Program {
 
         modulatorPsk = new ModulatorPsk();
 
-        modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
+        modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
 
         bufferController = new BufferController(3000);
         bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
@@ -87,8 +86,8 @@ public class Dev extends Program {
 
     public boolean conect(String typeDevice){
         int port = typeDevice.equals("Горизонт")?80:81;
-        String rm = Core.getCore().receiverUPSWindowUI.getRM();
-        String ip = Params.RXRM.getString(rm, "192.168.0.1");
+       // String rm = Core.getCore().receiverUPSWindowUI.getRM();
+        String ip = Core.getCore().receiverUPSWindowUI.item.get("ip");
         boolean stateCon = ethernetDriver.doInit(ip, port);
         if(stateCon){
             ethernetDriver.clearReceiverListener();

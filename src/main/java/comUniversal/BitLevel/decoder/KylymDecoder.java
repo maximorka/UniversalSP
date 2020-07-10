@@ -32,12 +32,20 @@ public class KylymDecoder {
     private int maxGroupValue;
     private int bitCounter;
     private boolean startReceive = false;
+    private int softDecoding = 0;
+    private int showRecovery = 0;
+
 
     private int speed;
     private int alroritm = 0;
     private int oldAlroritm = 0;
 
     private MessageListener messageListener;
+    private StartRadiogram startRadiogramListener;
+    public void addStartRadiogramListener(StartRadiogram listener) {
+        this.startRadiogramListener = listener;
+    }
+
     public void addMessageListener(MessageListener listener){
         this.messageListener = listener;
     }
@@ -156,21 +164,26 @@ public class KylymDecoder {
         return treshold >= this.frameTreshold;
     }
 
-    private int toNumber(int[] bits, Complex[] sempls) {
-        int result = 10;
+    private String toSymbol(int[] bits, Complex[] sempls) {
+        String symbol = "";
 
-        if(Arrays.equals(bits, N0)) {result = 0;}
-        else if(Arrays.equals(bits, N1)) {result = 1;}
-        else if(Arrays.equals(bits, N2)) {result = 2;}
-        else if(Arrays.equals(bits, N3)) {result = 3;}
-        else if(Arrays.equals(bits, N4)) {result = 4;}
-        else if(Arrays.equals(bits, N5)) {result = 5;}
-        else if(Arrays.equals(bits, N6)) {result = 6;}
-        else if(Arrays.equals(bits, N7)) {result = 7;}
-        else if(Arrays.equals(bits, N8)) {result = 8;}
-        else if(Arrays.equals(bits, N9)) {result = 9;}
-        else {result = recovery(sempls);}
+        if(Arrays.equals(bits, N0)) {symbol = "0";}
+        else if(Arrays.equals(bits, N1)) {symbol = "1";}
+        else if(Arrays.equals(bits, N2)) {symbol = "2";}
+        else if(Arrays.equals(bits, N3)) {symbol = "3";}
+        else if(Arrays.equals(bits, N4)) {symbol = "4";}
+        else if(Arrays.equals(bits, N5)) {symbol = "5";}
+        else if(Arrays.equals(bits, N6)) {symbol = "6";}
+        else if(Arrays.equals(bits, N7)) {symbol = "7";}
+        else if(Arrays.equals(bits, N8)) {symbol = "8";}
+        else if(Arrays.equals(bits, N9)) {symbol = "9";}
+        else { symbol = "*"; };
 
+        if ( symbol == "*") {
+            if (softDecoding == 1) {
+                symbol = recovery(sempls);
+            }
+        }
 //        String hardChar = (resultHard == 10)? "*" : String.valueOf(resultHard);
 //        String softChar = (resultSoft == 10)? "*" : String.valueOf(resultSoft);;
 //
@@ -188,7 +201,9 @@ public class KylymDecoder {
 //            counter = 0;
 //        }
 
-        return result;
+
+
+        return symbol;
     }
 
     private int counter = 0;
@@ -197,9 +212,8 @@ public class KylymDecoder {
 
     private float[] level;
 
-    private int recovery(Complex[] sempls){
-
-        int result = 10;
+    private String recovery(Complex[] sempls){
+        String symbol = "";
 
         float[] compare = new float[10+1];
         compare[0] = softCompare(sempls, N0_constellation);
@@ -223,11 +237,19 @@ public class KylymDecoder {
         // find min
         float min = compare[0];
         for (int i = 0; i < 10; i++){
-            if(compare[i] < min){
+            if(compare[i] <= min){
                 min = compare[i];
-                result = i;
+                if(showRecovery == 1) {
+                    symbol = "\u0332"; // _
+                    symbol += String.valueOf(i);
+                } else {
+                    symbol = String.valueOf(i);
+                }
+
             }
         }
+
+
 
         float[] test = new float[10];
         for (int i = 0; i < test.length ; i++)
@@ -235,7 +257,7 @@ public class KylymDecoder {
         Arrays.sort(test);
         compare[10] = test[1] - test[0];
         if(compare[10] < 0.9f)
-            result = 10;
+            symbol = "*";
 
         this.level = compare;
 
@@ -270,9 +292,9 @@ public class KylymDecoder {
 //
 //        compare[11] = compare[10] - min;
 
+//        System.out.println("Symbol recovery = " + symbol);
 
-
-        return result;
+        return symbol;
     }
 
     private float softCompare(Complex[] sempls, Complex[] constellation){
@@ -308,19 +330,20 @@ public class KylymDecoder {
     }
 
 
-    private int[] toGroup(int[] groupBits, Complex[] groupSamples) {
-        int[] result = new int[5];
-        int[] bits = new int[6];
-        Complex[] samples = new Complex[6];
-        for (int i = 0; i < 5; i++) {
-            System.arraycopy(groupBits, 6 * i, bits, 0, 6);
-            System.arraycopy(groupSamples, 6 * i, samples, 0, 6);
-            result[i] = toNumber(bits, samples);
+    private String[] toGroup(int[] groupBits, Complex[] groupSamples) {
+        String[] group = new String[5];
+        for (int i = 0; i < group.length; i++) {
+            int[] symbolBits = new int[6];
+            System.arraycopy(groupBits, 6 * i, symbolBits, 0, 6);
+            Complex[] symbolSamples = new Complex[6];
+            System.arraycopy(groupSamples, 6 * i, symbolSamples, 0, 6);
+            group[i] = toSymbol(symbolBits, symbolSamples);
         }
-        return result;
+        return group;
     }
 
     public void addData(int difBit, Complex sempl) {
+
 
         System.arraycopy(difBitArray, 1, difBitArray, 0, difBitArray.length - 1);
         difBitArray[difBitArray.length - 1] = difBit;
@@ -328,9 +351,16 @@ public class KylymDecoder {
         semplArray[semplArray.length - 1] = sempl;
 
         if (isFrameFind()) {
+
+
+
             alroritm = 1;
             startReceive = true;
             bitCounter = 0;
+
+
+
+
             creatGroup();
         } else if (startReceive) {
             bitCounter++;
@@ -343,6 +373,11 @@ public class KylymDecoder {
                 alroritm = 0;
             }
         }
+
+
+
+
+
         if(oldAlroritm != alroritm) {
             oldAlroritm = alroritm;
             toListenersAlgoritm(alroritm, speed);
@@ -356,18 +391,26 @@ public class KylymDecoder {
 
         this.speed = speed;
         maxGroupValue = Integer.parseInt(Params.SETTINGS.getString("group_print", "40"));
-
+        softDecoding = Integer.parseInt(Params.SETTINGS.getString("soft_decoding", "0"));
+        showRecovery = Integer.parseInt(Params.SETTINGS.getString("show_recovery", "0"));
     }
 
 
 
     private void creatGroup(){
         reversCheck();
+
+        if((oldAlroritm == 0) && (alroritm == 1)){
+            if(startRadiogramListener != null) {
+                startRadiogramListener.start();
+            }
+        }
+
         int[] groupBits = new int[30];
         Complex[] groupSampls = new Complex[30];
         System.arraycopy(difBitArray, 0, groupBits, 0, 30);
         System.arraycopy(semplArray, 0, groupSampls, 0, 30);
-        int[] result = toGroup(groupBits, groupSampls);
+        String[] group = toGroup(groupBits, groupSampls);
 
 //        int counterError = 0;
 //        int counterRecovery = 0;
@@ -398,10 +441,27 @@ public class KylymDecoder {
 //            }
 //        }
 
+        String message = "";
 
-        for (int number : result) {
-            if (messageListener != null)
-                messageListener.setSymbol(number);
+        int countError = 0;
+
+        for (int i = 0; i < group.length ; i++) {
+            message += group[i];
+            if(group[i] == "*") {
+                countError++;
+            }
+        }
+
+        if(countError >= 3){
+            message = "*****";
+        }
+
+        message += " ";
+
+        if (messageListener != null) {
+//            for (String symbol : group) {
+                messageListener.setSymbol(message);
+//            }
         }
 
 //        if (messageListener != null)

@@ -84,7 +84,7 @@ public class OptimalNonCoherent {
             toDemOutListeners(timeTuning.difBit, timeTuning.currentSempl);
 
         // debug
-        toListenersIq(inSempl);
+//        toListenersIq(inSempl);
 
     }
 }

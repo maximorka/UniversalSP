@@ -1,4 +1,7 @@
 {
   "filename": "transmitterRm",
-  "items": {}
+  "items": {},
+  "item": [],
+  "RMSettings": {},
+  "TXSettings": {}
 }

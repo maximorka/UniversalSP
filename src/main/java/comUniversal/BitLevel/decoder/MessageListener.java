@@ -1,5 +1,5 @@
 package comUniversal.BitLevel.decoder;
 
 public interface MessageListener {
-    void setSymbol(String message);
+    void setSymbol(int message);
 }

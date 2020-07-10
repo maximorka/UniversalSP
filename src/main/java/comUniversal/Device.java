@@ -94,7 +94,7 @@ public class Device {
 
 
             //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
-            optimalNonCoherentDеmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
+//            optimalNonCoherentDеmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
 
             modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
 
@@ -202,8 +202,8 @@ public class Device {
 
 
             //demodulatorPsk.addListenerSymbol(data -> kylymDecoder.addData(data));
-            optimalNonCoherentDеmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
-            optimalNonCoherentDеmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
+//            optimalNonCoherentDеmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
+//            optimalNonCoherentDеmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
             //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
             //groupAdd.addRadiogramPercentListener(percent -> informationWindow.updatePercentRadiogram(percent));
             driverHorizon.ddcSetWidth(Width.kHz_3);

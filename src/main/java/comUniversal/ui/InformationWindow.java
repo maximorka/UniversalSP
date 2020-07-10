@@ -40,6 +40,7 @@ public class InformationWindow {
     private int frequency = 0;
 
     private static final String ERROR_STYLE = "-fx-fill: red; -fx-font-family: Consolas; -fx-font-size: 14;";
+    private static final String RECOVERY_STYLE = "-fx-fill: red; -fx-font-family: Consolas; -fx-font-size: 14;";
     private static final String WARN_STYLE = "-fx-fill: black; -fx-font-family: Consolas; -fx-font-size: 14;";
     private static final String NUMB_STYLE = "-fx-fill: blue; -fx-font-family: Consolas; -fx-font-size: 14;";
 
@@ -59,47 +60,52 @@ public class InformationWindow {
         });
     }
 
-    public void setTextMessage(int data) {
-        String tmp = String.valueOf(data);
+    public void setTextMessage(String message) {
+//        String tmp;
+//
+//        String style;
+//
+//        if ((data == 10) || (data == 110)) {
+//            style = ERROR_STYLE;
+//            tmp = "*";
+//        } else if(data >= 100){
+//            data -= 100;
+//            style = ERROR_STYLE;
+//            tmp = String.valueOf(data);
+//        } else{
+//            style = WARN_STYLE;
+//            tmp = String.valueOf(data);
+//        }
 
-        if (tmp.equals("10")) {
-            Platform.runLater(() -> {
-                // получаем границы нового сообещения
-                int from = special.getLength();
-                int to = from + 1;
-                // добавили сообещние
-                special.appendText("*");
-                // указали для него стиль
-                special.setStyle(from, to, ERROR_STYLE);
-            });
-        } else {
-            Platform.runLater(() -> {
-                // получаем границы нового сообещения
-                int from = special.getLength();
-                int to = from + 1;
-                // добавили сообещние
-                special.appendText(tmp);
-                // указали для него стиль
-                special.setStyle(from, to, WARN_STYLE);
-                //numberM.appendText(tmp);
-            });
-        }
 
-        countSymbol++;
-        if (countSymbol % 5 == 0) {
             Platform.runLater(() -> {
                 // получаем границы нового сообещения
                 int from = special.getLength();
                 int to = from + 1;
                 // добавили сообещние
-                special.appendText(" ");
+//                special.appendText("\u0332");
+                special.appendText(message + " ");
+
                 // указали для него стиль
                 special.setStyle(from, to, WARN_STYLE);
-                //numberM.appendText(" ");
-
             });
 
-        }
+
+//        countSymbol++;
+//        if (countSymbol % 5 == 0) {
+//            Platform.runLater(() -> {
+//                // получаем границы нового сообещения
+//                int from = special.getLength();
+//                int to = from + 1;
+//                // добавили сообещние
+//                special.appendText(" ");
+//                // указали для него стиль
+//                special.setStyle(from, to, WARN_STYLE);
+//                //numberM.appendText(" ");
+//
+//            });
+//
+//        }
         Platform.runLater(() -> {
             if (special.getCurrentLineEndInParargraph() % 60 == 0) {
                 String num = String.valueOf(special.getCurrentLineEndInParargraph() / 6);

@@ -29,16 +29,16 @@ public class DemodulatorPsk {
         this.filter = new MovingAverage((int) (this.samplingFrequency / this.baudeRate));
         this.clocker = new Clocker(this.baudeRate / this.samplingFrequency);
     }
-    private List<Symbol> symbol = new ArrayList<>();
-    public void addListenerSymbol(Symbol listener){symbol.add(listener);}
+    private List<DemOut> symbol = new ArrayList<>();
+    public void addListenerSymbol(DemOut listener){symbol.add(listener);}
     public void clearListenersSymbol(){symbol.clear();}
-    private void toListenersSymbol(int data) {
-        if (!symbol.isEmpty())
-            for (Symbol listener : symbol) {
-                //System.out.print(data);
-                listener.symbol(data);
-            }
-    }
+//    private void toListenersSymbol(int data) {
+//        if (!symbol.isEmpty())
+//            for (Symbol listener : symbol) {
+//                //System.out.print(data);
+//                listener.symbol(data);
+//            }
+//    }
 
     public void demodulate(MyComplex sempl){
 
@@ -92,6 +92,13 @@ class MovingAverage{
         integrator = integrator.subtract(last);
         return new Complex(integrator.getReal() / window, integrator.getImaginary() / window);
     }
+
+    public float average(float sempl){
+        return (float)average(new Complex(sempl, 0.f)).getReal();
+    }
+
+
+
 }
 
 class Clocker{

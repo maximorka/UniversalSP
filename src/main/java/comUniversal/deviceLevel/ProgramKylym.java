@@ -19,15 +19,15 @@ public class ProgramKylym {
     public void add(int data){
         dataInput.add(data);
     }
-    public ProgramKylym(){
-        //kylymDecoder100.setRunning(true);
-       // kylymDecoder250.setRunning(true);
-
-        //digital = digital -> add(digital);
-        optimalNonCoherent100.addListenerSymbol(data -> kylymDecoder100.addData(data));
-        optimalNonCoherent250.addListenerSymbol(data -> kylymDecoder250.addData(data));
-        workingThread.start();
-    }
+//    public ProgramKylym(){
+//        //kylymDecoder100.setRunning(true);
+//       // kylymDecoder250.setRunning(true);
+//
+//        //digital = digital -> add(digital);
+//        optimalNonCoherent100.addListenerSymbol(data -> kylymDecoder100.addData(data));
+////        optimalNonCoherent250.addListenerSymbol(data -> kylymDecoder250.addData(data));
+//        workingThread.start();
+//    }
 
     public void fromEthernet(Complex data) {
         MyComplex myComplex = new MyComplex((float) data.getReal(),(float) data.getImaginary());

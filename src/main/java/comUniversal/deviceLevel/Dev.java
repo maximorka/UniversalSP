@@ -65,15 +65,20 @@ public class Dev extends Program {
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
-        //optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
+//        optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
-        optimalNonCoherentDåmodulatorPsk100.addListenerSymbol(data -> kylymDecoder100.addData(data));
-        modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
-        optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
+        optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> kylymDecoder100.addData(difBit, sempl));
+        optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> kylymDecoder250.addData(difBit, sempl));
+
+//        modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
+//        optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
 
 
-        kylymDecoder100.addMessageListener(symbol -> Core.getCore().informationWindow.setTextMessage(symbol));
+        kylymDecoder100.addMessageListener(data -> Core.getCore().informationWindow.setTextMessage(data));
         kylymDecoder250.addMessageListener(symbol -> Core.getCore().informationWindow.setTextMessage(symbol));
+
+        kylymDecoder100.addStartRadiogramListener(() -> Core.getCore().informationWindow.enterTime());
+        kylymDecoder250.addStartRadiogramListener(() -> Core.getCore().informationWindow.enterTime());
 
         optimalNonCoherentDåmodulatorPsk100.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
         optimalNonCoherentDåmodulatorPsk250.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
@@ -113,7 +118,7 @@ public class Dev extends Program {
 
         driverHorizon.ducSetMode(Mode.DISABLE);
         driverHorizon.ddcSetMode(Mode.DISABLE);
-        //kylymDecoder100.setRunning(false);
+//        kylymDecoder100.setRunning(false);
         //kylymDecoder250.setRunning(false);
         ethernetDriver.closeSocket();
     }

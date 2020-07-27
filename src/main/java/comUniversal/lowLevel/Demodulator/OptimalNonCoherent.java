@@ -13,7 +13,6 @@ public class OptimalNonCoherent {
 
     private AutomaticFrequencyTuning automaticFrequencyTuning;
     private MovingAverage channelFilter;
-    private Clocker clocker;
     private FineFrequencyTuning fineFrequencyTuning;
     private TimeTuning timeTuning;
 
@@ -35,8 +34,8 @@ public class OptimalNonCoherent {
         channelFilter = new MovingAverage(3000 / baudRate);
         fineFrequencyTuning = new FineFrequencyTuning(3000 / baudRate);
         timeTuning = new TimeTuning(baudRate);
-
         automaticFrequencyTuning.addFrequencyListener(new FrequencyListener() {
+
             @Override
             public void frequency(float f) {
                 toListenersFrequency(f);
@@ -44,20 +43,20 @@ public class OptimalNonCoherent {
         });
     }
 
-    private List<Symbol> symbol = new ArrayList<>();
+    private List<DemOut> demOutListeners = new ArrayList<>();
 
-    public void addListenerSymbol(Symbol listener) {
-        symbol.add(listener);
+    public void addSemplListener(DemOut listener) {
+        demOutListeners.add(listener);
     }
 
-    public void clearListenersSymbol() {
-        symbol.clear();
+    public void clearDemOutListeners() {
+        demOutListeners.clear();
     }
 
-    private void toListenersSymbol(int data) {
-        if (!symbol.isEmpty())
-            for (Symbol listener : symbol)
-                listener.symbol(data);
+    private void toDemOutListeners(int difBit, Complex sempl) {
+        if (!demOutListeners.isEmpty())
+            for (DemOut listener : demOutListeners)
+                listener.data(difBit, sempl);
     }
 
     private List<IqOutDebug> listeners = new ArrayList<>();
@@ -81,10 +80,12 @@ public class OptimalNonCoherent {
         Complex outAft = automaticFrequencyTuning.tuning(inSempl);
         Complex outFine = fineFrequencyTuning.tuning(outAft);
         Complex outCf = channelFilter.average(outFine);
-        if(timeTuning.tuning(outCf)) {
-            toListenersSymbol(timeTuning.getBit());
-        }
+        if(timeTuning.tuning(outCf))
+            toDemOutListeners(timeTuning.difBit, timeTuning.currentSempl);
+
+        // debug
 //        toListenersIq(inSempl);
+
     }
 }
 

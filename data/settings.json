@@ -6,6 +6,8 @@
     "rx_UPS_frequency": "128000",
     "tx_UPS_frequency": "128000",
     "border_procent": "6",
-    "group_print": "40"
+    "group_print": "40",
+    "soft_decoding": "1",
+    "show_recovery": "1"
   }
 }

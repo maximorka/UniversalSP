@@ -9,8 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import org.fxmisc.richtext.InlineCssTextArea;
-//import javafx.css.Style;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class InformationWindow {
 
@@ -35,13 +38,14 @@ public class InformationWindow {
     private Button clearText;
     @FXML
     private Label statusL;
-    int countSymbol=0;
+    int countGroup=0;
     @FXML
     private TextArea text;
    // public InlineCssTextArea special;
-    public InlineCssTextArea number;
+    //public InlineCssTextArea number;
 
     private int frequency = 0;
+
 
     private static final String ERROR_STYLE = "-fx-fill: #9c9a94;";
     private static final String WAIT_STYLE = "-fx-fill: #9c9a94;";
@@ -84,80 +88,38 @@ public class InformationWindow {
             @Override
             public void handle(ActionEvent event) {
                 text.clear();
+                countGroup = 0;
             }
         });
     }
-    private String longText() {
-        StringBuilder stringBuilder = new StringBuilder();
 
-        for (int i = 0; i < 50; i++) {
-            for (int j = 0; j < 50; j++) {
-                stringBuilder.append("line-");
-            }
-            stringBuilder.append(System.lineSeparator());
+//    private String longText() {
+//        StringBuilder stringBuilder = new StringBuilder();
+//    }
+
+    public void setTextMessage(String data) {
+        text.appendText(data);
+
+        countGroup++;
+        if (countGroup % 10 == 0) {
+            Platform.runLater(() -> {
+                text.appendText("\n\r");
+            });
         }
-
-        return stringBuilder.toString();
     }
-    public void setTextMessage(int data) {
-        String tmp = String.valueOf(data);
 
-        if (tmp.equals("10")) {
-            Platform.runLater(() -> {
-//                // получаем границы нового сообещения
-//                int from = special.getLength();
-//                int to = from + 1;
-//                // добавили сообещние
-//                special.appendText("*");
-//                // указали для него стиль
-//                special.setStyle(from, to, ERROR_STYLE);
-                text.appendText("*");
-            });
-        } else {
-            Platform.runLater(() -> {
-//                // получаем границы нового сообещения
-//                int from = special.getLength();
-//                int to = from + 1;
-//                // добавили сообещние
-//                special.appendText(tmp);
-//                // указали для него стиль
-//                special.setStyle(from, to, WARN_STYLE);
-                //numberM.appendText(tmp);
-                text.appendText(tmp);
-            });
-        }
+    public void enterTime(){
+        SimpleDateFormat formatter = new SimpleDateFormat("Прийнято dd.MM.yyyy о HH:mm:ss");
+        Date date = new Date();
+        String time = formatter.format(date);
 
-        countSymbol++;
-        if (countSymbol % 5 == 0) {
+        text.appendText("\n\r");
+        text.appendText("\n\r");
+        text.appendText(time);
+        text.appendText("\n\r");
+        countGroup = 0;
+    }
 
-            Platform.runLater(() -> {
-                // получаем границы нового сообещения
-//                int from = special.getLength();
-//                int to = from + 1;
-//                // добавили сообещние
-//                special.appendText(" ");
-//                // указали для него стиль
-//                special.setStyle(from, to, WARN_STYLE);
-                //numberM.appendText(" ");
-                text.appendText(" ");
-            });
-
-        }
-
-        }
-//        Platform.runLater(() -> {
-//            if (text.getCurrentLineEndInParargraph() % 60 == 0) {
-//                String num = String.valueOf(special.getCurrentLineEndInParargraph() / 6);
-//                if (num.equals(10)) {
-//                    number.deleteText(0, special.getCurrentLineEndInParargraph());
-//                }
-//                int from = number.getLength();
-//                int to = from + 2;
-//                number.appendText(num);
-//                number.setStyle(from, to, NUMB_STYLE);
-//            }
-//        });
-    //}
 
     public void setAlgoritm(int algoritm, int speed){
         Platform.runLater(new Runnable() {

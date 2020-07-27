@@ -7,25 +7,23 @@ public class TimeTuning {
     private ZeroCrossDetector zeroCrossDetector;
     private ZeroCrossDetector outZeroCrossDetector;
     private Nco nco;
+    private Agc agc;
     private MovingAverage timeFilter;
     private LineDelay lineDelay;
     private LineDelay signalLineDelay;
     private double oldAngle = 0.f, phaseAccum = 0.f;
-    public Complex sempl = new Complex(0.f, 0.f);
-    private int symbol = 0;
-    private int lastBit = 0;
+    private Complex lastSempl = new Complex(0.f, 0.f);
+    public Complex currentSempl = new Complex(0.f, 0.f);
+    public int difBit = 0;
 
     public TimeTuning(float boudRate){
+        agc = new Agc(1.f, 60.f, -40.f, 36);
         zeroCrossDetector = new ZeroCrossDetector();
         outZeroCrossDetector = new ZeroCrossDetector();
         nco = new Nco(2.f * (float)Math.PI * boudRate / 3000.f);
-        timeFilter = new  MovingAverage(3000);
+        timeFilter = new  MovingAverage(3001);
         lineDelay = new LineDelay(3000 / 2);
         signalLineDelay = new LineDelay((3000 / 2) + 4);
-    }
-
-    public int getBit(){
-        return this.symbol;
     }
 
     public boolean tuning(Complex sempl){
@@ -73,18 +71,36 @@ public class TimeTuning {
         Complex outDelaySempl = signalLineDelay.delay(sempl);
 
         if(crossOut) {
+            this.currentSempl = agc.update(outDelaySempl);
 
-            sempl = new Complex(outDelaySempl.getReal(), outDelaySempl.getImaginary());
+//            this.currentSempl = new Complex(outDelaySempl.getReal(), outDelaySempl.getImaginary());
 
-            int currentBit = (sempl.getReal() >= 0.f)? 0 : 1;
-
-            symbol = (currentBit == lastBit)? 0 : 1;
-
-            lastBit = currentBit;
-
+            this.difBit = (currentSempl.getReal() * lastSempl.getReal() < 0.f)? 1 : 0;
+            lastSempl = new Complex(currentSempl.getReal(), currentSempl.getImaginary());
         }
 
         return crossOut;
     }
+
+    private MovingAverage levelAvg = new MovingAverage(100);
+
+
+    private float level(Complex sempl){
+
+        Complex reference = new Complex(Math.signum(sempl.getReal()), 0.f);
+
+        double a = reference.getReal() - sempl.getReal();
+        double b = reference.getImaginary() - sempl.getImaginary();
+        Complex dif = new Complex(a, b);
+
+        float r = (float)dif.abs();
+
+        if(r > 2.f)
+            r = 2.f;
+
+        return (2.f - r) / 2;
+
+    }
+
 
 }

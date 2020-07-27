@@ -16,6 +16,8 @@ public class Agc {
         this.length = length;
         lpf = new MovingAverage(this.length);
         lineDelay = new LineDelay(this.length / 2);
+
+        
     }
 
     public Complex update(Complex sempl){

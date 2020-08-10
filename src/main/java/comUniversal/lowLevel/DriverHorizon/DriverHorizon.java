@@ -1,6 +1,7 @@
 package comUniversal.lowLevel.DriverHorizon;
 
 import comUniversal.util.MyComplex;
+import org.apache.commons.math3.complex.Complex;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -42,25 +43,31 @@ public class DriverHorizon {
     public void clearTransferListener(){transfer.clear();}
     private void toListenersTransferDataBytes(byte[] data){
         if(!transfer.isEmpty())
-            for(TransferDataBytes listener: transfer)
+            for(TransferDataBytes listener: transfer) {
                 listener.SendData(data);
+            }
     }
 
     // Common methods
     private void sendCommand(byte command){sendCommand(command, 0);}
-    private void sendCommand(byte command, MyComplex[] packet){
+    private void sendCommand(byte command, Complex[] packet){
 
         byte[] result = new byte[4 + 64*3];
-        ByteBuffer re_im = ByteBuffer.allocate(4);
-        int re = 0, im = 0, index = 0;
+        int index = 0;
 
         result[index++] = command;
         result[index++] = 0x56;
         result[index++] = 0x34;
         result[index++] = 0x12;
-        for (MyComplex sempl : packet) {
-            re = (int)(2047*sempl.re);
-            im = (int)(2047*sempl.im);
+
+
+
+        for (Complex sempl : packet) {
+
+            Complex data = new Complex(sempl.getReal(), sempl.getImaginary());
+            ByteBuffer re_im = ByteBuffer.allocate(4);
+            int re = (int)(2047*data.getReal());
+            int im = (int)(2047*data.getImaginary());
             re &= 0xFFF;
             im &= 0xFFF;
             re_im.putInt((re<<12)|im);
@@ -68,8 +75,24 @@ public class DriverHorizon {
             result[index++] = re_im.array()[2];
             result[index++] = re_im.array()[1];
             re_im.clear();
+
+//            System.out.println("Re = " + data.getReal());
+//            System.out.println("Im = " + data.getImaginary());
+
+
         }
-        toListenersTransferDataBytes(result);
+
+//        System.out.println("");
+
+        byte[] out = new byte[4 + 64*3];
+
+        for(int i = 0; i < out.length; i++)
+        {
+            out[i] = result[i];
+        }
+
+
+        toListenersTransferDataBytes(out);
 
     }
 
@@ -152,21 +175,24 @@ public class DriverHorizon {
 
     // DUC methods
     private int semplCounter = 0;
-    private MyComplex[] samplePacket = new MyComplex[64];
-    public void ducSetIq(MyComplex sempl){
+    private Complex[] samplePacket = new Complex[64];
+
+    public void ducSetIq(Complex sempl){
 
 //        if((sempl.re != 0.f) || (sempl.im != 0.f)) {
 //            System.out.println("Re = " + sempl.re + " Im = " + sempl.im);
 //        }
-        samplePacket[semplCounter%64] = sempl;
+        samplePacket[semplCounter%64] = new Complex(sempl.getReal(), sempl.getImaginary());
         semplCounter++;
-        if(semplCounter >= 64) {
+        if(semplCounter == 64) {
             semplCounter = 0;
             sendCommand(duc_set_iq, samplePacket);
+        } else if (semplCounter > 64) {
+            System.out.println("Все, піздец! semplCounter = " + semplCounter);
         }
     }
-    public void ducSetIq(MyComplex[] sempls){
-        for(MyComplex sempl: sempls)
+    public void ducSetIq(Complex[] sempls){
+        for(Complex sempl: sempls)
             ducSetIq(sempl);
     }
 
@@ -225,7 +251,7 @@ public class DriverHorizon {
     private List<DdcIQ> ddcIQ = new ArrayList<>();
     public void addDdcIQ(DdcIQ listener){ddcIQ.add(listener);}
     public void clearDdcIQ(){ddcIQ.clear();}
-    private void toListenersDdcIQ(MyComplex sempl){
+    private void toListenersDdcIQ(Complex sempl){
         if(!ddcIQ.isEmpty())
             for(DdcIQ listener: ddcIQ)
                 listener.sempl(sempl);
@@ -356,15 +382,14 @@ public class DriverHorizon {
     }
 
 
-    private MyComplex convertIntToComplex(int data){
-        MyComplex sempl = new MyComplex(0,0 );
+    private Complex convertIntToComplex(int data){
+
         int re = data & 0x0000FFFF;
         int im = data & 0xFFFF0000;
         re <<= 16;
         re >>= 16;
         im >>= 16;
-        sempl.re = (float)re/32768.f;
-        sempl.im = (float)im/32768.f;
+        Complex sempl = new Complex((float)re/32768.f,(float)im/32768.f );
         return sempl;
     }
 

@@ -150,7 +150,21 @@ private SettingsRMWindowUI settingsRMWindowUI;
         addTxRm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/SettingsTX.fxml"));
+                Scene scene = null;
+                try {
+                    scene = new Scene(fxmlLoader.load());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+                Stage stage = new Stage();
+                stage.setX(212);
+                stage.setY(367);
+                stage.setTitle("пл");
+                stage.setScene(scene);
+                stage.show();
             }
         });
         deleteItemTx.setOnAction(new EventHandler<ActionEvent>() {
@@ -278,22 +292,26 @@ private SettingsRMWindowUI settingsRMWindowUI;
 
     }
     private void updateSettingsTxRmTable(){
-        ObservableList<String> data = Params.TXRM.getKey();
-        ObservableList<String> dataIp = FXCollections.observableArrayList();
-
-        for (int i = 0; i <data.size() ; i++) {
-            String p = new String(Params.TXRM.getString(data.get(i)));
-            dataIp.add(p);
-        }
-
+        ObservableList<String> data = Params.TXRM.getKeyName();
         dataTx = FXCollections.observableArrayList();
         for (int i = 0; i <data.size() ; i++) {
-            RM p = new RM(data.get(i));
-            dataTx.add(p);
+            String p = new String(Params.TXRM.getStringName(i));
+            dataTx.add(new RM(p));
         }
 
         tableTx.setItems(dataTx);
         tableTx.getColumns().addAll(txNameCol);
+    }
+    public void updateSettingsTx(){
+
+        ObservableList<String> data = Params.TXRM.getKeyName();
+        dataTx = FXCollections.observableArrayList();
+        for (int i = 0; i <data.size() ; i++) {
+            String p = new String(Params.TXRM.getStringName(i));
+            dataTx.add(new RM(p));
+        }
+        tableTx.setItems(dataTx);
+
     }
     private void updateJsonRx(){
         int size = tableRx.getItems().size();

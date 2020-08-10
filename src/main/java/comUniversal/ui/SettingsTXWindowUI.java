@@ -69,6 +69,7 @@ saveButton.setOnAction(new EventHandler<ActionEvent>() {
         Params.TXRM.save();
         Core.getCore().settingController.updateSettingsTx();
         Core.getCore().mainUI.updateTxType();
+        //its coomit
     }
 });
     }

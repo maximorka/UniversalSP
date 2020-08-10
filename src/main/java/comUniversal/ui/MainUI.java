@@ -74,7 +74,7 @@ public class MainUI {
         langsTx = Params.TXRM.getKeyName();
         typeTxChoicebox.setItems(langsTx);
 
-        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим");//,"Молот");
+        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим","Струм");
         modeWorkChoicebox.setItems(typeMode);
 
         typeRxChoicebox.getSelectionModel().selectFirst();
@@ -110,9 +110,9 @@ public class MainUI {
                     rxLabel.setDisable(false);
                     typeRxChoicebox.setDisable(false);
                    informationWindow = fxmlLoader.getController();
-                }else if(modeWorkChoicebox.getValue() == "Молот"){
+                }else if(modeWorkChoicebox.getValue() == "Струм"){
                     FXMLLoader fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(getClass().getResource("/Information.fxml"));
+                    fxmlLoader.setLocation(getClass().getResource("/InformationMolot.fxml"));
 
                     Scene scene = null;
                     try {
@@ -311,6 +311,12 @@ public void setConnectButton(){
         langsRx = Params.RXRM.getKeyName();
         System.out.println(langsRx);
         typeRxChoicebox.setItems(langsRx);
+    }
+    public void updateTxType() {
+        ObservableList<String> langsTx = FXCollections.observableArrayList();
+        langsTx = Params.TXRM.getKeyName();
+        System.out.println(langsTx);
+        typeTxChoicebox.setItems(langsTx);
     }
     public String getTypeRx() {
         return typeRxChoicebox.getValue().toString();

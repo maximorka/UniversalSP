@@ -162,6 +162,17 @@ public class Params {
 		rm.put("mode", mode);
 		RMSettings.put(name,rm);
 	}
+
+	public void putStringTXSettings(String name, String value,String ip, String fr, String width, String mode) {
+
+		Map<String,String> rm = new HashMap<String, String>();
+		rm.put("typeTx",value);
+		rm.put("ip",ip);
+		rm.put("freq", fr);
+		rm.put("widht", width);
+		rm.put("mode", mode);
+		TXSettings.put(name,rm);
+	}
 	public void putStringRMName(String name) {
 
 		item.add(name) ;

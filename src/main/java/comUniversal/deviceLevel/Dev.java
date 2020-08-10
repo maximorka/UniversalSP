@@ -70,7 +70,7 @@ public class Dev extends Program {
         optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> kylymDecoder100.addData(difBit, sempl));
         optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> kylymDecoder250.addData(difBit, sempl));
 
-//        modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
+        //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
 //        optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
 
 
@@ -92,6 +92,7 @@ public class Dev extends Program {
     public boolean conect(String typeDevice){
         int port = typeDevice.equals("Ãîðèçîíò")?80:81;
        // String rm = Core.getCore().receiverUPSWindowUI.getRM();
+        System.out.println("Port: "+port);
         String ip = Core.getCore().receiverUPSWindowUI.item.get("ip");
         boolean stateCon = ethernetDriver.doInit(ip, port);
         if(stateCon){

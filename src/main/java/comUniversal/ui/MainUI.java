@@ -74,7 +74,7 @@ public class MainUI {
         langsTx = Params.TXRM.getKeyName();
         typeTxChoicebox.setItems(langsTx);
 
-        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим","Струм");
+        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим","Cтрум");
         modeWorkChoicebox.setItems(typeMode);
 
         typeRxChoicebox.getSelectionModel().selectFirst();
@@ -160,7 +160,11 @@ public class MainUI {
                     stageRx.setTitle("RX");
                     stageRx.setScene(scene);
                     stageRx.show();
-                    Core.getCore().createClassKylym();
+
+                        Core.getCore().createClassKylym();
+
+
+
                     connectButton.setDisable(false);
                     receiverUPSWindowUI = fxmlLoader.getController();
                     Core.getCore().informationWindow = informationWindow;
@@ -216,12 +220,10 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String con = "-fx-background-color: #00cd00";
-
-               int typeProgram = modeWorkChoicebox.getValue()=="Килим"?1:0;
-
+                String typeRx = Core.getCore().receiverUPSWindowUI.getrxType();
                 if (connectButton.getStyle() != con) {
 
-                   if( Core.getCore().dev.conect("kylym")) {
+                   if( Core.getCore().dev.conect(typeRx)) {
                         Platform.runLater(() -> {
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");

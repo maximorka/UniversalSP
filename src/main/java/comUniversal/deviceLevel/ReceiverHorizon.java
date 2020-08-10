@@ -19,7 +19,7 @@ public class ReceiverHorizon extends Receiver {
         data.add(sample);
     }
 
-    public DdcIQ ddcIQ = sempl -> add(new Complex(sempl.re,sempl.im));
+    public DdcIQ ddcIQ = sempl -> add(sempl);
 
 
     public ReceiverHorizon(){

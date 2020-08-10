@@ -1,6 +1,5 @@
 package comUniversal.lowLevel.Demodulator;
 
-import comUniversal.util.MyComplex;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
@@ -75,9 +74,8 @@ public class OptimalNonCoherent {
                 listener.sempl(sempl);
     }
 
-    public void demodulate(MyComplex sempl){
-        Complex inSempl = new Complex(sempl.re, sempl.im);
-        Complex outAft = automaticFrequencyTuning.tuning(inSempl);
+    public void demodulate(Complex sempl){
+        Complex outAft = automaticFrequencyTuning.tuning(sempl);
         Complex outFine = fineFrequencyTuning.tuning(outAft);
         Complex outCf = channelFilter.average(outFine);
         if(timeTuning.tuning(outCf))

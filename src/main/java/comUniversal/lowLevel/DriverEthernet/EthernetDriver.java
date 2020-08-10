@@ -49,6 +49,8 @@ public class EthernetDriver {
 
         try {
             socket = new Socket();
+            System.out.println("Ip " + ip);
+            System.out.println("Port " + port);
             socket.connect(new InetSocketAddress(ip,port),3_000);
             connect = true;
 
@@ -122,9 +124,10 @@ public class EthernetDriver {
         //if(socket!=null) {
             if (connect) {
                 try {
-
-                    outputStream.write(data);
+                    byte out = data; // <-------- Don't touch! Never don't touch!
+                    outputStream.write(out);
                     outputStream.flush();
+                    //System.out.println(String.format("0x%02X", data));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

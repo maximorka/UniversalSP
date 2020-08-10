@@ -39,5 +39,11 @@ public class Agc {
 //        System.out.println("Gain = " + gain);
 
         return semplDelay.multiply(gain);
+
+
+
+
+        ///
+        ///
     }
 }

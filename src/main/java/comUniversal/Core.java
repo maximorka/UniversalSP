@@ -132,4 +132,7 @@ public class Core {
     public void createClassKylym(){
         dev = new Dev();
     }
+    public void createClassStrum(){
+        dev = new Dev("Струм");
+    }
 }

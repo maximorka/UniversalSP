@@ -37,6 +37,6 @@ public class Agc {
 
         return semplDelay.multiply(gain);
 
-        
+
     }
 }

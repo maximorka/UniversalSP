@@ -41,15 +41,6 @@ public class Agc {
         return semplDelay.multiply(gain);
 
 
-
-        /// jdkdfk
-        
-
-
-
-        //
-
-        ///
-        ///
+// ημ³ν
     }
 }

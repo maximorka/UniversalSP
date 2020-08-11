@@ -126,7 +126,7 @@ public class EthernetDriver {
                 try {
                     byte out = data; // <-------- Don't touch! Never don't touch!
                     outputStream.write(out);
-                    outputStream.flush();
+                    //outputStream.flush();
                     //System.out.println(String.format("0x%02X", data));
                 } catch (IOException e) {
                     e.printStackTrace();

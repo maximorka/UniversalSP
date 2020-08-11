@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/ui/ReceiverUPSWindowUI.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/ui/SettingController.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/ui/TransmitterUPSWindowUI.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/util/ByteBitTable.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/util/reedsolomon/reedsolomon/ReedSolomonEncoderDecoder.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/util/reedsolomon/zxing/common/reedsolomon/GenericGF.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/util/reedsolomon/zxing/common/reedsolomon/GenericGFPoly.java" charset="UTF-8" />

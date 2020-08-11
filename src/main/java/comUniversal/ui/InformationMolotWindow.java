@@ -119,7 +119,9 @@ public class InformationMolotWindow {
             public void handle(ActionEvent actionEvent) {
                String txt = serviceMessage.getText();
                 System.out.println("Fine");
+
                 Core.getCore().dev.infAdd.add(txt);
+                //Core.getCore().dev.infAdd.add("011101011101011101011101011101011101");
                // Core.getCore().device[0].groupAdd.add(txt);
 //                sendButton.setDisable(true);
 //                speed100RadioButton.setDisable(true);

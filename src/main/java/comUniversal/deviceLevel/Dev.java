@@ -3,6 +3,7 @@ package comUniversal.deviceLevel;
 import comUniversal.BitLevel.GroupAdd;
 import comUniversal.BitLevel.InfAdd;
 import comUniversal.BitLevel.decoder.KylymDecoder;
+import comUniversal.BitLevel.decoder.StrymDecoder;
 import comUniversal.Core;
 import comUniversal.lowLevel.BufferController.BufferController;
 import comUniversal.lowLevel.Debuger.Debuger;
@@ -29,6 +30,7 @@ public class Dev extends Program {
     public OptimalNonCoherent optimalNonCoherentDåmodulatorPsk250;
     public KylymDecoder kylymDecoder100;
     public KylymDecoder kylymDecoder250;
+    public StrymDecoder strymDecoder250;
     public Dev (String settings){
         this.ethernetDriver = new EthernetDriver();
         driverHorizon = new DriverHorizon();
@@ -50,7 +52,7 @@ public class Dev extends Program {
 
         optimalNonCoherentDåmodulatorPsk250 = new OptimalNonCoherent(250);
         kylymDecoder250 = new KylymDecoder(250);
-
+        strymDecoder250 = new StrymDecoder();
 
         modulatorPsk = new ModulatorPsk();
 
@@ -72,6 +74,10 @@ public class Dev extends Program {
 
         optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> kylymDecoder100.addData(difBit, sempl));
         optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> kylymDecoder250.addData(difBit, sempl));
+
+        // for testing
+        optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> strymDecoder250.addData(difBit, sempl));
+
 
         //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
 

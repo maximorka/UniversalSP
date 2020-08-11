@@ -121,26 +121,30 @@ public class EthernetDriver {
         }
     }
     public void writeByte(byte data) {
-        //if(socket!=null) {
-            if (connect) {
-                try {
-                    byte out = data; // <-------- Don't touch! Never don't touch!
-                    outputStream.write(out);
-                    //outputStream.flush();
-                    //System.out.println(String.format("0x%02X", data));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+        if (connect) {
+            try {
+                outputStream.write(data);
+               // outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+
             }
-       // }
+        }
         else{
             System.out.println("try");
         }
     }
     public void writeBytes(byte[] data) {
-
-        for(byte out: data)
-            writeByte(out);
+        if (connect) {
+            try {
+                for (byte out : data)
+                    outputStream.write(out);
+               // outputStream.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 public boolean isConect(){

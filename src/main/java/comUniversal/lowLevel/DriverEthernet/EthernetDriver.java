@@ -121,12 +121,14 @@ public class EthernetDriver {
         }
     }
     public void writeByte(byte data) {
+
         if (connect) {
             try {
                 outputStream.write(data);
                // outputStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
+
             }
         }
         else{

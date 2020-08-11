@@ -89,8 +89,8 @@ public class Dev extends Program {
         kylymDecoder100.addStartRadiogramListener(() -> Core.getCore().informationWindow.enterTime());
         kylymDecoder250.addStartRadiogramListener(() -> Core.getCore().informationWindow.enterTime());
 
-        optimalNonCoherentDåmodulatorPsk100.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
-        optimalNonCoherentDåmodulatorPsk250.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
+       // optimalNonCoherentDåmodulatorPsk100.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
+     //   optimalNonCoherentDåmodulatorPsk250.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
 
         kylymDecoder100.addAlgoritmListener((algorit, speed) -> Core.getCore().informationWindow.setAlgoritm(algorit, speed));
         kylymDecoder250.addAlgoritmListener((algorit, speed) -> Core.getCore().informationWindow.setAlgoritm(algorit, speed));

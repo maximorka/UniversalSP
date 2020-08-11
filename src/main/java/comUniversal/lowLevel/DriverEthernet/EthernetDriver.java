@@ -124,7 +124,7 @@ public class EthernetDriver {
         if (connect) {
             try {
                 outputStream.write(data);
-                outputStream.flush();
+               // outputStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -138,7 +138,7 @@ public class EthernetDriver {
             try {
                 for (byte out : data)
                     outputStream.write(out);
-                outputStream.flush();
+               // outputStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }

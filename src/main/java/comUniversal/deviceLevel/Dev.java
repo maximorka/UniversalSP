@@ -37,6 +37,7 @@ public class Dev extends Program {
     public Dev(){
 
         this.ethernetDriver = new EthernetDriver();
+
         try {debuger = new Debuger();} catch (
                 IOException e) {
             System.out.println(e);
@@ -49,6 +50,7 @@ public class Dev extends Program {
 
         optimalNonCoherentDåmodulatorPsk250 = new OptimalNonCoherent(250);
         kylymDecoder250 = new KylymDecoder(250);
+
 
         modulatorPsk = new ModulatorPsk();
 
@@ -66,7 +68,7 @@ public class Dev extends Program {
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
         //driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
-//optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
+//        optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
         optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> kylymDecoder100.addData(difBit, sempl));
         optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> kylymDecoder250.addData(difBit, sempl));

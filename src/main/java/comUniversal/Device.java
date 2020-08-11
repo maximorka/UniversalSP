@@ -197,7 +197,7 @@ public class Device {
 
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk100.demodulate(sempl));
             driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDеmodulatorPsk250.demodulate(sempl));
-            driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
+            driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
             //optimalNonCoherentDеmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
 

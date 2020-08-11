@@ -1,7 +1,7 @@
 package comUniversal.lowLevel.BufferController;
 
-import comUniversal.util.MyComplex;
 import comUniversal.util.Params;
+import org.apache.commons.math3.complex.Complex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class BufferController {
     private List<IBufferController> controllers = new ArrayList<>();
     public void addTransferListener(IBufferController listener){controllers.add(listener);}
     public void clearTransferListener(){controllers.clear();}
-    private void toListenersTransferDataBytes(MyComplex sample){
+    private void toListenersTransferDataBytes(Complex sample){
         if(!controllers.isEmpty())
             for(IBufferController listener: controllers)
                 listener.sendData(sample);
@@ -83,30 +83,35 @@ public void setWorkingThread(boolean work){
                         needSendSample += sampleCountPer1ms * 2;
                     }
                     for (int i = 0; i < needSendSample; i++) {
-                        MyComplex sample = new MyComplex(0.0F, 0.0F);
+                        Complex sample = new Complex(0.0F, 0.0F);
                         if (getIQSource != null) {
                             sample = getIQSource.getIQ();
                         }
-                        toListenersTransferDataBytes(sample);
+                        toListenersTransferDataBytes(new Complex(sample.getReal(), sample.getImaginary()));
+
+//                        System.out.println(sample.getReal() + " " + sample.getImaginary());
+
                     }
+
+//                System.out.println("needSendSample = " + needSendSample);
 
               //  }
             }
         }
     }
 
-    public static void main(String[] args) {
-        BufferController bufferController = new BufferController(3000);
-
-        while (true){
-
-           // bufferController.sendIQ();
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
+//    public static void main(String[] args) {
+//        BufferController bufferController = new BufferController(3000);
+//
+//        while (true){
+//
+//           // bufferController.sendIQ();
+//            try {
+//                Thread.sleep(1);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//    }
 }

@@ -1,7 +1,8 @@
 package comUniversal.lowLevel.BufferController;
 
-import comUniversal.util.MyComplex;
+
+import org.apache.commons.math3.complex.Complex;
 
 public interface GetIQSource {
-        MyComplex getIQ();
+        Complex getIQ();
 }

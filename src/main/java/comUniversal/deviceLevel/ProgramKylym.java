@@ -2,7 +2,6 @@ package comUniversal.deviceLevel;
 
 import comUniversal.BitLevel.decoder.KylymDecoder;
 import comUniversal.lowLevel.Demodulator.OptimalNonCoherent;
-import comUniversal.util.MyComplex;
 import org.apache.commons.math3.complex.Complex;
 
 import java.util.ArrayDeque;
@@ -30,9 +29,9 @@ public class ProgramKylym {
 //    }
 
     public void fromEthernet(Complex data) {
-        MyComplex myComplex = new MyComplex((float) data.getReal(),(float) data.getImaginary());
-        optimalNonCoherent100.demodulate(myComplex);
-        optimalNonCoherent250.demodulate(myComplex);
+        Complex sempl = new Complex((float) data.getReal(),(float) data.getImaginary());
+        optimalNonCoherent100.demodulate(sempl);
+        optimalNonCoherent250.demodulate(sempl);
     }
     public int getData(int[] data) {
         int length = Math.min(data.length, dataInput.size());

@@ -1,6 +1,7 @@
 package comUniversal.deviceLevel;
 
 import comUniversal.BitLevel.GroupAdd;
+import comUniversal.BitLevel.InfAdd;
 import comUniversal.BitLevel.decoder.KylymDecoder;
 import comUniversal.Core;
 import comUniversal.lowLevel.BufferController.BufferController;
@@ -18,6 +19,7 @@ import java.io.IOException;
 public class Dev extends Program {
     private Update update;
     public GroupAdd groupAdd;
+    public InfAdd infAdd;
     public EthernetDriver ethernetDriver;
     private Debuger debuger;
     public ModulatorPsk modulatorPsk;
@@ -35,11 +37,11 @@ public class Dev extends Program {
     public Dev(){
 
         this.ethernetDriver = new EthernetDriver();
-
         try {debuger = new Debuger();} catch (
                 IOException e) {
             System.out.println(e);
         }
+        infAdd = new InfAdd();
         groupAdd = new GroupAdd();
         driverHorizon = new DriverHorizon();
         optimalNonCoherentDåmodulatorPsk100 = new OptimalNonCoherent(100);
@@ -47,7 +49,6 @@ public class Dev extends Program {
 
         optimalNonCoherentDåmodulatorPsk250 = new OptimalNonCoherent(250);
         kylymDecoder250 = new KylymDecoder(250);
-
 
         modulatorPsk = new ModulatorPsk();
 
@@ -65,15 +66,15 @@ public class Dev extends Program {
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
         //driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
-//        optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
+//optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
         optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> kylymDecoder100.addData(difBit, sempl));
         optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> kylymDecoder250.addData(difBit, sempl));
 
-//        modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
-//        optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
+        //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
 
-
+        modulatorPsk.setSymbolSource(() -> infAdd.getBit());
+//optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
         kylymDecoder100.addMessageListener(data -> Core.getCore().informationWindow.setTextMessage(data));
         kylymDecoder250.addMessageListener(symbol -> Core.getCore().informationWindow.setTextMessage(symbol));
 
@@ -92,6 +93,7 @@ public class Dev extends Program {
     public boolean conect(String typeDevice){
         int port = typeDevice.equals("Ãîðèçîíò")?80:81;
        // String rm = Core.getCore().receiverUPSWindowUI.getRM();
+        System.out.println("Port: "+port);
         String ip = Core.getCore().receiverUPSWindowUI.item.get("ip");
         boolean stateCon = ethernetDriver.doInit(ip, port);
         if(stateCon){

@@ -2,6 +2,7 @@
 
 package comUniversal.ui;
 
+import comUniversal.Core;
 import comUniversal.SendData;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -116,9 +117,10 @@ public class InformationMolotWindow {
         sendButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-//                String txt = messageTransmitter.getText();
-//                System.out.println("Fine");
-//                Core.getCore().device[0].groupAdd.add(txt);
+               String txt = serviceMessage.getText();
+                System.out.println("Fine");
+                Core.getCore().dev.infAdd.add(txt);
+               // Core.getCore().device[0].groupAdd.add(txt);
 //                sendButton.setDisable(true);
 //                speed100RadioButton.setDisable(true);
 //                speed200RadioButton.setDisable(true);

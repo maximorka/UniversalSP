@@ -191,4 +191,8 @@ public class ReceiverUPSWindowUI implements ParamsSettings {
     public int getFr(){
         return Integer.parseInt(rxFrequencyTextField.getText());
     }
+    public String getrxType(){
+        return rxType.getText();
+    }
+
 }

@@ -1,6 +1,7 @@
 package comUniversal.deviceLevel;
 
 import comUniversal.BitLevel.GroupAdd;
+import comUniversal.BitLevel.InfAdd;
 import comUniversal.BitLevel.decoder.KylymDecoder;
 import comUniversal.BitLevel.decoder.StrymDecoder;
 import comUniversal.Core;
@@ -19,6 +20,7 @@ import java.io.IOException;
 public class Dev extends Program {
     private Update update;
     public GroupAdd groupAdd;
+    public InfAdd infAdd;
     public EthernetDriver ethernetDriver;
     private Debuger debuger;
     public ModulatorPsk modulatorPsk;
@@ -42,6 +44,7 @@ public class Dev extends Program {
                 IOException e) {
             System.out.println(e);
         }
+        infAdd = new InfAdd();
         groupAdd = new GroupAdd();
         driverHorizon = new DriverHorizon();
         optimalNonCoherentDåmodulatorPsk100 = new OptimalNonCoherent(100);
@@ -66,7 +69,7 @@ public class Dev extends Program {
 
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
-        driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+        //driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
 //        optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
         optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> kylymDecoder100.addData(difBit, sempl));
@@ -77,17 +80,17 @@ public class Dev extends Program {
 
 
         //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
-//        optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
 
-
+        modulatorPsk.setSymbolSource(() -> infAdd.getBit());
+//optimalNonCoherentDåmodulatorPsk250.addListenerSymbol(data -> kylymDecoder250.addData(data));
         kylymDecoder100.addMessageListener(data -> Core.getCore().informationWindow.setTextMessage(data));
         kylymDecoder250.addMessageListener(symbol -> Core.getCore().informationWindow.setTextMessage(symbol));
 
         kylymDecoder100.addStartRadiogramListener(() -> Core.getCore().informationWindow.enterTime());
         kylymDecoder250.addStartRadiogramListener(() -> Core.getCore().informationWindow.enterTime());
 
-        optimalNonCoherentDåmodulatorPsk100.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
-        optimalNonCoherentDåmodulatorPsk250.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
+       // optimalNonCoherentDåmodulatorPsk100.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
+     //   optimalNonCoherentDåmodulatorPsk250.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
 
         kylymDecoder100.addAlgoritmListener((algorit, speed) -> Core.getCore().informationWindow.setAlgoritm(algorit, speed));
         kylymDecoder250.addAlgoritmListener((algorit, speed) -> Core.getCore().informationWindow.setAlgoritm(algorit, speed));

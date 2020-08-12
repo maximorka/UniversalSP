@@ -61,8 +61,24 @@ public class ByteUtils {
 		}
 		
 	}
-	
 
+	public static boolean[] getBits(byte b) {
+		int index = b;
+		if (b < 0) {
+			index = 256 + b;
+		}
+		return ByteBitTable.BIT_TABLE[index];
+	}
+	public static boolean[] getBits(byte[] bytes) {
+		boolean[] result = new boolean[8 * bytes.length];
+
+		for(int byteIndex = 0; byteIndex < bytes.length; byteIndex++) {
+			boolean[] bits = getBits(bytes[byteIndex]);
+			System.arraycopy(bits, 0, result, byteIndex * 8, 8);
+		}
+
+		return result;
+	}
 
 	public static byte getByte(boolean[] bits) {
 		byte result = 0;

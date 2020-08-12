@@ -74,7 +74,7 @@ public class MainUI {
         langsTx = Params.TXRM.getKeyName();
         typeTxChoicebox.setItems(langsTx);
 
-        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим","Cтрум");
+        ObservableList <String> typeMode = FXCollections.observableArrayList("Килим","Струм");
         modeWorkChoicebox.setItems(typeMode);
 
         typeRxChoicebox.getSelectionModel().selectFirst();

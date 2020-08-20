@@ -4,7 +4,7 @@ import org.apache.commons.math3.complex.Complex;
 
 public class StrymDecoder {
 
-    private final int[] sinchro = {0,1,1,1,1,1,1,0};
+    private final int[] sinchro = {0,1,1,1,1,1,1,1,1,1,1,0};
     private final int numFrame = 10; // кількість кадрів
     private final int lengthFrame = 120; // довжина кадру
     private final float frameTreshold = 0.80f; // поріг достовірності
@@ -89,7 +89,7 @@ public class StrymDecoder {
 
         if(counterBit >= lengthFrame + sinchro.length ){
 
-            System.out.println("Сіхро втрачено! counterBit = " + counterBit);
+            //System.out.println("Сіхро втрачено! counterBit = " + counterBit);
             counterBit = 0;
         }
 

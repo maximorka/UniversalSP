@@ -24,8 +24,8 @@ public class SPApp extends Application {
 
         stage.setTitle("”н≥версальне програмне забезпеченн€");
         stage.setScene(scene);
-        stage.setX(212);
-        stage.setY(15);
+        stage.setX(10);
+        stage.setY(8);
         stage.show();
         stage.setOnCloseRequest(event -> {
             System.out.println("platform exit");

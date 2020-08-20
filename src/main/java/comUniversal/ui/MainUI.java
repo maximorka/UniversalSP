@@ -121,8 +121,8 @@ public class MainUI {
                         e.printStackTrace();
                     }
                     Stage stage = new Stage();
-                    stageProg.setX(443);
-                    stageProg.setY(90);
+                    stageProg.setX(213);
+                    stageProg.setY(83);
                     stageProg.setTitle("Молот");
                     stageProg.setScene(scene);
                     stageProg.show();
@@ -155,8 +155,8 @@ public class MainUI {
                             windowEvent.consume();
                         }
                     });
-                    stageRx.setX(212);
-                    stageRx.setY(90);
+                    stageRx.setX(10);
+                    stageRx.setY(83);
                     stageRx.setTitle("RX");
                     stageRx.setScene(scene);
                     stageRx.show();

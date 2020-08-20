@@ -1,13 +1,39 @@
 .Hbox{
-	-fx-background-color: #e5e5e5;
+
+
 }
 
 .vBox{
 	-fx-border-style: solid;
 	-fx-border-width: 2;
 	-fx-border-color: grey;
-}
 
+
+
+}
+.timeStyle{
+ -fx-font-family: Consolas;
+  -fx-font-size: 18;
+  -fx-text-fill: red;
+  -fx-font-weight: bold;
+
+}
+.vBox-Inf{
+	-fx-border-style: solid;
+	-fx-border-width: 2;
+	-fx-border-color: grey;
+	-fx-content-display: top;
+      -fx-border-insets: 2 5 1 1;
+
+}
+.Hbox-Inf{
+    -fx-border-style: solid;
+	-fx-border-width: 2;
+	-fx-border-color: #e5e5e5;
+
+	-fx-content-display: top;
+          -fx-border-insets: 10 1 1 1;
+}
 .textArea{
   -fx-font-family: Consolas;
   -fx-font-size: 16;
@@ -92,5 +118,13 @@
         linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
     -fx-background-insets: 0, 0, 2;
     -fx-background-radius: 2, 1, 0;
+}
+
+
+
+.label-t {
+ -fx-background-color:#f5f2f2 ;
+
+  -fx-translate-y: -10;
 }
 

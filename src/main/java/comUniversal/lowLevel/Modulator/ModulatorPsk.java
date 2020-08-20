@@ -12,7 +12,7 @@ public class ModulatorPsk {
     //private int[] sinchroSequence = {0,0,0,1,1,1};
 
 
-
+private int print =0;
     private int index = 0;
     private int counter = 0;
 
@@ -71,7 +71,12 @@ public class ModulatorPsk {
 
 //            System.out.println("Re = " + result.getReal());
 //            System.out.println("Im = " + result.getImaginary());
-
+//        System.out.print((int)result.getReal());
+//        print++;
+//        if(print==60){
+//            System.out.println("");
+//            print=0;
+//        }
         return result;
     }
 

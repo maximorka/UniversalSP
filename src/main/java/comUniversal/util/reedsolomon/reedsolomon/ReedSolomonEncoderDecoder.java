@@ -153,19 +153,30 @@ public class ReedSolomonEncoderDecoder {
 	}
 
 	public static void main(String[] args) {
-		byte[] test = new byte[2];
-		byte[] res2 = new byte[2];
+		byte[] test = new byte[1];
+		byte[] res2 = new byte[5];
 		test[0] = 2;
-		test[1] = 5;
-		byte[] res = new byte[4];
-		res = doEncode(test,2);
+		//test[1] = 5;
+		//test[2] = 6;
+//		test[3] = 7;
+//		test[4] = 8;
+//		test[5] = 9;
+		byte[] res = new byte[15];
+		byte[] resu = new byte[5];
+		res = doEncode(test,4);
 		for (int i = 0; i <res.length ; i++) {
 			System.out.println(res[i]);
 		}
-res[0]=7;
-		res2 = doDecode(res,2);
-		for (int i = 0; i <res2.length ; i++) {
-			System.out.println(res2[i]);
-		}
+		System.out.println("Decode");
+
+		res2[0]=3;
+		res2[1]=res[1];
+		res2[2]=res[2];
+		res2[3]=res[3];
+		res2[4]=res[4];
+		resu = doDecode(res2,4);
+		//for (int i = 0; i <res2.length ; i++) {
+			System.out.println(resu[0]);
+		//}
 	}
 }

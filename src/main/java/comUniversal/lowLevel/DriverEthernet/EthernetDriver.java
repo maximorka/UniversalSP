@@ -120,31 +120,11 @@ public class EthernetDriver {
             }
         }
     }
-    public void writeByte(byte data) {
 
-        if (connect) {
-            try {
-                outputStream.write(data);
-               // outputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            }
-        }
-        else{
-            System.out.println("try");
-        }
-    }
     public void writeBytes(byte[] data) {
-        if (connect) {
-            try {
-                for (byte out : data)
-                    outputStream.write(out);
-               // outputStream.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        if(!connect) return;
+        try {outputStream.write(data);}
+        catch (IOException e) {e.printStackTrace();}
     }
 
 public boolean isConect(){

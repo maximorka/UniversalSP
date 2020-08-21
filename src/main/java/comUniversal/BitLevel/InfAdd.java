@@ -21,21 +21,21 @@ public class InfAdd {
     private Queue<Integer> bits = new ArrayDeque<Integer>();
     private Queue<Byte> data = new ArrayDeque<Byte>();
     private Queue<byte[]> encodByte = new ArrayDeque<byte[]>();
-    int[] inputD = new int[132];
+    int[] inputD = new int[133];
     int[] interlivBuf = new int[30];
     private int totalSize = 0;
     int index = 0;
     int index1 = 0;
     int indexD = 0;
     int print =0;
-int bit = 0;
+    int bit = 0;
     private String numberCorespondent;
     private int command1;
     private int command2;
     private int command3;
     private int command4;
     private boolean readyFlag = false;
-   private int[] sinch = new int[]{0,1,1,1,1,1,1,1,1,1,1,0};
+    private int[] sinch = new int[]{1,1,1,1,1,0,0,1,0,1,0,0,0};
 
     public String getNumberCorespondent() {
         return numberCorespondent;
@@ -109,7 +109,7 @@ int bit = 0;
 //            System.out.println("Data nulll");
 //            return -1;
 //        } else {
-            //updatePercent();
+        //updatePercent();
 //            float ou = (float) Math.random();
 //            boolean r = ou>0.5?true:false;
 //
@@ -121,28 +121,28 @@ int bit = 0;
 //    indexD=0;
 //}
 
-        if (index1%132==0) {
+        if (index1%133==0) {
             readyFlag = update();
             //System.out.println("new");
         }
         if (readyFlag == false)
             return -1;
-        boolean bit = inputD[index1%132]==1;
+        boolean bit = inputD[index1%133]==1;
         //System.out.print(inputD[index1%132]);
-           // boolean data = bits.poll()==1;
+        // boolean data = bits.poll()==1;
 
-            boolean defData = lastbit ^ bit;
-            lastbit = defData;
-            index1++;
-            return defData==true?1:0;
+        boolean defData = lastbit ^ bit;
+        lastbit = defData;
+        index1++;
+        return defData==true?1:0;
         //}
     }
 
     private void createFrame(int[] data){
 
 
-    int len = data.length;
-   // boolean[] sinch = new boolean[]{false,true,true,true,true,true,true,false};
+        int len = data.length;
+        // boolean[] sinch = new boolean[]{false,true,true,true,true,true,true,false};
 
         for (int i = 0; i <len ; i++) {
             if(index<120){
@@ -215,7 +215,7 @@ int bit = 0;
         }
 
         shift = 0;
-        for (int i = 0; i <12 ; i++) {
+        for (int i = 0; i <13 ; i++) {
             inputD[shift++] = sinch[i];
         }
 
@@ -235,7 +235,7 @@ int bit = 0;
             inputD[shift++] = (interlivBuf[i]&1);
             //}
         }
-return true;
+        return true;
     }
 
     private byte[] myCoder(byte data){

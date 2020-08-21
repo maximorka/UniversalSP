@@ -1,115 +1,161 @@
 package comUniversal.BitLevel.decoder;
 
+import comUniversal.lowLevel.Debuger.Debuger;
+import comUniversal.util.reedsolomon.reedsolomon.ReedSolomonEncoderDecoder;
+import comUniversal.util.reedsolomon.zxing.common.reedsolomon.ReedSolomonEncoder;
 import org.apache.commons.math3.complex.Complex;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
 public class StrymDecoder {
 
-    private final int[] sinchro = {0,1,1,1,1,1,1,1,1,1,1,0};
-    private final int numFrame = 10; // кількість кадрів
-    private final int lengthFrame = 120; // довжина кадру
-    private final float frameTreshold = 0.80f; // поріг достовірності
+    private MessageListener messageListener;
+    public void addMessageListener(MessageListener listener){
+        this.messageListener = listener;
+    }
 
-    private int difBitArray[] = new int[numFrame * (lengthFrame + sinchro.length)];
+    private int[] mask = {1,1,1,1,1,0,0,1,0,1,0,0,0};//{1,1,1,0,0,0,1,0,0,1,0};// {0,1,1,1,1,1,1,1,1,1,0};
+    private int numFrame = 8; // кількість кадрів
+    private int lengthFrame = 120; // довжина кадру
+    private int difBitArray[] = new int[numFrame * (lengthFrame + mask.length)];
+    private int bitCounter = 0;
+
+
+    private FramePositionFinder framePositionFinder;
 
     private String dataString = "";
 
+    public StrymDecoder (Debuger debuger){
+        framePositionFinder = new FramePositionFinder(lengthFrame, mask, debuger);
+    }
 
-    private boolean isFrameFind() {
+    private boolean isFrameFindTest(){
+
+
 
         if (difBitArray.length == 0)
             return false;
 
-        float countBitError = 0.f;
+        boolean result = false;
+        int majoritary;
+        int bit;
 
-        for (int i = 0; i < numFrame; i++) {
-            for (int j = 0; j < sinchro.length; j++) {
-                if (difBitArray[(lengthFrame + sinchro.length) * i + j] != sinchro[j]) {
-                    countBitError++;
-                }
-            }
+        for (int i = 0; i < mask.length; i++) {
+
+            majoritary = 0;
+
+            for (int j = 0; j < numFrame; j++)
+                majoritary += difBitArray[(lengthFrame + mask.length) * j + i];
+
+            bit = (majoritary > numFrame / 2)? 1: 0;
+
+            result = (bit == mask[i]);
+
+            if(!result)
+                break;
+
         }
 
-        float treshold =  1.f - (countBitError / ((float) numFrame * (float) sinchro.length));
+        return result;
 
-        return treshold >= this.frameTreshold;
     }
 
-    private void creatGroup(){
+    private byte toSymbol(int[] src){
+        byte symbol = 0;
+        for(int i = 0; i < src.length; i++) {
+            symbol <<= 1;
+            symbol |= (src[i] & 0x01);
+        }
+        return symbol;
+    }
+
+    private byte[] deInterLiving(byte[] symbols) {
+        byte[] result = new byte[symbols.length];
+
+        int index = 0;
+        for(int i = 0; i < 6; i++)
+            for(int j = 0; j < 5; j++)
+                result[index++] = symbols[i + 6 * j];
+
+        return result;
+    }
 
 
 
-        for(int i = 0; i < 15; i++) {
 
-            int dataByte = 0;
+    private void creatGroup(int position){
 
-            for(int j = 0; j < 8; j++) {
+        int shift = mask.length + position;
 
-                dataByte <<= 1;
-                dataByte += difBitArray[sinchro.length + i*8 +j];
+        byte[] allSymbols = new byte[5*6];
 
+        for(int i = 0; i < allSymbols.length; i++) {
+            int[] s = new int[4];
+            System.arraycopy(difBitArray, 4*i + shift, s, 0, s.length);
+            allSymbols[i] = toSymbol(s);
+        }
+
+        byte[] deInterLivingData = deInterLiving(allSymbols);
+
+        String message = "";
+
+        for(int i = 0; i < 6; i++){
+            byte[] symbols = new byte[5];
+            System.arraycopy(deInterLivingData, 5*i, symbols, 0, symbols.length);
+
+            try {
+                message += String.format("%01X", ReedSolomonEncoderDecoder.doDecode(symbols, 4)[0]);
+            } catch(Exception e) {
+                message += "*";
             }
-            System.out.print(dataByte);
-            System.out.print(" ");
 
         }
-        System.out.println("");
 
+        if (messageListener != null)
+            messageListener.setSymbol(message);
 
-//        String groupString = "";
-//
-//        for(int i = 0; i < lengthFrame + sinchro.length; i++){
-//            int bit = difBitArray[i];
-//            if(bit == 0) {groupString += "0";}
-//            else if (bit == 1) {groupString += "1";}
-//            else {System.out.println("fuck");}
-//
+        // Debug
+//        System.out.print("Фрейм знайдено, позиція " + framePositionFinder.getPosition() + ", Біти: ");
+//        for(int i = 0; i < mask.length; i++)
+//            System.out.print(difBitArray[position + i]);
+//        System.out.print(" ");
+//        for(int i = 0; i < 6; i++) {
+//            for (int j = 0; j < 20; j++)
+//                System.out.print(difBitArray[mask.length + position + i * 20 + j]);
+//            System.out.print(" ");
 //        }
-//
-//        System.out.println(groupString);
+//        System.out.println("Дані: " + message);
+        // Debug
     }
 
-
-    private int counterBit = 0;
 
     public void addData(int difBit, Complex sempl) {
 
-        System.arraycopy(difBitArray, 1, difBitArray, 0, difBitArray.length - 1);
-        difBitArray[difBitArray.length - 1] = difBit;
+        shiftBitArray(difBit);
 
-        counterBit++;
+        // debug
+        dataString += Integer.toString(difBit);
 
-        if (isFrameFind()) {
+        // cutting on frame
+        if(bitCounter % (lengthFrame + mask.length) != 0 ) return;
 
-            System.out.println("Евріка!");
-            counterBit = 0;
-            creatGroup();
-
-
+        // find frame
+        if (framePositionFinder.isFind(difBitArray)){
+            creatGroup(framePositionFinder.getPosition());
+        } else {
+            System.out.println("Пошук фрейму");
         }
+        dataString = "";
 
-        if(counterBit >= lengthFrame + sinchro.length ){
-
-            //System.out.println("Сіхро втрачено! counterBit = " + counterBit);
-            counterBit = 0;
-        }
-
-
-
-//        if (difBit == 0) {
-//            dataString += "0";
-//        }
-//        else if(difBit == 1) {
-//            dataString += "1";
-//        }
-//        else {
-//            System.out.println("Fatal error");
-//        }
-//
-//        if(dataString.length() == (lengthFrame + sinchro.length)) {
-//            System.out.println(dataString);
-//            dataString = "";
-//        }
     }
 
+    private void shiftBitArray(int bit){
+        System.arraycopy(difBitArray, 1, difBitArray, 0, difBitArray.length - 1);
+        difBitArray[difBitArray.length - 1] = bit;
+        bitCounter++;
+    }
 
 }

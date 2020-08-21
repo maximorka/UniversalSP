@@ -30,7 +30,7 @@ public class Debuger {
         if(client == null) return;
         try {
             outputStream.write(data);
-            outputStream.flush();
+            //outputStream.flush();
         } catch (IOException e) {}
     }
 

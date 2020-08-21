@@ -1,0 +1,17 @@
+{
+  "filename": "transmitterRm",
+  "items": {},
+  "item": [
+    "TX1"
+  ],
+  "RMSettings": {},
+  "TXSettings": {
+    "TX1": {
+      "widht": "3",
+      "mode": "1",
+      "typeTx": "Горизонт",
+      "ip": "255.255.255.255",
+      "freq": "128000"
+    }
+  }
+}

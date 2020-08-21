@@ -17,6 +17,7 @@ public class Core {
     public ReceiverUPSWindowUI receiverUPSWindowUI;
     public TransmitterUPSWindowUI transmitterUPSWindowUI;
     public InformationWindow informationWindow;
+    public InformationMolotWindow informationMolotWindow;
     public SettingController settingController;
     public SettingsRMWindowUI settingsRMWindowUI;
     private Update update;

@@ -27,6 +27,7 @@ public class MainUI {
     public static Button connect;
     public static ChoiceBox modeWork;
     InformationWindow informationWindow;
+    InformationMolotWindow informationMolotWindow;
     ReceiverUPSWindowUI receiverUPSWindowUI;
     TransmitterUPSWindowUI transmitterUPSWindowUI;
     SettingController settingController;
@@ -128,7 +129,7 @@ public class MainUI {
                     stageProg.show();
                     rxLabel.setDisable(false);
                     typeRxChoicebox.setDisable(false);
-
+                    informationMolotWindow= fxmlLoader.getController();
                     txLabel.setDisable(false);
                     typeTxChoicebox.setDisable(false);
                 }
@@ -168,6 +169,7 @@ public class MainUI {
                     connectButton.setDisable(false);
                     receiverUPSWindowUI = fxmlLoader.getController();
                     Core.getCore().informationWindow = informationWindow;
+                    Core.getCore().informationMolotWindow = informationMolotWindow;
                     Core.getCore().receiverUPSWindowUI = receiverUPSWindowUI;
                 }else if(typeRxChoicebox.getValue() == "Відсутній"){
                     stageRx.close();

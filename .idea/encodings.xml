@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/SPApp.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/SendData.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/deviceLevel/Dev.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/ui/InformationMolotWindow.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/ui/MainUI.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/ui/ReceiverUPSWindowUI.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/main/java/comUniversal/ui/SettingController.java" charset="windows-1251" />

@@ -51,7 +51,7 @@ public class InformationMolotWindow {
     public static int filterWinradio = 0;
 
     //private HorizonDevice[] horizonDevice;
-   // private HorizonDevice horizonDevice1;
+    // private HorizonDevice horizonDevice1;
     private boolean running = true;
     private String typeRx;
     private String typeTx;
@@ -117,12 +117,12 @@ public class InformationMolotWindow {
         sendButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-               String txt = serviceMessage.getText();
+                String txt = serviceMessage.getText();
                 System.out.println("Fine");
 
-                //Core.getCore().dev.infAdd.add(txt);
+                Core.getCore().dev.infAdd.add(txt);
                 //Core.getCore().dev.infAdd.add("011101011101011101011101011101011101");
-               // Core.getCore().device[0].groupAdd.add(txt);
+                // Core.getCore().device[0].groupAdd.add(txt);
 //                sendButton.setDisable(true);
 //                speed100RadioButton.setDisable(true);
 //                speed200RadioButton.setDisable(true);
@@ -136,10 +136,10 @@ public class InformationMolotWindow {
                 speed200RadioButton.setSelected(false);
 //                if(Core.getCore().countConectedDevice == 1) {
 //                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-//                    Core.getCore().device[0].optimalNonCoherentDåmodulatorPsk100.setRelativeBaudRate(100.f / 3000.f);
+//                    Core.getCore().device[0].optimalNonCoherentD?modulatorPsk100.setRelativeBaudRate(100.f / 3000.f);
 //                }else if(Core.getCore().countConectedDevice == 2) {
 //                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-//                    Core.getCore().device[1].optimalNonCoherentDåmodulatorPsk100.setRelativeBaudRate(100.f / 3000.f);
+//                    Core.getCore().device[1].optimalNonCoherentD?modulatorPsk100.setRelativeBaudRate(100.f / 3000.f);
 //                }
             }
         });
@@ -149,10 +149,10 @@ public class InformationMolotWindow {
                 speed100RadioButton.setSelected(false);
 //                if(Core.getCore().countConectedDevice == 1) {
 //                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-//                    Core.getCore().device[0].optimalNonCoherentDåmodulatorPsk100.setRelativeBaudRate(250.f / 3000.f);
+//                    Core.getCore().device[0].optimalNonCoherentD?modulatorPsk100.setRelativeBaudRate(250.f / 3000.f);
 //                }else if(Core.getCore().countConectedDevice == 2) {
 //                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-//                    Core.getCore().device[1].optimalNonCoherentDåmodulatorPsk100.setRelativeBaudRate(250.f / 3000.f);
+//                    Core.getCore().device[1].optimalNonCoherentD?modulatorPsk100.setRelativeBaudRate(250.f / 3000.f);
 //                }
             }
         });
@@ -233,7 +233,7 @@ public class InformationMolotWindow {
                     clear();
                     sendData.parsData();
                 } else {
-                    inf("Ñëóæáîâå ïîâ³äîìëåííÿ");
+                    inf("???????? ????????????");
                 }
             } else if (checkMather(freqTextField, "\\d{5}")) {
                 sendData.setFrequencyTx(freqString);
@@ -245,13 +245,13 @@ public class InformationMolotWindow {
                     clear();
                     sendData.parsData();
                 } else {
-                    inf("Ñëóæáîâå ïîâ³äîìëåííÿ");
+                    inf("???????? ????????????");
                 }
             } else {
-                inf("Ïåðåâ³äíà ãðóïà");
+                inf("????????? ?????");
             }
         } else {
-            inf("Íîìåð êîðåñïîíäåíòà");
+            inf("????? ?????????????");
         }
 
     }
@@ -268,7 +268,7 @@ public class InformationMolotWindow {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(text);
         alert.setHeaderText(null);
-        alert.setContentText("Íå êîðåêòíå çíà÷åííÿ");
+        alert.setContentText("?? ???????? ????????");
         alert.showAndWait();
     }
 
@@ -276,7 +276,7 @@ public class InformationMolotWindow {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(" ");
         alert.setHeaderText(null);
-        alert.setContentText("Ââåä³òü çíà÷åííÿ");
+        alert.setContentText("??????? ????????");
         alert.showAndWait();
     }
 
@@ -286,6 +286,3 @@ public class InformationMolotWindow {
         //command.setValue(null);
     }
 }
-
-
-

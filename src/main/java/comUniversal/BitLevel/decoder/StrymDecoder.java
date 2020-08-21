@@ -23,6 +23,7 @@ public class StrymDecoder {
     private int difBitArray[] = new int[numFrame * (lengthFrame + mask.length)];
     private int bitCounter = 0;
 
+
     private FramePositionFinder framePositionFinder;
 
     private String dataString = "";

@@ -103,7 +103,6 @@ public class EthernetDriver {
                             for(ReceiverDataBytes listener: receiver)
                                 for (int i = 0; i < data ; i++) {
                                     listener.ReceiveData(inputBuffer[i]);
-
                                 }
 
                     }
@@ -122,9 +121,11 @@ public class EthernetDriver {
     }
 
     public void writeBytes(byte[] data) {
+
         if(!connect) return;
         try {outputStream.write(data);}
         catch (IOException e) {e.printStackTrace();}
+
     }
 
 public boolean isConect(){

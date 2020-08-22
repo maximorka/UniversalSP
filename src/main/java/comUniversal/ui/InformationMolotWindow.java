@@ -22,7 +22,7 @@ import java.util.Date;
 //import javafx.css.Style;
 
 public class InformationMolotWindow {
-InfAdd inf = new InfAdd();
+    InfAdd inf = new InfAdd();
     Date date1 = new Date();
     public static Button sendB;
     public static RadioButton RadioButton100;
@@ -59,7 +59,7 @@ InfAdd inf = new InfAdd();
     public static int filterWinradio = 0;
 
     //private HorizonDevice[] horizonDevice;
-   // private HorizonDevice horizonDevice1;
+    // private HorizonDevice horizonDevice1;
     private boolean running = true;
     private String typeRx;
     private String typeTx;
@@ -116,7 +116,7 @@ InfAdd inf = new InfAdd();
     private Button majorButton;
     @FXML
     private Button saveRgButton;
-//    @FXML
+    //    @FXML
 //    private Button sendButton;
     @FXML
     private Button stopTxButton;
@@ -162,7 +162,7 @@ InfAdd inf = new InfAdd();
         ObservableList <String> timeTx = FXCollections.observableArrayList("3 ı‚","6 ı‚","12 ı‚");
         timeTxComboBox.setItems(timeTx);
 
-        ObservableList <String> serviceMessageTx = FXCollections.observableArrayList("œÓ‚ÚÓ≥Ú¸","«‡˜ÂÍ‡ÈÚÂ","ƒÓ‰‡ÚÍÓ‚ËÈ ÒÂ‡ÌÒ");
+        ObservableList <String> serviceMessageTx = FXCollections.observableArrayList("œŒ¬“Œ–≤“‹","«¿◊≈ ¿…“≈","ƒŒƒ¿“ Œ¬»… —≈¿Õ—");
         serviceMessageTxList.setItems(serviceMessageTx);
 
         message = new TextArea();
@@ -177,7 +177,7 @@ InfAdd inf = new InfAdd();
 //        messageReceived.setEditable(false);
 
         for (int i = 1; i <= 9; i++) {
-           // command.getItems().add(String.valueOf(i));
+            // command.getItems().add(String.valueOf(i));
         }
         serviceMessageTxList.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -185,7 +185,7 @@ InfAdd inf = new InfAdd();
                 addSeans.setVisible(false);
                 String serviceMessage = (String) serviceMessageTxList.getSelectionModel().getSelectedItem();
                 System.out.println(serviceMessage );
-                if(serviceMessage.equals("ƒÓ‰‡ÚÍÓ‚ËÈ ÒÂ‡ÌÒ")){
+                if(serviceMessage.equals("ƒŒƒ¿“ Œ¬»… —≈¿Õ—")){
                     addSeans.setVisible(true);
 
                 }
@@ -214,10 +214,10 @@ InfAdd inf = new InfAdd();
 //                speed200RadioButton.setSelected(false);
 ////                if(Core.getCore().countConectedDevice == 1) {
 ////                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-////                    Core.getCore().device[0].optimalNonCoherentDÂmodulatorPsk100.setRelativeBaudRate(100.f / 3000.f);
+////                    Core.getCore().device[0].optimalNonCoherentD?modulatorPsk100.setRelativeBaudRate(100.f / 3000.f);
 ////                }else if(Core.getCore().countConectedDevice == 2) {
 ////                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
-////                    Core.getCore().device[1].optimalNonCoherentDÂmodulatorPsk100.setRelativeBaudRate(100.f / 3000.f);
+////                    Core.getCore().device[1].optimalNonCoherentD?modulatorPsk100.setRelativeBaudRate(100.f / 3000.f);
 ////                }
 //            }
 //        });
@@ -227,10 +227,10 @@ InfAdd inf = new InfAdd();
 //                speed100RadioButton.setSelected(false);
 ////                if(Core.getCore().countConectedDevice == 1) {
 ////                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-////                    Core.getCore().device[0].optimalNonCoherentDÂmodulatorPsk100.setRelativeBaudRate(250.f / 3000.f);
+////                    Core.getCore().device[0].optimalNonCoherentD?modulatorPsk100.setRelativeBaudRate(250.f / 3000.f);
 ////                }else if(Core.getCore().countConectedDevice == 2) {
 ////                    Core.getCore().device[0].modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
-////                    Core.getCore().device[1].optimalNonCoherentDÂmodulatorPsk100.setRelativeBaudRate(250.f / 3000.f);
+////                    Core.getCore().device[1].optimalNonCoherentD?modulatorPsk100.setRelativeBaudRate(250.f / 3000.f);
 ////                }
 //            }
 //        });
@@ -340,7 +340,7 @@ InfAdd inf = new InfAdd();
 //                    clear();
 //                    sendData.parsData();
 //                } else {
-//                    inf("—ÎÛÊ·Ó‚Â ÔÓ‚≥‰ÓÏÎÂÌÌˇ");
+//                    inf("???????? ????????????");
 //                }
 //            } else if (checkMather(freqTextField, "\\d{5}")) {
 //                sendData.setFrequencyTx(freqString);
@@ -352,13 +352,13 @@ InfAdd inf = new InfAdd();
 //                    clear();
 //                    sendData.parsData();
 //                } else {
-//                    inf("—ÎÛÊ·Ó‚Â ÔÓ‚≥‰ÓÏÎÂÌÌˇ");
+//                    inf("???????? ????????????");
 //                }
 //            } else {
-//                inf("œÂÂ‚≥‰Ì‡ „ÛÔ‡");
+//                inf("????????? ?????");
 //            }
         } else {
-            inf("œŒ«»¬Õ»…");
+            inf("œÓÁË‚ÌËÈ");
         }
 
     }
@@ -383,7 +383,7 @@ InfAdd inf = new InfAdd();
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(" ");
         alert.setHeaderText(null);
-        alert.setContentText("¬‚Â‰≥Ú¸ ÁÌ‡˜ÂÌÌˇ");
+        alert.setContentText("??????? ????????");
         alert.showAndWait();
     }
 
@@ -392,7 +392,7 @@ InfAdd inf = new InfAdd();
         //serviceMessage.clear();
         //command.setValue(null);
     }
-     public class TimeTh extends Thread{
+    public class TimeTh extends Thread{
         @Override
         public void run() {
             while (true){
@@ -411,6 +411,4 @@ InfAdd inf = new InfAdd();
         }
     }
 }
-
-
 

@@ -3,6 +3,7 @@ package comUniversal.deviceLevel;
 import comUniversal.BitLevel.GroupAdd;
 import comUniversal.BitLevel.InfAdd;
 import comUniversal.BitLevel.decoder.KylymDecoder;
+import comUniversal.BitLevel.decoder.MessageShowed;
 import comUniversal.BitLevel.decoder.StrymDecoder;
 import comUniversal.Core;
 import comUniversal.lowLevel.BufferController.BufferController;
@@ -31,12 +32,16 @@ public class Dev extends Program {
     public KylymDecoder kylymDecoder100;
     public KylymDecoder kylymDecoder250;
     public StrymDecoder strymDecoder250;
+    public StrymDecoder strymDecoder100;
+    public MessageShowed messageShowed;
     public Dev (String settings){
         this.ethernetDriver = new EthernetDriver();
         driverHorizon = new DriverHorizon();
         bufferController = new BufferController(3000);
     }
     public Dev(){
+
+
 
         this.ethernetDriver = new EthernetDriver();
 
@@ -52,7 +57,10 @@ public class Dev extends Program {
 
         optimalNonCoherentDåmodulatorPsk250 = new OptimalNonCoherent(250);
         kylymDecoder250 = new KylymDecoder(250);
-        strymDecoder250 = new StrymDecoder();
+        strymDecoder250 = new StrymDecoder(debuger);
+        strymDecoder100 = new StrymDecoder(debuger);
+        messageShowed = new MessageShowed();
+
 
         modulatorPsk = new ModulatorPsk();
 
@@ -69,7 +77,7 @@ public class Dev extends Program {
 
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
-        //driverHorizon.addDdcIQ(sempl -> debuger.show(new Complex(sempl.re, sempl.im)));
+        //driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
 //        optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
         optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> kylymDecoder100.addData(difBit, sempl));
@@ -77,7 +85,8 @@ public class Dev extends Program {
 
         // for testing
         optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> strymDecoder250.addData(difBit, sempl));
-
+        strymDecoder250.addMessageListener(data -> messageShowed.Show(data));
+        //optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> strymDecoder100.addData(difBit, sempl));
 
         //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
 
@@ -89,8 +98,8 @@ public class Dev extends Program {
         kylymDecoder100.addStartRadiogramListener(() -> Core.getCore().informationWindow.enterTime());
         kylymDecoder250.addStartRadiogramListener(() -> Core.getCore().informationWindow.enterTime());
 
-       // optimalNonCoherentDåmodulatorPsk100.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
-     //   optimalNonCoherentDåmodulatorPsk250.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
+        // optimalNonCoherentDåmodulatorPsk100.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
+        //   optimalNonCoherentDåmodulatorPsk250.addFrequencyListener(f -> Core.getCore().informationWindow.setFreq(f));
 
         kylymDecoder100.addAlgoritmListener((algorit, speed) -> Core.getCore().informationWindow.setAlgoritm(algorit, speed));
         kylymDecoder250.addAlgoritmListener((algorit, speed) -> Core.getCore().informationWindow.setAlgoritm(algorit, speed));
@@ -100,7 +109,7 @@ public class Dev extends Program {
 
     public boolean conect(String typeDevice){
         int port = typeDevice.equals("Ãîðèçîíò")?80:81;
-       // String rm = Core.getCore().receiverUPSWindowUI.getRM();
+        // String rm = Core.getCore().receiverUPSWindowUI.getRM();
         System.out.println("Port: "+port);
         String ip = Core.getCore().receiverUPSWindowUI.item.get("ip");
         boolean stateCon = ethernetDriver.doInit(ip, port);

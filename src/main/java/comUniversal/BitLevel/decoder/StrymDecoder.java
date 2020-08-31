@@ -2,13 +2,7 @@ package comUniversal.BitLevel.decoder;
 
 import comUniversal.lowLevel.Debuger.Debuger;
 import comUniversal.util.reedsolomon.reedsolomon.ReedSolomonEncoderDecoder;
-import comUniversal.util.reedsolomon.zxing.common.reedsolomon.ReedSolomonEncoder;
 import org.apache.commons.math3.complex.Complex;
-
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
 
 public class StrymDecoder {
 
@@ -153,7 +147,7 @@ public class StrymDecoder {
         if (framePositionFinder.isFind(difBitArray)){
             creatGroup(framePositionFinder.getPosition());
         } else {
-            System.out.println("Пошук фрейму");
+            //System.out.println("Пошук фрейму");
         }
         dataString = "";
 

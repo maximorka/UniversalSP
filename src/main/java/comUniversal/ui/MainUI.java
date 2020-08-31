@@ -124,11 +124,13 @@ public class MainUI {
                     Stage stage = new Stage();
                     stageProg.setX(213);
                     stageProg.setY(83);
-                    stageProg.setTitle("Молот");
+                    stageProg.setTitle("Струм");
                     stageProg.setScene(scene);
+                    stageProg.setResizable(false);
                     stageProg.show();
                     rxLabel.setDisable(false);
-                    typeRxChoicebox.setDisable(false);
+                    //typeRxChoicebox.setDisable(false);
+                    typeTxChoicebox.setDisable(false);
                     informationMolotWindow= fxmlLoader.getController();
                     txLabel.setDisable(false);
                     typeTxChoicebox.setDisable(false);
@@ -183,7 +185,7 @@ public class MainUI {
         typeTxChoicebox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if(typeTxChoicebox.getValue() == "Горизонт" || typeTxChoicebox.getValue() == "Горизонт+" ) {
+                if(typeTxChoicebox.getValue() != null) {
 
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getResource("/TransmiterUPSWindow.fxml"));
@@ -200,13 +202,20 @@ public class MainUI {
                             windowEvent.consume();
                         }
                     });
-                    stageTx.setX(212);
+                    stageTx.setX(10);
                     stageTx.setY(367);
                     stageTx.setTitle("TX");
                     stageTx.setScene(scene);
                     stageTx.show();
                     connectButton.setDisable(false);
 
+                    Core.getCore().createClassKylym();
+
+
+                    transmitterUPSWindowUI = fxmlLoader.getController();
+                    Core.getCore().informationWindow = informationWindow;
+                    Core.getCore().informationMolotWindow = informationMolotWindow;
+                    Core.getCore().transmitterUPSWindowUI = transmitterUPSWindowUI;
 
                 }else if(typeTxChoicebox.getValue() == "Відсутній"){
                     stageTx.close();
@@ -222,10 +231,14 @@ public class MainUI {
             @Override
             public void handle(ActionEvent actionEvent) {
                 String con = "-fx-background-color: #00cd00";
-                String typeRx = Core.getCore().receiverUPSWindowUI.getrxType();
+                if(Core.getCore().receiverUPSWindowUI != null){
+                    String typeRx = Core.getCore().receiverUPSWindowUI.getRxType();
+                }
+
+                String typeTx = Core.getCore().transmitterUPSWindowUI.getTxType();
                 if (connectButton.getStyle() != con) {
 
-                   if( Core.getCore().dev.conect(typeRx)) {
+                   if( Core.getCore().dev.conect(typeTx)) {
                         Platform.runLater(() -> {
                             connectButton.setText("Відключитись");
                             connectButton.setStyle("-fx-background-color: #00cd00");
@@ -237,7 +250,7 @@ public class MainUI {
                             typeRxChoicebox.setDisable(true);
                             typeTxChoicebox.setDisable(true);
 //                            Core.getCore().transmitterUPSWindowUI.updateVisibility(false);
-                            Core.getCore().receiverUPSWindowUI.updateVisibility(false);
+                           // Core.getCore().receiverUPSWindowUI.updateVisibility(false);
                         });
                  }
                } else {
@@ -252,7 +265,7 @@ public class MainUI {
                         txLabel.setDisable(false);
                         typeProgramLabel.setDisable(false);
                         modeWorkChoicebox.setDisable(false);
-                        typeRxChoicebox.setDisable(false);
+                        typeTxChoicebox.setDisable(false);
                         set.setDisable(false);
                         Core.getCore().transmitterUPSWindowUI.updateVisibility(true);
                         Core.getCore().receiverUPSWindowUI.updateVisibility(true);
@@ -325,7 +338,9 @@ public void setConnectButton(){
     public String getTypeRx() {
         return typeRxChoicebox.getValue().toString();
     }
-
+    public String getTypeTx() {
+        return typeTxChoicebox.getValue().toString();
+    }
     private void inf(String text) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(text);

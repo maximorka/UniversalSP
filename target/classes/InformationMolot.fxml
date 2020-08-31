@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -73,28 +74,28 @@
                                                                <children>
                                                                   <Label layoutX="5.0" layoutY="6.0" prefHeight="25.0" prefWidth="16.0" text="F1" />
                                                                   <TextField fx:id="freq1TextField" layoutX="24.0" layoutY="6.0" prefHeight="25.0" prefWidth="55.0" />
-                                                                  <CheckBox layoutX="81.0" layoutY="13.0" mnemonicParsing="false" />
+                                                                  <CheckBox fx:id="check1Freq" layoutX="81.0" layoutY="13.0" mnemonicParsing="false" />
                                                                </children>
                                                             </AnchorPane>
                                                             <AnchorPane prefHeight="38.0" prefWidth="107.0">
                                                                <children>
                                                                   <TextField fx:id="freq2TextField" layoutX="19.0" layoutY="6.0" prefHeight="25.0" prefWidth="55.0" />
                                                                   <Label layoutY="10.0" text="F2" />
-                                                                  <CheckBox layoutX="77.0" layoutY="13.0" mnemonicParsing="false" />
+                                                                  <CheckBox fx:id="check2Freq" layoutX="77.0" layoutY="13.0" mnemonicParsing="false" />
                                                                </children>
                                                             </AnchorPane>
                                                             <AnchorPane prefHeight="38.0" prefWidth="124.0">
                                                                <children>
                                                                   <TextField fx:id="freq3TextField" layoutX="28.0" layoutY="5.0" prefHeight="25.0" prefWidth="55.0" />
                                                                   <Label layoutX="8.0" layoutY="9.0" text="F3" />
-                                                                  <CheckBox layoutX="86.0" layoutY="11.0" mnemonicParsing="false" />
+                                                                  <CheckBox fx:id="check3Freq" layoutX="86.0" layoutY="11.0" mnemonicParsing="false" />
                                                                </children>
                                                             </AnchorPane>
                                                             <AnchorPane prefHeight="35.0" prefWidth="140.0">
                                                                <children>
                                                                   <Label layoutX="5.0" layoutY="9.0" text="F4" />
                                                                   <TextField fx:id="freq4TextField" layoutX="26.0" layoutY="4.0" prefHeight="25.0" prefWidth="55.0" />
-                                                                  <CheckBox layoutX="84.0" layoutY="12.0" mnemonicParsing="false" />
+                                                                  <CheckBox fx:id="check4Freq" layoutX="84.0" layoutY="12.0" mnemonicParsing="false" />
                                                                </children>
                                                             </AnchorPane>
                                                          </children>
@@ -130,7 +131,7 @@
                                                       </HBox>
                                                       <HBox maxWidth="-Infinity" minHeight="-Infinity" prefHeight="242.0" prefWidth="515.0" styleClass="Hbox-Inf" stylesheets="@css/Main.css">
                                                          <children>
-                                                            <Label fx:id="title1111" minWidth="-Infinity" prefHeight="17.0" prefWidth="60.0" styleClass="label-t" stylesheets="@css/Main.css" text="СЛУЖБОВІ" />
+                                                            <Label fx:id="title1111" minWidth="-Infinity" prefHeight="17.0" prefWidth="60.0" styleClass="label-t" stylesheets="@css/Main.css" text="СЛУЖБОВІ" textFill="#eee2e2" />
                                                             <AnchorPane prefHeight="189.0" prefWidth="235.0">
                                                                <children>
                                                                   <ListView fx:id="serviceMessageTxList" layoutX="-56.0" layoutY="7.0" prefHeight="216.0" prefWidth="243.0" />
@@ -211,26 +212,36 @@
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0" />
-                                    <AnchorPane prefHeight="28.0" prefWidth="89.0">
+                                    <AnchorPane prefHeight="30.0" prefWidth="154.0">
                                        <children>
-                                          <ComboBox fx:id="timeTxComboBox" layoutX="39.0" prefHeight="25.0" prefWidth="88.0" />
-                                          <Label layoutY="4.0" text="ЧАС" />
+                                          <ComboBox fx:id="timeRepeatTxComboBox" layoutX="52.0" prefHeight="25.0" prefWidth="100.0" />
+                                          <Label fx:id="timeRepeatLabel" layoutY="4.0" text="ЧАС" textFill="#3c3737" />
+                                          <Label fx:id="countRepeatLabel" layoutY="3.0" text="Кількість" />
+                                          <ComboBox fx:id="countRepeatTxComboBox" layoutX="51.0" prefHeight="25.0" prefWidth="100.0" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                        <children>
-                                          <CheckBox fx:id="cycleTxCheckBox" layoutX="24.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="17.0" prefWidth="91.0" text="ЦИКЛІЧНО" />
+                                          <CheckBox fx:id="cycleTxCheckBox" layoutX="24.0" layoutY="5.0" mnemonicParsing="false" opacity="0.0" prefHeight="17.0" prefWidth="47.0" text="ЦИКЛІЧНО" />
                                        </children>
                                     </AnchorPane>
                                     <AnchorPane prefHeight="28.0" prefWidth="100.0" />
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#sendingMessage" text="ПЕРЕДАТИ" />
+                                          <Button fx:id="sendButton" mnemonicParsing="false" onAction="#sendingMessage" text="ПЕРЕДАТИ" />
                                        </children>
                                     </AnchorPane>
+                                    <AnchorPane prefHeight="30.0" prefWidth="0.0">
+                                       <children>
+                                          <ProgressBar fx:id="txProgressBar" layoutX="11.0" layoutY="5.0" prefHeight="18.0" prefWidth="79.0" progress="0.0">
+                                             <effect>
+                                                <Blend mode="MULTIPLY" />
+                                             </effect>
+                                          </ProgressBar>
+                                       </children></AnchorPane>
                                     <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                        <children>
-                                          <Button fx:id="stopTxButton" mnemonicParsing="false" text="СТОП" />
+                                          <Button fx:id="stopTxButton" layoutX="19.0" mnemonicParsing="false" text="СТОП" />
                                        </children>
                                     </AnchorPane>
                                  </children>
@@ -271,14 +282,14 @@
             </AnchorPane>
             <AnchorPane prefHeight="83.0" prefWidth="151.0">
                <children>
-                  <Label layoutY="3.0" text="РЕЖИМ" />
-                  <ComboBox fx:id="modeRxComboBox" layoutX="48.0" prefHeight="25.0" prefWidth="82.0" />
+                  <Label layoutY="3.0" text="РЕЖИМ" textFill="#e1bbbb" />
+                  <ComboBox fx:id="modeRxComboBox" layoutX="48.0" prefHeight="25.0" prefWidth="94.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="83.0" prefWidth="122.0">
                <children>
-                  <Label layoutY="4.0" text="V ПРД" />
-                  <ComboBox fx:id="speedTxComboBox" layoutX="43.0" prefHeight="25.0" prefWidth="64.0" />
+                  <Label layoutY="4.0" text="V ПРД" textFill="#f2dada" />
+                  <ComboBox fx:id="speedTxComboBox" layoutX="43.0" prefHeight="25.0" prefWidth="87.0" />
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="200.0" prefWidth="200.0">

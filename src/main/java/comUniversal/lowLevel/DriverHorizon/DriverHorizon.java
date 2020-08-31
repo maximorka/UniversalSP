@@ -1,6 +1,5 @@
 package comUniversal.lowLevel.DriverHorizon;
 
-import comUniversal.util.MyComplex;
 import org.apache.commons.math3.complex.Complex;
 
 import java.nio.ByteBuffer;
@@ -30,6 +29,7 @@ public class DriverHorizon {
     private byte duc_reset =  15;
     private byte duc_clear_buffer =  16;
     private byte duc_get_buffer_percent =  17;
+    private float power = 100.f;
 
     // Interface
     private byte ethernet_set = 21;
@@ -178,11 +178,11 @@ public class DriverHorizon {
     private Complex[] samplePacket = new Complex[64];
 
     public void ducSetIq(Complex sempl){
-
+Complex samplePower = new Complex(sempl.getReal()* this.power/100.f,sempl.getImaginary() * this.power/100.f );
 //        if((sempl.re != 0.f) || (sempl.im != 0.f)) {
 //            System.out.println("Re = " + sempl.re + " Im = " + sempl.im);
 //        }
-        samplePacket[semplCounter%64] = new Complex(sempl.getReal(), sempl.getImaginary());
+        samplePacket[semplCounter%64] = new Complex(samplePower.getReal(), samplePower.getImaginary());
         semplCounter++;
         if(semplCounter == 64) {
             semplCounter = 0;
@@ -549,6 +549,12 @@ public class DriverHorizon {
             this::errors,
             this::maskFind
     };
+    public void ducSetPower(float power){
+        if(power<=100.f){
+            this.power = power;
+        }
+
+    }
 
 }
 

@@ -14,9 +14,12 @@ import comUniversal.lowLevel.DriverHorizon.DriverHorizon;
 import comUniversal.lowLevel.DriverHorizon.Mode;
 import comUniversal.lowLevel.DriverHorizon.Width;
 import comUniversal.lowLevel.Modulator.ModulatorPsk;
+import comUniversal.util.Params;
 import org.apache.commons.math3.complex.Complex;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Dev extends Program {
     private Update update;
@@ -34,14 +37,13 @@ public class Dev extends Program {
     public StrymDecoder strymDecoder250;
     public StrymDecoder strymDecoder100;
     public MessageShowed messageShowed;
+    public Map<String, String> item;
     public Dev (String settings){
         this.ethernetDriver = new EthernetDriver();
         driverHorizon = new DriverHorizon();
         bufferController = new BufferController(3000);
     }
     public Dev(){
-
-
 
         this.ethernetDriver = new EthernetDriver();
 
@@ -64,16 +66,20 @@ public class Dev extends Program {
 
         modulatorPsk = new ModulatorPsk();
 
-        modulatorPsk.setRelativeBaudeRate(250.f / 3000.f);
+        modulatorPsk.setRelativeBaudeRate(100.f / 3000.f);
 
         bufferController = new BufferController(3000);
         bufferController.addTransferListener(sample -> driverHorizon.ducSetIq(sample));
         driverHorizon.addDucBufferPercent(percent -> bufferController.updatePercent(percent));
         bufferController.setSources(() -> modulatorPsk.getSempl());
 
-        driverHorizon.addDdcMode(data -> Core.getCore().receiverUPSWindowUI.getModeRx(data));
-        driverHorizon.addDdcWidth(data -> Core.getCore().receiverUPSWindowUI.getWidthRx(data));
-        driverHorizon.addDdcFrequency(data -> Core.getCore().receiverUPSWindowUI.getFrequencyRx(data));
+    //    driverHorizon.addDdcMode(data -> Core.getCore().receiverUPSWindowUI.getModeRx(data));
+      //  driverHorizon.addDdcWidth(data -> Core.getCore().receiverUPSWindowUI.getWidthRx(data));
+        //driverHorizon.addDdcFrequency(data -> Core.getCore().receiverUPSWindowUI.getFrequencyRx(data));
+
+        driverHorizon.addDdcMode(data -> Core.getCore().transmitterUPSWindowUI.getModeTx(data));
+        driverHorizon.addDdcWidth(data -> Core.getCore().transmitterUPSWindowUI.getWidthTx(data));
+        driverHorizon.addDdcFrequency(data -> Core.getCore().transmitterUPSWindowUI.getFrequencyTx(data));
 
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
@@ -103,15 +109,26 @@ public class Dev extends Program {
 
         kylymDecoder100.addAlgoritmListener((algorit, speed) -> Core.getCore().informationWindow.setAlgoritm(algorit, speed));
         kylymDecoder250.addAlgoritmListener((algorit, speed) -> Core.getCore().informationWindow.setAlgoritm(algorit, speed));
+        infAdd.addRadiogramPercentListener(percent -> Core.getCore().informationMolotWindow.updatePercentRadiogram(percent));
         update = new Update();
         update.start();
     }
 
     public boolean conect(String typeDevice){
+        String rm = Core.getCore().mainUI.getTypeTx();
+        item = new HashMap<>();
+        item = (Params.TXRM.getMapTx(rm));
+        System.out.println(item);
         int port = typeDevice.equals("Ãîðèçîíò")?80:81;
         // String rm = Core.getCore().receiverUPSWindowUI.getRM();
         System.out.println("Port: "+port);
-        String ip = Core.getCore().receiverUPSWindowUI.item.get("ip");
+        String ip="";
+        if(Core.getCore().receiverUPSWindowUI != null){
+            ip = Core.getCore().receiverUPSWindowUI.item.get("ip");
+        }else {
+            ip = Core.getCore().transmitterUPSWindowUI.item.get("ip");
+        }
+
         boolean stateCon = ethernetDriver.doInit(ip, port);
         if(stateCon){
             ethernetDriver.clearReceiverListener();
@@ -121,6 +138,8 @@ public class Dev extends Program {
             driverHorizon.ddcSetMode(Mode.ENABLE);
             driverHorizon.ducSetWidth(Width.kHz_3);
             driverHorizon.ducSetMode(Mode.ENABLE);
+            int power = Integer.parseInt(item.get("power"));
+            driverHorizon.ducSetPower((float)power);
         }
         return stateCon;
     }

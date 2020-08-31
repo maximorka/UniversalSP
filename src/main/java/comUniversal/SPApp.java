@@ -26,6 +26,7 @@ public class SPApp extends Application {
         stage.setScene(scene);
         stage.setX(10);
         stage.setY(8);
+        stage.setResizable(false);
         stage.show();
         stage.setOnCloseRequest(event -> {
             System.out.println("platform exit");

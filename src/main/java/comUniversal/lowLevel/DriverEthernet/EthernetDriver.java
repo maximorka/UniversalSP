@@ -39,11 +39,9 @@ public class EthernetDriver {
         return initSocket();
     }
 
-
     private boolean initSocket() {
         if (readThread != null) {
             readThread.running = false;
-
         }
         closeSocket();
 

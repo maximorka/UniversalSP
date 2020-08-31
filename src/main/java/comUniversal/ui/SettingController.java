@@ -31,6 +31,7 @@ import java.nio.ByteBuffer;
 
 public class SettingController{
 private SettingsRMWindowUI settingsRMWindowUI;
+    private SettingsTXWindowUI settingsTXWindowUI;
    private Dev dev;
     private TableColumn rxNameCol;
     private TableColumn rxIpCol;
@@ -48,7 +49,8 @@ private SettingsRMWindowUI settingsRMWindowUI;
     private Button deleteItemTx;
     @FXML
     private Button editRxRm;
-
+    @FXML
+    private Button editTxRm;
     @FXML
     private TextField ipTextField;
     @FXML
@@ -147,6 +149,37 @@ private SettingsRMWindowUI settingsRMWindowUI;
 
             }
         });
+        editTxRm.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("EDIT");
+                int t = tableTx.getSelectionModel().getFocusedIndex();
+                RM rm = tableTx.getSelectionModel().getSelectedItem();
+
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getResource("/SettingsTX.fxml"));
+                Scene scene = null;
+                try {
+                    scene = new Scene(fxmlLoader.load());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                settingsTXWindowUI = fxmlLoader.getController();
+                Core.getCore().settingsTXWindowUI = settingsTXWindowUI;//Params.RXRM.deleteKeyName(rm.getName());
+
+                Core.getCore().settingsTXWindowUI.setEditTx(rm.getName());
+                Stage stage = new Stage();
+                stage.setX(212);
+                stage.setY(90);
+                stage.setTitle("TX");
+                stage.setScene(scene);
+
+                stage.show();
+
+
+            }
+        });
+
         addTxRm.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

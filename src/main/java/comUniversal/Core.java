@@ -20,6 +20,7 @@ public class Core {
     public InformationMolotWindow informationMolotWindow;
     public SettingController settingController;
     public SettingsRMWindowUI settingsRMWindowUI;
+    public SettingsTXWindowUI settingsTXWindowUI;
     private Update update;
     private boolean running = false;
     public int countConectedDevice = 0;

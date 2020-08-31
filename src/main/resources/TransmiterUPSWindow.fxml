@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.TransmitterUPSWindowUI">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="201.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="comUniversal.ui.TransmitterUPSWindowUI">
    <children>
       <VBox layoutX="2.0" layoutY="2.0" prefHeight="214.0" prefWidth="224.0" styleClass="vBox" stylesheets="@css/Main.css" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
          <children>
@@ -15,6 +15,22 @@
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                </children>
             </HBox>
+            <HBox prefHeight="23.0" prefWidth="222.0">
+               <children>
+                  <AnchorPane prefHeight="25.0" prefWidth="51.0">
+                     <children>
+                        <Label prefHeight="17.0" prefWidth="43.0" text="Тип TX" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="2.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="25.0" prefWidth="74.0">
+                     <children>
+                        <Label fx:id="txType" layoutX="18.0" layoutY="2.0" text="Label" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefHeight="19.0" prefWidth="125.0" />
+               </children>
+            </HBox>
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="3.0" prefWidth="222.0" />
             <HBox prefHeight="30.0" prefWidth="380.0">
                <children>
                   <AnchorPane prefHeight="40.0" prefWidth="19.0">
@@ -27,11 +43,7 @@
                         <TextField fx:id="ipTextField" layoutX="1.0" layoutY="2.0" prefHeight="25.0" prefWidth="104.0" text="255.255.255.255" AnchorPane.leftAnchor="7.0" AnchorPane.topAnchor="2.0" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="30.0" prefWidth="64.0">
-                     <children>
-                        <Button fx:id="changeSettingsIPbutton" layoutX="2.0" layoutY="2.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="60.0" text="Змінити" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0" />
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane prefHeight="30.0" prefWidth="64.0" />
                </children>
             </HBox>
             <HBox prefHeight="14.0" prefWidth="210.0">
@@ -71,13 +83,9 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="23.0" prefWidth="98.0">
                      <children>
-                        <Label fx:id="widthDeviceLabel" layoutX="8.0" layoutY="3.0" prefHeight="17.0" prefWidth="50.0" textFill="#b5a9a9" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="2.0" />
+                        <Label fx:id="widthDeviceLabel" layoutX="8.0" layoutY="3.0" prefHeight="17.0" prefWidth="57.0" textFill="#b5a9a9" AnchorPane.topAnchor="2.0" />
                      </children></AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <Label textFill="#d6d1d1" AnchorPane.leftAnchor="2.0" />
-                     </children>
-                  </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                </children>
             </HBox>
@@ -90,29 +98,25 @@
                   </AnchorPane>
                   <AnchorPane prefHeight="21.0" prefWidth="59.0">
                      <children>
-                        <Label fx:id="modeDeviceLabel" layoutX="6.0" prefHeight="17.0" prefWidth="50.0" textFill="#b5a9a9" AnchorPane.leftAnchor="6.0" AnchorPane.topAnchor="0.0" />
+                        <Label fx:id="modeDeviceLabel" layoutY="6.0" prefHeight="17.0" prefWidth="50.0" textFill="#b5a9a9" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                </children>
             </HBox>
-            <HBox prefHeight="23.0" prefWidth="200.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <AnchorPane prefHeight="17.0" prefWidth="47.0">
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label text="Буфер" textFill="#d6d1d1" AnchorPane.leftAnchor="3.0" />
-                     </children>
-                  </AnchorPane>
-                  <AnchorPane prefHeight="17.0" prefWidth="0.0">
-                     <children>
-                        <Label fx:id="procentDeviceLabel" prefWidth="50.0" textFill="#d6d1d1" AnchorPane.leftAnchor="10.0" />
+                        <Label text="Рівень" />
                      </children>
                   </AnchorPane>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label text="\%" textFill="#d6d1d1" AnchorPane.leftAnchor="2.0" />
+                        <TextField fx:id="powerTx" prefHeight="25.0" prefWidth="70.0" />
                      </children>
                   </AnchorPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" />
                </children></HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" />
          </children>

@@ -26,7 +26,7 @@ private boolean edit = false;
     @FXML
     private TextField txFrequencyTextField;
     @FXML
-    private ComboBox widthTx;
+    private ComboBox powerTx;
     @FXML
     private ComboBox modeTx;
     @FXML
@@ -41,15 +41,16 @@ private boolean edit = false;
 
         System.out.println("initialize() setting TX");
 
-        widthTx.setVisible(false);
+
         modeTx.setVisible(false);
         modeLabel.setVisible(false);
-        widthLabel.setVisible(false);
+        ///widthLabel.setVisible(false);
 
         ObservableList <String> typeRx = FXCollections.observableArrayList("Горизонт","Горизонт+");
         txType.setItems(typeRx);
-        ObservableList <String> widht = FXCollections.observableArrayList("3","6","12","24","48");
-        widthTx.setItems(widht);
+        ObservableList <String> power = FXCollections.observableArrayList("10","20","30","40","50","60","70","80","90","100");
+        powerTx.setItems(power);
+        powerTx.setValue(100);
         ObservableList <String> mode = FXCollections.observableArrayList("1");
         modeTx.setItems(mode);
 
@@ -65,7 +66,7 @@ saveButton.setOnAction(new EventHandler<ActionEvent>() {
         }
         Params.TXRM.putStringRMName(txRmTextField.getText());
 
-        Params.TXRM.putStringTXSettings(txRmTextField.getText(), txType.getValue().toString(), ipTextField.getText(), txFrequencyTextField.getText(), "3", "1");
+        Params.TXRM.putStringTXSettings(txRmTextField.getText(), txType.getValue().toString(), ipTextField.getText(), txFrequencyTextField.getText(), "3", "1",powerTx.getValue().toString());
         Params.TXRM.save();
         Core.getCore().settingController.updateSettingsTx();
         Core.getCore().mainUI.updateTxType();
@@ -179,10 +180,12 @@ saveButton.setOnAction(new EventHandler<ActionEvent>() {
     public void setEdit(String rm){
         Map<String, String> item = new HashMap<>();
         txRmTextField.setText(rm);
-
+        System.out.println(rm);
         item = (Params.TXRM.getMap(rm));
-        txType.setValue(item.get("typeTx"));
-        widthTx.setValue(item.get("widht"));
+        System.out.println(item);
+        //txType.setValue(item.get("typeTx"));
+        //widthTx.setValue(item.get("widht"));
+        powerTx.setValue(item.get("power"));
         modeTx.setValue(item.get("mode"));
         //rxType.setText(item.get("typeRx"));
         ipTextField.setText(item.get("ip"));
@@ -190,4 +193,21 @@ saveButton.setOnAction(new EventHandler<ActionEvent>() {
         //widthDeviceLabel.setText(item.get("widht"));
         //modeDeviceLabel.setText(item.get("mode"));
     }
+    public void setEditTx(String rm){
+        Map<String, String> item = new HashMap<>();
+        txRmTextField.setText(rm);
+
+        item = (Params.TXRM.getMapTx(rm));
+
+        txType.setValue(item.get("typeTx"));
+        //widthTx.setValue(item.get("widht"));
+        powerTx.setValue(item.get("power"));
+        modeTx.setValue(item.get("mode"));
+        //rxType.setText(item.get("typeRx"));
+        ipTextField.setText(item.get("ip"));
+        txFrequencyTextField.setText(item.get("freq"));
+        //widthDeviceLabel.setText(item.get("widht"));
+        //modeDeviceLabel.setText(item.get("mode"));
+    }
+
 }

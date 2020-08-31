@@ -10,6 +10,7 @@ import java.util.Queue;
 public class InfAdd {
     static boolean lastbit = false;
     private int mod = 2;
+
     private List<RadiogramPercent> radiogramPercent = new ArrayList<>();
     public void addRadiogramPercentListener(RadiogramPercent listener){radiogramPercent.add(listener);}
     public void clearRadiogramPercentListener(){radiogramPercent.clear();}
@@ -30,11 +31,14 @@ public class InfAdd {
     int print =0;
     int bit = 0;
     private String numberCorespondent;
-    private int command1;
-    private int command2;
-    private int command3;
-    private int command4;
+    private String sendFrequency;
+    private String koef;
+    private String command1;
+    private String command2;
+    private String command3;
+    private String command4;
     private boolean readyFlag = false;
+    private boolean flagData = false;
     private int[] sinch = new int[]{1,1,1,1,1,0,0,1,0,1,0,0,0};
 
     public String getNumberCorespondent() {
@@ -44,26 +48,33 @@ public class InfAdd {
     public void setNumberCorespondent(String numberCorespondent) {
         this.numberCorespondent = numberCorespondent;
     }
-    public void setCommand1(int command1)
+    public void setCommand1(String command1)
     {
         this.command1 = command1;
-        System.out.println(command1);
     }
-    public void setCommand2(int command2)
+    public void setKoef(String koef)
+    {
+        this.koef = koef;
+    }
+    public void setCommand2(String command2)
     {
         this.command2 = command2;
         System.out.println(command2);
     }
-    public void setCommand3(int command3)
+    public void setCommand3(String command3)
     {
         this.command3 = command3;
         System.out.println(command3);
     }
-    public void setCommand4(int command4)
+    public void setCommand4(String command4)
     {
         this.command4 = command4;
         System.out.println(command4);
     }
+    public void setSendFrequency(String frequency) {
+        this.sendFrequency = frequency;
+    }
+
     public void add(String string, int tab) {
 
 
@@ -93,7 +104,7 @@ public class InfAdd {
 
     private void updatePercent(){
         if (totalSize != 0) {
-            int currentPercent = (100 * bits.size()) / totalSize;
+            int currentPercent = (100 * data.size()) / totalSize;
             int different = oldPercent - currentPercent;
             if (Math.abs(different) >= 1) {
                 oldPercent = currentPercent;
@@ -120,12 +131,12 @@ public class InfAdd {
 //if(indexD == 130){
 //    indexD=0;
 //}
-
+        updatePercent();
         if (index1%133==0) {
-            readyFlag = update();
+            flagData = update();
             //System.out.println("new");
         }
-        if (readyFlag == false)
+        if (flagData == false)
             return -1;
         boolean bit = inputD[index1%133]==1;
         //System.out.print(inputD[index1%132]);
@@ -134,41 +145,9 @@ public class InfAdd {
         boolean defData = lastbit ^ bit;
         lastbit = defData;
         index1++;
+
         return defData==true?1:0;
         //}
-    }
-
-    private void createFrame(int[] data){
-
-
-        int len = data.length;
-        // boolean[] sinch = new boolean[]{false,true,true,true,true,true,true,false};
-
-        for (int i = 0; i <len ; i++) {
-            if(index<120){
-                inputD[index]=data[i];
-                index++;
-            }
-            else {
-                //System.arraycopy(sinch,0,inputD,index,10);
-                inputD[120]=0;
-                inputD[121]=1;
-                inputD[122]=1;
-                inputD[123]=1;
-                inputD[124]=1;
-                inputD[125]=1;
-                inputD[126]=1;
-                inputD[127]=0;
-                //inputD[128]=0;
-                //inputD[129]=0;
-
-                addQue(inputD);
-                index = 0;
-                inputD[index++]=data[i];
-            }
-
-        }
-
     }
 
     private void addQue(int[] data){
@@ -198,13 +177,18 @@ public class InfAdd {
 //        }
 
 
-        if(data.size() == 0 )
-            return false;
+       if (readyFlag == false)
+           return false;
         int shift = 0;
         for (int i = 0; i <6 ; i++) {
             byte[] in = myCoder((byte) (0));
             if(data.size() != 0 ){
-                in = myCoder((byte) data.poll());
+                byte tmp = data.poll();
+                System.out.print(tmp);
+                in = myCoder( tmp);
+            }else {
+                readyFlag = false;
+                return false;
             }
             interlivBuf[shift]= in[0];
             interlivBuf[shift+6]= in[1];
@@ -212,8 +196,9 @@ public class InfAdd {
             interlivBuf[shift+18]= in[3];
             interlivBuf[shift+24]= in[4];
             shift++;
+            //totalSize--;
         }
-
+        System.out.println("");
         shift = 0;
         for (int i = 0; i <13 ; i++) {
             inputD[shift++] = sinch[i];
@@ -247,24 +232,96 @@ public class InfAdd {
         return ReedSolomonEncoderDecoder.doEncode(inEncode,4);
     }
 
-    public void addDataRg(String string) {
+    public void addDataRg(String string, String count) {
+        int countRepeat = Integer.parseInt(count);
+        System.out.println("Count repeat RG "+countRepeat);
+        for (int u = 0; u <countRepeat ; u++) {
 
-        for (int i = 0; i < 3; i++) {
-            data.add((byte) 11);//mask corespondent
-            data.add((byte) 10);
-            data.add((byte) 10);
-            data.add((byte) Character.getNumericValue(numberCorespondent.charAt(0)));
-            data.add((byte) Character.getNumericValue(numberCorespondent.charAt(1)));
-            data.add((byte) Character.getNumericValue(numberCorespondent.charAt(2)));
-        }
-        for (int i = 0; i < string.length(); i++) {
-            if (i % 5 == 0) {
-                data.add((byte) 14);// mask radiogram
+            for (int i = 0; i < 3; i++) {
+                data.add((byte) 11);//mask corespondent
+                data.add((byte) 10);
+                data.add((byte) 10);
+                data.add((byte) Character.getNumericValue(numberCorespondent.charAt(0)));
+                data.add((byte) Character.getNumericValue(numberCorespondent.charAt(1)));
+                data.add((byte) Character.getNumericValue(numberCorespondent.charAt(2)));
             }
-            data.add((byte) Character.getNumericValue(string.charAt(i)));
-        }
+            int lenght = (5 - string.length()%5);
 
-        int size = data.size();
+            for (int i = 0; i < string.length(); i++) {
+                if (i % 5 == 0) {
+                    data.add((byte) 14);// mask radiogram
+                }
+                data.add((byte) Character.getNumericValue(string.charAt(i)));
+            }
+            if(lenght !=5) {
+                for (int i = 0; i < lenght; i++) {
+                    data.add((byte) 10);
+                }
+            }
+        }
+        totalSize = data.size();
+        readyFlag = true;
+    }
+
+    public void addDataService( String time) {
+        int txByte =0;
+        int repeat = 0;
+        int timeCount = Integer.parseInt(time);
+        int tx  = 0;
+       do {
+           txByte = 0;
+           if (sendFrequency != null) {
+               for (int i = 0; i < 1; i++) {
+                   data.add((byte) 11);//mask corespondent
+                   data.add((byte) 10);
+                   data.add((byte) 10);
+                   data.add((byte) Character.getNumericValue(numberCorespondent.charAt(0)));
+                   data.add((byte) Character.getNumericValue(numberCorespondent.charAt(1)));
+                   data.add((byte) Character.getNumericValue(numberCorespondent.charAt(2)));
+                   data.add((byte) 12);//mask freqq
+                   data.add((byte) ((Character.getNumericValue(sendFrequency.charAt(0)) + Character.getNumericValue(koef.charAt(0))) % 10));
+                   data.add((byte) ((Character.getNumericValue(sendFrequency.charAt(1)) + Character.getNumericValue(koef.charAt(1))) % 10));
+                   data.add((byte) ((Character.getNumericValue(sendFrequency.charAt(2)) + Character.getNumericValue(koef.charAt(2))) % 10));
+                   data.add((byte) ((Character.getNumericValue(sendFrequency.charAt(3)) + Character.getNumericValue(koef.charAt(3))) % 10));
+                   data.add((byte) ((Character.getNumericValue(sendFrequency.charAt(4)) + Character.getNumericValue(koef.charAt(4))) % 10));
+               }
+               txByte += 12;
+           }
+
+           if (command1 != null && !command1.equals("")) {
+                   data.add((byte) 11);//mask corespondent
+                   data.add((byte) 10);
+                   data.add((byte) 10);
+                   data.add((byte) Character.getNumericValue(numberCorespondent.charAt(0)));
+                   data.add((byte) Character.getNumericValue(numberCorespondent.charAt(1)));
+                   data.add((byte) Character.getNumericValue(numberCorespondent.charAt(2)));
+                   txByte += 6;
+
+                   for (int y = 0; y < command1.length(); y += 2) {
+                       data.add((byte) 13);//mask command
+                       data.add((byte) Character.getNumericValue(command1.charAt(y)));
+                       data.add((byte) Character.getNumericValue(command1.charAt(y + 1)));
+                       data.add((byte) 13);//mask command
+                       data.add((byte) Character.getNumericValue(command1.charAt(y)));
+                       data.add((byte) Character.getNumericValue(command1.charAt(y + 1)));
+                       txByte +=6;
+                   }
+
+           }
+
+           txByte =((txByte * 20) +( (txByte/6) * 13));
+           float timeTransm = (float) txByte/100.f;
+           repeat =  (int)(((timeCount*60.f)/timeTransm)+1.f);
+           System.out.println("Rep "+repeat);
+           tx++;
+       }while (repeat>=tx);
+        sendFrequency = null;
+        command1 = null;
+        totalSize = data.size();
+        readyFlag = true;
+    }
+    public void clearTxQueue(){
+        data.clear();
     }
     public static void main(String[] args) {
         InfAdd infAdd = new InfAdd();

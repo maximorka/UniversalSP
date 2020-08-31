@@ -77,17 +77,17 @@ public class Dev extends Program {
 
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk100.demodulate(sempl));
         driverHorizon.addDdcIQ(sempl -> optimalNonCoherentDåmodulatorPsk250.demodulate(sempl));
-        //driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
+        driverHorizon.addDdcIQ(sempl -> debuger.show(sempl));
 //        optimalNonCoherentDåmodulatorPsk100.addListenerIq(sempl -> debuger.show(sempl));
 
         optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> kylymDecoder100.addData(difBit, sempl));
         optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> kylymDecoder250.addData(difBit, sempl));
 
         // for testing
-        optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> strymDecoder250.addData(difBit, sempl));
-        strymDecoder250.addMessageListener(data -> messageShowed.Show(data));
-        //optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> strymDecoder100.addData(difBit, sempl));
-
+        //optimalNonCoherentDåmodulatorPsk250.addSemplListener((difBit, sempl) -> strymDecoder250.addData(difBit, sempl));
+        //strymDecoder250.addMessageListener(data -> messageShowed.Show(data));
+        optimalNonCoherentDåmodulatorPsk100.addSemplListener((difBit, sempl) -> strymDecoder100.addData(difBit, sempl));
+        strymDecoder100.addMessageListener(data -> messageShowed.Show(data));
         //modulatorPsk.setSymbolSource(() -> groupAdd.getBit());
 
         modulatorPsk.setSymbolSource(() -> infAdd.getBit());

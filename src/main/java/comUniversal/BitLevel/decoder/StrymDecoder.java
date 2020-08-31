@@ -106,11 +106,18 @@ public class StrymDecoder {
             byte[] symbols = new byte[5];
             System.arraycopy(deInterLivingData, 5*i, symbols, 0, symbols.length);
 
+            String symbol;
             try {
-                message += String.format("%01X", ReedSolomonEncoderDecoder.doDecode(symbols, 4)[0]);
+                symbol = String.format("%01X", ReedSolomonEncoderDecoder.doDecode(symbols, 4)[0]);
             } catch(Exception e) {
-                message += "*";
+                symbol = "*";
             }
+
+            if(symbol.equals("A"))
+                symbol = "0";
+
+            message += symbol;
+
 
         }
 
@@ -118,16 +125,16 @@ public class StrymDecoder {
             messageListener.setSymbol(message);
 
         // Debug
-//        System.out.print("Фрейм знайдено, позиція " + framePositionFinder.getPosition() + ", Біти: ");
-//        for(int i = 0; i < mask.length; i++)
-//            System.out.print(difBitArray[position + i]);
-//        System.out.print(" ");
-//        for(int i = 0; i < 6; i++) {
-//            for (int j = 0; j < 20; j++)
-//                System.out.print(difBitArray[mask.length + position + i * 20 + j]);
-//            System.out.print(" ");
-//        }
-//        System.out.println("Дані: " + message);
+        System.out.print("Фрейм знайдено, позиція " + framePositionFinder.getPosition() + ", Біти: ");
+        for(int i = 0; i < mask.length; i++)
+            System.out.print(difBitArray[position + i]);
+        System.out.print(" ");
+        for(int i = 0; i < 6; i++) {
+            for (int j = 0; j < 20; j++)
+                System.out.print(difBitArray[mask.length + position + i * 20 + j]);
+            System.out.print(" ");
+        }
+        System.out.println("Дані: " + message);
         // Debug
     }
 

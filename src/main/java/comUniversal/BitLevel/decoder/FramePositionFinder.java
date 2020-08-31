@@ -9,7 +9,7 @@ public class FramePositionFinder {
     private boolean status = false;
 
     private float level = 30.f;
-    private int trasholdCrashCounter = 3;
+    private int trasholdCrashCounter = 10;
     private int lengthFrame;
     private int crashCounter;
     private int[] mask;
@@ -58,7 +58,7 @@ public class FramePositionFinder {
                 distance[i] += Math.abs(accum[j + i] - toNrz(mask[j]));
             distance[i] /= mask.length;
             distance[i] *= 50.f;
-            debuger.show(new Complex(distance[i], 0));
+            //debuger.show(new Complex(distance[i], 0));
         }
 
 

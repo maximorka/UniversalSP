@@ -12,23 +12,33 @@ public class MessageShowed {
 
         if( (message == null) ||  (message == "") ||  (message.length() != 6)){
             Core.getCore().informationMolotWindow.setTextMessageStrum("Error, формат даних не коректний");
-            System.out.println("Error, формат даних не коректний");
+            //System.out.println("Error, формат даних не коректний");
             return;
-        } else if(message.charAt(0) == 'C'){
-            Core.getCore().informationMolotWindow.setTextMessageStrum(removeCharAt(message, 0) + " - перевідна");
-            System.out.println(removeCharAt(message, 0) + " - перевідна");
-        } else if(message.charAt(0) == 'B'){
-            Core.getCore().informationMolotWindow.setTextMessageStrum(removeCharAt(message, 0) + " - позивний");
-            System.out.println(removeCharAt(message, 0) + " - позивний");
+        } else if((message.charAt(0) == 'C') && (message.charAt(3) != 'D')){
+
+            Core.getCore().informationMolotWindow.setTextMessageStrum(message + " - перевідна");
+            //System.out.println(removeCharAt(message, 0) + " - перевідна");
+
+
+
+        } else if((message.charAt(0) == 'B') && (message.charAt(3) != 'D')){
+            Core.getCore().informationMolotWindow.setTextMessageStrum(message + " - позивний");
+            //System.out.println(removeCharAt(message, 0) + " - позивний");
         } else if((message.charAt(0) == 'D') || (message.charAt(3) == 'D')){
-            Core.getCore().informationMolotWindow.setTextMessageStrum(removeCharAt(message, 0) + " - команди" );
-            System.out.println(removeCharAt(message, 0) + " - команди" );
-        } else if(message.charAt(0) == 'E'){
-            Core.getCore().informationMolotWindow.setTextMessageStrum(removeCharAt(message, 0) + " - радіограма");
-            System.out.println(removeCharAt(message, 0) + " - радіограма");
+            String command1 = String.valueOf(message.charAt(1)) + String.valueOf(message.charAt(2));
+            String command2 = String.valueOf(message.charAt(4)) + String.valueOf(message.charAt(5));
+            if(command1.equals(command2)) {
+                if((command1.charAt(0) != '*') && command1.charAt(1) != '*' ) {
+                    Core.getCore().informationMolotWindow.setTextMessageStrum(message + " - команда");
+                    //System.out.println(removeCharAt(message, 0) + " - команди" );
+                }
+            }
+        } else if((message.charAt(0) == 'E') && (message.charAt(3) != 'D')){
+            Core.getCore().informationMolotWindow.setTextMessageStrum(message + " - радіограма");
+            //System.out.println(removeCharAt(message, 0) + " - радіограма");
         } else {
-            Core.getCore().informationMolotWindow.setTextMessageStrum(removeCharAt(message, 0));
-            System.out.println(removeCharAt(message, 0));
+            Core.getCore().informationMolotWindow.setTextMessageStrum(message);
+            //System.out.println(removeCharAt(message, 0));
         }
 
     }
